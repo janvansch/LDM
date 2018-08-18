@@ -1,0 +1,196 @@
+body {
+  width: 1200px;
+  padding: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+header {
+    height: 100px;
+    background-color: darkblue;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+nav {
+    width: 8%;
+    line-height: 30px;
+    background-color: #ffeeff;
+    height: 300px;
+    font-size: 100%;
+    float: left;
+    padding: 5px;
+}
+
+section {
+    width: 90%;
+    font-size: 100%;
+    float: left;
+    padding: 5px;
+}
+
+footer {
+    background-color: firebrick;
+    color: white;
+    clear: both;
+    font-size: 90%;
+    text-align: center;
+    padding: 5px;
+}
+
+fieldset {
+    display: block;
+    font-size: 100%;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px groove (internal value);
+}
+
+legend {
+  color:  darkblue;
+  font-size: 100%;
+  font-weight: 700;
+}
+
+input {
+  margin: 5px;
+}
+
+.intense {
+  color:  darkblue;
+  font-size: 100%;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.warning {
+  color: crimson;
+  font-size: 100%;
+  font-weight: 900;
+}
+/*
+=== Login View Styles ===
+*/
+#version {
+    float: right;
+    color: white;
+}
+
+#user {
+    color: white;
+}
+
+#login {
+    display: block;
+    width: 90%;
+    text-align: center;
+}
+
+#prompt {
+    color: crimson;
+    font-size: 100%;
+    font-weight: 900;
+}
+/*
+=== Leads View Styles ===
+*/
+#leadView {
+    display: none;
+    width: 99%;
+    font-size: 95%;
+    text-align: center;
+}
+#contactComment {
+  width: 88%;
+  height: 30px;
+  text-align: left;
+  font-size: 100%;
+}
+#serviceComment {
+  width: 88%;
+  height: 30px;
+  text-align: left;
+  font-size: 100%;
+}
+
+/*
+=== User View Styles ===
+*/
+#userView {
+    display: none;
+    width: 95%;
+    text-align: center;
+}
+
+#addUser {
+  /* display: none; */
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#deleteUser {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#updateUser {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+
+/*
+=== Practise View Styles ===
+*/
+#practiseView {
+  display: none;
+  width: 99%;
+  text-align: center;
+}
+#advAdmin {
+  display: none;
+  width: 95%;
+  text-align: center;
+}
+/*
+=== Adviser View Styles ===
+*/
+#adviserView {
+  display: none;
+  width: 95%;
+  text-align: center;
+}
+
+/* Start of flex container formatting
+------------------------------------------------*/
+.flex-container {
+  /* display: -webkit-flex; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 50px;
+}
+
+.flex-item {
+  flex-grow: 0;
+  margin: auto;
+}
+
+.flex-item input {
+  margin-top: 3px;
+  margin-bottom: 5px;
+  padding: 1px;
+}
+
+/* End of flex container formatting
+-----------------------------------------------------------------*/

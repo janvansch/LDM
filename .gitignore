@@ -1,0 +1,9 @@
+node_modules/
+config/config.json
+@docs/
+sandbox/
+/*.bat
+*_bak*.*
+*-bak*.*
+package-lock.json
+*.log

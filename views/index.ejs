@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LDM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+</head>
+
+<body>
+  <small id="version">ver 0.00</small>
+	<header>
+		<h1>Leads Distribution Management System</h1>
+    <p id="user"> </p>
+	</header>
+
+	<nav>
+		Create Lead<br>
+		Practise View<br>
+		Adviser View<br>
+		Admin View<br>
+		{Web}
+    <!--
+    <input type="button" value="Add User" onclick="javascript:toggleAddUser();"/><br>
+    <input type="button" value="Delete User" onclick="javascript:deleteUser();"/><br>
+    <input type="button" value="Update User" onclick="javascript:updateUser();"/>
+    -->
+	</nav>
+
+	<section>
+		<!--
+    ==========================
+    === Login View Display ===
+    ==========================
+    -->
+    <div id="login">
+      <% include ./partials/viewLogin %>
+    </div>
+    <!--
+    =============================
+    === User Maintenence View ===
+    =============================
+    -->
+    <div id="userView">
+      <% include ./partials/viewAdmin %>
+    </div>
+    <!--
+    ===============================
+    === Capture Leads Main View ===
+    ===============================
+    -->
+    <div id="leadView">
+      <% include ./partials/viewAddLead %>
+    </div>
+    <!--
+    =====================
+    === Practise View ===
+    =====================
+    -->
+    <div id="practiseView">
+      <% include ./partials/viewPractise %>
+    </div>
+    <!--
+    ====================
+    === Adviser View ===
+    ====================
+    -->
+    <div id="adviserView">
+      <% include ./partials/viewAdviser %>
+    </div>
+	</section>
+
+	<footer>
+		Copyright © J. van Schalkwyk (nimbledesign.co.za) 2018
+	</footer>
+
+  <script src="javascripts/script.js"></script>
+
+</body>
+</html>

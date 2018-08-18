@@ -1,0 +1,118 @@
+<label>Preferred Language*:</label>
+<label for="afr">
+  <input id="afr" type="radio" name="langPref" value="Afrikaans"/> Afrikaans
+</label>
+<label for="eng">
+  <input id="eng" type="radio" name="langPref" value="English" checked/> English
+</label>
+<br/>
+<label>
+  First Name*: <input type="text" name="firstname" size="15" required/>
+</label>
+<label>
+  Surname*: <input type="text" name="surname" size="20" required/>
+</label>
+<label>
+  Initials: <input type="text" name="initials" size="5"/>
+</label>
+<label>
+  Contact Num*: <input type="text" name="contactNum" size="15" required/>
+</label>
+<label>
+  Alternate Num: <input type="text" name="altNumber" size="15"/>
+</label>
+<br/>
+<label>
+  Email: <input type="email" name="eMail" size="60"/>
+</label>
+<label>
+  Cell Number: <input type="text" name="cellNumber" size="15"/>
+</label>
+<br/>
+<label>Preferred contact time:</label>
+<label for="monday">
+  <input id="monday" type="checkbox" name="contactDay" value="Monday"/>
+  Mon
+</label>
+<label for="tuesday">
+  <input id="tuesday" type="checkbox" name="contactDay" value="Tuesday"/>
+  Tue
+</label>
+<label for="wednesday">
+  <input id="wednesday" type="checkbox" name="contactDay" value="Wednesday"/>
+  Wed
+</label>
+<label for="thursday">
+  <input id="thursday" type="checkbox" name="contactDay" value="Thursday"/>
+  Thu
+</label>
+<label for="friday">
+  <input id="friday" type="checkbox" name="contactDay" value="Friday"/>
+  Fri
+</label>
+<label for="saturday">
+  <input id="saturday" type="checkbox" name="contactDay" value="Saturday"/>
+  Sat
+</label>
+<label for="time">
+  Time
+  <input id="time" type="time" name="time" size="5"/>
+</label>
+<label for="before">
+  <input id="before" type="radio" name="timeBA" value="before"/> Before
+</label>
+<label for="after">
+  <input id="after" type="radio" name="timeBA" value="after"/> After
+</label>
+<br/>
+<label for="contactComment">
+  Comment:
+  <textarea id="contactComment" name="comment1">
+  </textarea>
+</label>
+<br/>
+<br/>
+<fieldset>
+  <legend>Contact's location & postal information:</legend>
+  <div class="flex-container">
+    <div class="flex-item">
+      <label>
+        Postal Code <input type="number" name="postalCode" min="0" max="9999" size="5"/>
+      </label>
+      <br/>
+      <label>
+        Suburb* <input type="text" name="suburb" size="20" required/>
+      </label>
+    </div>
+    <div class="flex-item">
+      <label>
+        Street Number <input type="text" name="streetNum" size="5"/>
+      </label>
+      <br/>
+      <label>
+        Street Name <input type="text" name="street" size="20"/>
+      </label>
+    </div>
+    <div class="flex-item">
+      <label>
+        Building Name <input type="text" name="buildingName" size="25"/>
+      </label>
+      <br/>
+      <label>
+        Floor <input type="text" name="floor" size="3"/>
+      </label>
+      <label>
+        Room <input type="text" name="room" size="10"/>
+      </label>
+    </div>
+    <div class="flex-item">
+      <label>
+        Postal Code <input type="number" name="boxPostalCode" min="0" max="9999" size="5"/>
+      </label>
+      <br/>
+      <label>
+        P.O. Box <input type="text" name="box" size="10"/>
+      </label>
+    </div>
+  </div>
+</fieldset>
