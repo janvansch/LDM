@@ -26,7 +26,8 @@ var UserSchema = new mongoose.Schema({
     required: true
   },
   practiseCode: {
-    type: String
+    type: String,
+    required: false
   },
   skill: {
     accreditation: {

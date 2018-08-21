@@ -63,7 +63,7 @@ var LeadSchema = new mongoose.Schema({
   },
   contactLocation: {
     postal: {
-      type: Number,
+      type: String,
       required: true,
     },
     suburb: {
@@ -98,10 +98,10 @@ var LeadSchema = new mongoose.Schema({
   },
   postBox: {
     postalCode: {
-      type: Number
+      type: String
     },
     boxNumber: {
-      type: Number
+      type: String
     }
   },
   contactPref: {
@@ -150,8 +150,8 @@ var LeadSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  completedAt: {
-    type: Number,
+  createdAt: {
+    type: String,
     default: null
   },
   _creator: {

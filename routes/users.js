@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
 router.post('/add', async (req, res) => {
   try {
     const body = _.pick(req.body, [
-      'firstname',
+      'firstName',
       'surname',
 	    'phone',
 	    'cell',

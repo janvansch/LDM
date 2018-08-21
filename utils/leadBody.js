@@ -44,7 +44,8 @@ var leadBody = (leadData) => {
       comment4: "leadData[0].",
     },
     status: "Open",
-    completedAt: 0
+    //completedAt: 0
+    //body.completedAt = new Date().getTime();
   };
   console.log("===> Lead body: ", docBody);
   return docBody;

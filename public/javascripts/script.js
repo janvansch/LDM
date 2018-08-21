@@ -39,17 +39,18 @@ function setRoleView(user) {
   var userID = user._id;
   var userPracCode = user.practiseCode;
   var userRole = user.roleCode;
-  console.log(">>> User Role: ", userID, userPracCode, userRole);
+  console.log(`>>> User ID: ${userID}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
   if (userRole==="A") {
     toggleAdmin();
   }
   else if (userRole==="B") {
     togglePractise();
+    // Display the leads of the practise
     displayLeads(userPracCode);
   }
   else if (userRole==="C") {
     toggleAdviser();
-    showLeads(userPracCode, userID);
+    showLeads(userID, userPracCode );
   }
   else {
     toggleLead();
@@ -121,7 +122,7 @@ function displayLeads() {
   //
   //  Request lead data from server
   //
-  dataRequest(method, route, contentType, request, (err, res) => {
+  xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var data = JSON.parse(res.responseText);
       console.log(">>> lead Docs: ", data);
@@ -146,11 +147,11 @@ function displayLeads() {
         cells.push((typeof data[i].altNumber === 'undefined') ? (" - ") : (data[i].altNumber));
         cells.push((typeof data[i].cellNumber === 'undefined') ? (" - ") : (data[i].cellNumber));
         cells.push((typeof data[i].eMail === 'undefined') ? (" - ") : (data[i].eMail));
-        cells.push((typeof data[i].postal === 'undefined') ? (" - ") : (data[i].postal));
-        cells.push((typeof data[i].suburb === 'undefined') ? (" - ") : (data[i].suburb));
+        cells.push((typeof data[i].contactLocation.postal === 'undefined') ? (" - ") : (data[i].contactLocation.postal));
+        cells.push((typeof data[i].contactLocation.suburb === 'undefined') ? (" - ") : (data[i].contactLocation.suburb));
         cells.push((typeof data[i].service === 'undefined') ? (" - ") : (data[i].service));
-        cells.push((typeof data[i].comment1 === 'undefined') ? (" - ") : (data[i].comment1));
-        cells.push((typeof data[i].comment2 === 'undefined') ? (" - ") : (data[i].comment2));
+        cells.push((typeof data[i].comments.comment1 === 'undefined') ? (" - ") : (data[i].comments.comment1));
+        cells.push((typeof data[i].comments.comment2 === 'undefined') ? (" - ") : (data[i].comments.comment2));
         formatData[i] = cells;
         console.log("---> Report Row Data: ", i, formatData[i]);
       }
@@ -224,7 +225,7 @@ function submitLead() {
   if (Object.keys(contactTimeBA).length === 0 && contactTimeBA.constructor === Object) {
     var name = "timeBA";
     var value = [];
-    value.push("N/A");
+    value.push("n/a");
     contactTimeBA[name] = value;
   }
   // extract comment data from contact form
@@ -239,8 +240,6 @@ function submitLead() {
   //
   var coverData = document.getElementById("coverForm");
   var checkboxName = "service";
-  formElement = "input";
-  inputType = "checkbox";
   var coverInfo = getCheckedValues(coverData, checkboxName);
   if (Object.keys(coverInfo).length === 0 && coverInfo.constructor === Object) {
   //var array = coverInfo.perService;
@@ -426,8 +425,37 @@ function updateUser() {
 // =======================================
 //  Practise Administration Functionality
 // =======================================
-function allocateLead() {
-  console.log("===> Allocate lead to adviser process started: ");
+function allocateAdviser() {
+  console.log("===> Allocate Adviser Started");
+
+  // var leadRef, adviserRef;
+  //
+  //
+  // Format Request
+  //
+  var message = {message : "Adviser allocated"};
+  var method = "POST";
+  var route = "/leads/allocateAdviser";
+  var contentType = "application/json";
+
+  var request = JSON.stringify(message);
+
+  //
+  //  Send Allocate Request
+  //
+
+  xhrRequest(method, route, contentType, request, (err, res) => {
+    if (!err) {
+      var resBody = res.responseText;
+      //console.log(`>>> Result returned: Header = ${resHeader}, Body = ${resBody}`);
+      console.log(`>>> Result returned: Body = ${resBody}`);
+      displayLeads();
+    }
+    else {
+      var prompt = "Lead submit error";
+      document.getElementById("leadErr").innerHTML = prompt;
+    }
+  });
 }
 
 // =============================
@@ -594,7 +622,7 @@ function displayData(listContent, listPrompt, objRules) {
 // ================================
 //  Generic XMLHttpRequest handler
 // ================================
-function dataRequest(method, route, contentType, request, callback) {
+function xhrRequest(method, route, contentType, request, callback) {
   //Validate params - if params not valid end immediately
   if (request == null || route == null || contentType == null) {
     console.log("<<< ERROR - required parameters not provided >>>");
@@ -797,12 +825,12 @@ function readRules(definition) {
       var jText = '{ "filedef" : [' +
         '{ "fname" : "email" , "label" : "email" },' +
         '{ "fname" : "password" , "label" : "Password" },' +
-        '{ "fname" : "name" , "label" : "Name" },' +
+        '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
         '{ "fname" : "phone" , "label" : "Phone" },' +
         '{ "fname" : "cell" , "label" : "Cell" },' +
         '{ "fname" : "role" , "label" : "Role" },' +
-        '{ "fname" : "practise" , "label" : "Practise" } ]}'
+        '{ "fname" : "_practiseID" , "label" : "Practise ID" } ]}'
       ;
     break;
     case '1':
