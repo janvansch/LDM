@@ -24,8 +24,8 @@ function login() {
     // ------------------
     //  Close login View
     // ------------------
-    toggleLogin();
-    toggleLogin();
+    toggleView(viewLogin);
+    toggleView(viewLogin);
     // --------------------------
     //  Set view for user's role
     // --------------------------
@@ -41,19 +41,19 @@ function setRoleView(user) {
   var userRole = user.roleCode;
   console.log(`>>> User ID: ${userID}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
   if (userRole==="A") {
-    toggleAdmin();
+    toggleView("viewAdmin");
   }
   else if (userRole==="B") {
-    togglePractise();
+    toggleView(viewPractise);
     // Display the leads of the practise
     displayLeads(userPracCode);
   }
   else if (userRole==="C") {
-    toggleAdviser();
+    toggleView("viewAdviser");
     showLeads(userID, userPracCode );
   }
   else {
-    toggleLead();
+    toggleView("viewLead");
   }
 }
 // -------------------------------
@@ -712,15 +712,12 @@ function xhttpRequest(request, path, contentType, callback) {
   }
 }
 
-// ===================================
-//  View display management functions
-// ===================================
-// -------------------------------------
-//  Switch login View on/off
-// -------------------------------------
-function toggleLogin(){
+// ===============================
+//  Views display toggle function
+// ===============================
+function toggleView(viewID){
     var state = '';
-    var login = document.getElementById("login");
+    var login = document.getElementById(viewID);
     if(login.style.display == "block") {
         login.style.display = "none";
         state = "OFF";
@@ -731,76 +728,92 @@ function toggleLogin(){
     }
     console.log("login section:", state);
 }
-// -------------------------------------------
-//  Switch Add lead View on/off
-// -------------------------------------------
-function toggleLead(){
-    var list = document.getElementById("leadView");
-    if(list.style.display == "block") {
-        list.style.display = "none";
-        var state = "OFF";
-    } else {
-        list.style.display = "block";
-        var state = "ON";
-    }
-    console.log("Add Lead View:", state);
-}
-// -------------------------------------------
-//  Switch Admin View on/off
-// -------------------------------------------
-function toggleAdmin(){
-    var list = document.getElementById("userView");
-    if(list.style.display == "block") {
-        list.style.display = "none";
-        var state = "OFF";
-    } else {
-        list.style.display = "block";
-        var state = "ON";
-    }
-    console.log("Admin View:", state);
-}
-// -------------------------------------------
-//  Switch Practise View on/off
-// -------------------------------------------
-function togglePractise(){
-    var list = document.getElementById("practiseView");
-    if(list.style.display == "block") {
-        list.style.display = "none";
-        var state = "OFF";
-    } else {
-        list.style.display = "block";
-        var state = "ON";
-    }
-    console.log("Practise View:", state);
-}
-// -------------------------------------------
-//  Switch Adviser View on/off
-// -------------------------------------------
-function toggleAdviser(){
-    var list = document.getElementById("adviserView");
-    if(list.style.display == "block") {
-        list.style.display = "none";
-        var state = "OFF";
-    } else {
-        list.style.display = "block";
-        var state = "ON";
-    }
-    console.log("Adviser View:", state);
-}
-// -------------------------------------------
-//  Switch User Add on/off
-// -------------------------------------------
-function toggleAddUser(){
-    var list = document.getElementById("addUser");
-    if(list.style.display == "block") {
-        list.style.display = "none";
-        var state = "OFF";
-    } else {
-        list.style.display = "block";
-        var state = "ON";
-    }
-    console.log("Adviser View:", state);
-}
+// // -------------------------------------
+// //  Switch login View on/off
+// // -------------------------------------
+// function toggleLogin(){
+//     var state = '';
+//     var login = document.getElementById("login");
+//     if(login.style.display == "block") {
+//         login.style.display = "none";
+//         state = "OFF";
+//     }
+//     else {
+//         login.style.display = "block";
+//         state = "ON";
+//     }
+//     console.log("login section:", state);
+// }
+// // -------------------------------------------
+// //  Switch Add lead View on/off
+// // -------------------------------------------
+// function toggleLead(){
+//     var list = document.getElementById("viewLead");
+//     if(list.style.display == "block") {
+//         list.style.display = "none";
+//         var state = "OFF";
+//     } else {
+//         list.style.display = "block";
+//         var state = "ON";
+//     }
+//     console.log("Add Lead View:", state);
+// }
+// // -------------------------------------------
+// //  Switch Admin View on/off
+// // -------------------------------------------
+// function toggleAdmin(){
+//     var list = document.getElementById("userView");
+//     if(list.style.display == "block") {
+//         list.style.display = "none";
+//         var state = "OFF";
+//     } else {
+//         list.style.display = "block";
+//         var state = "ON";
+//     }
+//     console.log("Admin View:", state);
+// }
+// // -------------------------------------------
+// //  Switch Practise View on/off
+// // -------------------------------------------
+// function togglePractise(){
+//     var list = document.getElementById("practiseView");
+//     if(list.style.display == "block") {
+//         list.style.display = "none";
+//         var state = "OFF";
+//     } else {
+//         list.style.display = "block";
+//         var state = "ON";
+//     }
+//     console.log("Practise View:", state);
+// }
+// // -------------------------------------------
+// //  Switch Adviser View on/off
+// // -------------------------------------------
+// function toggleAdviser(){
+//     var list = document.getElementById("adviserView");
+//     if(list.style.display == "block") {
+//         list.style.display = "none";
+//         var state = "OFF";
+//     } else {
+//         list.style.display = "block";
+//         var state = "ON";
+//     }
+//     console.log("Adviser View:", state);
+// }
+// // -------------------------------------------
+// //  Switch User Add on/off
+// // -------------------------------------------
+// function toggleAddUser(){
+//     var list = document.getElementById("addUser");
+//     if(list.style.display == "block") {
+//         list.style.display = "none";
+//         var state = "OFF";
+//     } else {
+//         list.style.display = "block";
+//         var state = "ON";
+//     }
+//     console.log("Adviser View:", state);
+// }
 // -------------------------------------------
 //  Switch policy edit section display on/off
 // -------------------------------------------

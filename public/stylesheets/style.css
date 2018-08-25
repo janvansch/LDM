@@ -64,6 +64,27 @@ input {
   margin: 5px;
 }
 
+/* ------ Links ------ */
+a:link,
+a:visited {
+    /* color: #cf6317; */
+    color: #555;
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #cf6317;
+    -webkit-transition: border-bottom 0.2s, color 0.2s;
+    transition: border-bottom 0.2s, color 0.2s;
+}
+
+a:hover,
+a:active {
+    /* color: #555; */
+    color: #cf6317;
+    border-bottom: 1px solid transparent;
+}
+
+
+
 .intense {
   color:  darkblue;
   font-size: 100%;
@@ -88,7 +109,7 @@ input {
     color: white;
 }
 
-#login {
+#viewLogin {
     display: block;
     width: 90%;
     text-align: center;
@@ -100,9 +121,27 @@ input {
     font-weight: 900;
 }
 /*
+=== Login View Styles ===
+*/
+#viewAdmin {
+    display: none;
+    width: 99%;
+    text-align: center;
+}
+#viewAdminPrac {
+    display: none;
+    width: 99%;
+    text-align: center;
+}
+#viewAdminUser {
+    display: none;
+    width: 99%;
+    text-align: center;
+}
+/*
 === Leads View Styles ===
 */
-#leadView {
+#viewLead {
     display: none;
     width: 99%;
     font-size: 95%;
@@ -122,9 +161,37 @@ input {
 }
 
 /*
-=== User View Styles ===
+=== Practise Admin View Styles ===
 */
-#userView {
+#viewAdminPrac {
+    display: none;
+    width: 95%;
+    text-align: center;
+}
+
+#addPractise {
+  /* display: none; */
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#removePractise {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#updatePractise {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+
+/*
+=== User Admin View Styles ===
+*/
+#viewAdminUser {
     display: none;
     width: 95%;
     text-align: center;
@@ -152,12 +219,12 @@ input {
 /*
 === Practise View Styles ===
 */
-#practiseView {
+#viewPractise {
   display: none;
   width: 99%;
   text-align: center;
 }
-#advAdmin {
+#viewAdminAdviser {
   display: none;
   width: 95%;
   text-align: center;
@@ -165,7 +232,7 @@ input {
 /*
 === Adviser View Styles ===
 */
-#adviserView {
+#viewAdviser {
   display: none;
   width: 95%;
   text-align: center;
