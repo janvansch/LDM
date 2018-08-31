@@ -1,17 +1,22 @@
 // =============================================
 //  Create DB Documnent from Lead Data Received
 // =============================================
-var leadBody = (leadData) => {
-  console.log("===> Create Lead DB Document from: ", leadData);
+var userBody = (userData) => {
+  console.log("===> Create Lead DB Document from: ", userData);
   var docBody = {
-    langPref: leadData[0].langPref,
-    title: "",
-    firstName: leadData[1].firstname,
+    firstName: userData[0].firstName,
     surname: leadData[1].surname,
     initials: leadData[1].initials,
-    contactNum: leadData[1].contactNum,
-    altNumber: leadData[1].altNumber,
-    cellNumber: leadData[1].cellNumber,
+    phone: leadData[1].phone,
+    cell: leadData[1].cell,
+    roleCode: userData[0].roleCode,
+    practiseCode: userData[0].practiseCode,
+    skill: {
+      accreditation: leadData[7].accreditation,
+      experience: leadData[1].experience,
+    },
+
+    
     eMail: leadData[2].eMail,
     agentApproval: "Yes",
     currentInsurer: "çurr ins",
@@ -51,4 +56,4 @@ var leadBody = (leadData) => {
   return docBody;
 }
 
-module.exports = {leadBody};
+module.exports = {userBody};

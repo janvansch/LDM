@@ -1,27 +1,24 @@
-<h2>User Administration</h2>
+<h2>Practise Administration</h2>
 <!--
-=== Display User list ===
+=== Display Practise list ===
 -->
 <hr/>
-<h3>User List</h3>
-<div id="tablePos0"></div>
+<h3>Practise List</h3>
+<div id="tablePos10"></div>
 <hr/>
 <input type="button" value="Add User" onclick="javascript:toggleAddUser();"/>
 <input type="button" value="Delete User" onclick="javascript:deleteUser();"/>
 <input type="button" value="Update User" onclick="javascript:updateUser();"/>
 <!--
-=== Add User ===
+=== Add Practise ===
 -->
-<div id="addUser" style="display:none">
-  <% include ./addUser %>
+<div id="addPractise" style="display:none">
+  <% include ./addPractise %>
 </div>
-<!--
-=== End of Add User ===
--->
 <!--
 === Delete User ===
 -->
-<div id="deleteUser" style="display:none">
+<div id="deletePractise" style="display:none">
   <fieldset>
     <legend>Delete User</legend>
     <label>
@@ -36,7 +33,7 @@
 <!--
 === Update User ===
 -->
-<div id="updateUser" style="display:none">
+<div id="updatePractise" style="display:none">
   <fieldset>
     <legend>Update User</legend>
     <label>

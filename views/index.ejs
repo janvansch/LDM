@@ -15,16 +15,22 @@
 	</header>
 
 	<nav>
-		Create Lead<br>
-		Practise View<br>
-		Adviser View<br>
-		Admin View<br>
-		{Web}
-    <!--
-    <input type="button" value="Add User" onclick="javascript:toggleAddUser();"/><br>
-    <input type="button" value="Delete User" onclick="javascript:deleteUser();"/><br>
-    <input type="button" value="Update User" onclick="javascript:updateUser();"/>
-    -->
+    <h4>Select Action:</h4>
+    <div id="navLogin" style="display:none">
+      <% include ./partials/navLogin %>
+    </div>
+    <div id="navAdmin" style="display:none">
+      <% include ./partials/navAdmin %>
+    </div>
+    <div id="navLead" style="display:none">
+      <% include ./partials/navLead %>
+    </div>
+    <div id="navPractise" style="display:none">
+      <% include ./partials/navPractise %>
+    </div>
+    <div id="navAdviser" style="display:none">
+      <% include ./partials/navAdviser %>
+    </div>
 	</nav>
 
 	<section>
@@ -33,7 +39,7 @@
     === Login View Display ===
     ==========================
     -->
-    <div id="login">
+    <div id="viewLogin">
       <% include ./partials/viewLogin %>
     </div>
     <!--
@@ -41,23 +47,24 @@
     === User Maintenence View ===
     =============================
     -->
-    <div id="userView">
+    <div id="viewAdmin">
       <% include ./partials/viewAdmin %>
     </div>
+    
     <!--
     ===============================
     === Capture Leads Main View ===
     ===============================
     -->
-    <div id="leadView">
-      <% include ./partials/viewAddLead %>
+    <div id="viewLead">
+      <% include ./partials/viewLead %>
     </div>
     <!--
     =====================
     === Practise View ===
     =====================
     -->
-    <div id="practiseView">
+    <div id="viewPractise">
       <% include ./partials/viewPractise %>
     </div>
     <!--
@@ -65,7 +72,7 @@
     === Adviser View ===
     ====================
     -->
-    <div id="adviserView">
+    <div id="viewAdviser">
       <% include ./partials/viewAdviser %>
     </div>
 	</section>
