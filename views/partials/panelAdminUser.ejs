@@ -1,19 +1,26 @@
-<h2>User Administration</h2>
 <!--
-=== Display User list ===
+=== User Maintenance Functions ===
 -->
-<hr/>
-<h3>User List</h3>
-<div id="tablePos110"></div>
-<hr/>
-<input type="button" value="Add User" onclick="javascript:toggleView(addUser);"/>
-<input type="button" value="Delete User" onclick="javascript:deleteUser();"/>
-<input type="button" value="Update User" onclick="javascript:updateUser();"/>
 <!--
 === Add User ===
 -->
 <div id="addUser" style="display:none">
-  <% include ./addUser %>
+  <!-- The Modal -->
+  <div id="addUserModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2>Add User</h2>
+      </div>
+      <div class="modal-body">
+        <% include ./addUser %>
+      </div>
+      <div class="modal-footer">
+        <h3>Modal Footer</h3>
+      </div>
+    </div>
+  </div>
 </div>
 <!--
 === End of Add User ===

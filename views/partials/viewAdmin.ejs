@@ -1,32 +1,35 @@
-<h2>Practice & User Administration</h2>
-<br/>
+<h2>Admin: Practice & User Maintenance</h2>
 <!--
-=== User Administration Panel ===
+=====================================
+=== Practice Administration Panel ===
+=====================================
 -->
 <div id=panelAdminPrac style="display:none">
   <!--
-  === List practises ===
+   List practises
   -->
   <h3 id="list2">Practice List</h3>
   <hr/>
   <div id="table2">
     Place holder for the display of the list of Practices
-    <!-- Place holder for the display of the list of Leads -->
+    <!-- Place holder for the display of the list of practices -->
   </div>
   <hr/>
   <!--
-  === Practice Maintenance Actions ===
+   Practice Maintenance Actions
   -->
   <input type="button" value="Add Practice" onclick="javascript:addPractice();"/>
   <input type="button" value="Update Practice" onclick="javascript:updatePractice();"/>
   <input type="button" value="Delete Practice" onclick="javascript:deletePractice();"/>
 </div>
 <!--
+=================================
 === User Administration Panel ===
+=================================
 -->
 <div id=panelAdminUser style="display:none">
   <!--
-  === List Users ===
+   List Users
   -->
   <h3 id="list0">User List</h3>
   <hr/>
@@ -36,25 +39,46 @@
   </div>
   <hr/>
   <!--
-  === Practise Maintenance Actions ===
+   Practise Maintenance Actions
   -->
-  <input type="button" value="Add User" onclick="javascript:addUser();"/>
+  <input type="button" value="Add User" onclick="addUser()"/>
   <input type="button" value="Update User" onclick="javascript:updateUser();"/>
   <input type="button" value="Delete User" onclick="javascript:deleteUser();"/>
 </div>
 
 <!--
-=============================
-=== User Maintenence View ===
-=============================
+==================================
+=== User Maintenance Functions ===
+==================================
 -->
-<div id="viewAdminUser">
-  <% include ./panelAdminUser %>
+<!-- The Modal (source w3schools) -->
+<div id="modalBox" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Add User</h2>
+    </div>
+    <div class="modal-body">
+      <div id="addUser" style="display:none">
+        <% include ./userAdd %>
+      </div>
+      <div id="updateUser" style="display:none">
+        <% include ./userUpdate %>
+      </div>
+      <div id="deleteUser" style="display:none">
+        <% include ./userDelete %>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <h3>Modal Footer</h3>
+    </div>
+  </div>
 </div>
 <!--
-=============================
-=== User Maintenence View ===
-=============================
+======================================
+=== Practise Maintenance Functions ===
+======================================
 -->
 <div id="viewAdminPrac">
   <% include ./panelAdminPrac %>
