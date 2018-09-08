@@ -2,99 +2,99 @@
 User Description attributes
 -->
 <label>
-  Firstname: <input type="text" name="userdata" size="15"/>
+  First Name: <input type="text" name="firstName" size="15"/>
 </label>
 <label>
-  Surname: <input type="text" name="userdata" size="20"/>
+  Surname: <input type="text" name="surname" size="20"/>
 </label>
 <label>
-  Password: <input type="text" name="userdata" size="15"/>
-</label>
-<br/>
-<label>
-  Phone: <input type="text" name="userdata" size="15"/>
-</label>
-<label>
-  Cell: <input type="text" name="userdata" size="15"/>
-</label>
-<label>
-  Email: <input type="text" name="userdata" size="60"/>
+  Password: <input type="text" name="password" size="15"/>
 </label>
 <br/>
 <label>
-  Practise: <input type="text" name="userdata" size="60"/>
+  Phone: <input type="text" name="phone" size="15"/>
+</label>
+<label>
+  Cell: <input type="text" name="cell" size="15"/>
+</label>
+<label>
+  Email: <input type="email" name="email" size="60"/>
+</label>
+<br/>
+<label>
+  Practice: <input type="text" name="practice" size="60"/>
 </label>
 <br/>
 <!--
 User Role Selection
 -->
-<label><b>User Role:</b></labelh4>
+<label><b>Select User's Role:</b></label>
 <label for="roleA">
-  <input id="roleA" type="radio" name="role" onclick="javascript:isAdviser();"/>
+  <input id="roleA" type="radio" name="role" value="A" onclick="javascript:isAdviser();"/>
   System Administrator
 </label>
 <label for="roleB">
-  <input id="roleB" type="radio" name="role" onclick="javascript:isAdviser();"/>
+  <input id="roleB" type="radio" name="role" value="B" onclick="javascript:isAdviser();"/>
   Practise Administrator
 </label>
 <label for="roleC">
-  <input id="roleC" type="radio" name="role" onclick="javascript:isAdviser();"/>
+  <input id="roleC" type="radio" name="role" value="C" onclick="javascript:isAdviser();"/>
   Adviser
 </label>
 <label for="roleD">
-  <input id="roleD" type="radio" name="role" onclick="javascript:isAdviser();"/>
+  <input id="roleD" type="radio" name="role" value="D" onclick="javascript:isAdviser();"/>
   Capture Leads
 </label>
 <br/>
 <!--
-If Adviser select service abilities
+If user role = Adviser select service abilities.
+Note that this is not mandatory as it can maintained by the practice.
+The skills of the adviser must be captured for it to be considered
+during the leads allocation process.
 -->
 <div id="selectAbility" style="display:none">
-  <strong>Adviser Service Abilities*<strong>
-  <fieldset>
-    <legend>Select insurance types</legend>
-    <% include ./insuranceTypes %>
-    <!--
-    === Sub-view for Type of Cover ===
-    -->
-    <!-- Personnal Insurance Selected -->
-    <form id="coverForm" name="coverForm">
-
-      <div id="accPersonal" >
-        <fieldset>
-          <legend>Select personal insurance services</legend>
-          <% include ./typePersonal %>
-        </fieldset>
-      </div>
-      <!-- Commercial Insurance Selected -->
-      <div id="accCommercial" >
-        <fieldset>
-          <legend>Select commercial insurance services</legend>
-          <% include ./typeCommercial %>
-        </fieldset>
-      </div>
-      <!-- SASRIA Insurance Selected -->
-      <div id="accSasria" >
-        <fieldset>
-          <legend>Select Sasria services</legend>
-          <% include ./typeSasria %>
-        </fieldset>
-      </div>
-      <!-- Agriculture Insurance Selected -->
-      <div id="accAgriculture" >
-        <fieldset>
-          <legend>Select agricultural insurance services</legend>
-          <% include ./typeAgri %>
-        </fieldset>
-      </div>
-      <!-- Specialist Insurance Selected -->
-      <div id="accSpecialist" >
-        <fieldset>
-          <legend>Type of specialist insurance services</legend>
-          <% include ./typeSpecialist %>
-        </fieldset>
-      </div>
-    </form>
-  </fieldset>
+  <br/>
+  <strong>Select Adviser's Services:</strong>
+  <% include ./insuranceTypesB %>
+  <!--
+  === Sub-view for Type of Cover ===
+  -->
+  <!-- Personnal Insurance Selected -->
+  <div id="dispPersServ" style="display:none">
+    <fieldset>
+      <legend>Personal:</legend>
+      <% include ./typePersonal %>
+    </fieldset>
+  </div>
+  <!-- Commercial Insurance Selected -->
+  <div id="dispCommServ" style="display:none">
+    <fieldset>
+      <legend>Commercial:</legend>
+      <% include ./typeCommercial %>
+    </fieldset>
+  </div>
+  <!-- SASRIA Insurance Selected -->
+  <div id="dispSasrServ" style="display:none">
+    <fieldset>
+      <legend>Sasria Services:</legend>
+      <% include ./typeSasria %>
+    </fieldset>
+  </div>
+  <!-- Agriculture Insurance Selected -->
+  <div id="dispAgriServ" style="display:none">
+    <fieldset>
+      <legend>Agricultural:</legend>
+      <% include ./typeAgri %>
+    </fieldset>
+  </div>
+  <!-- Specialist Insurance Selected -->
+  <div id="dispSpecServ" style="display:none">
+    <fieldset>
+      <legend>Specialist:</legend>
+      <% include ./typeSpecialist %>
+    </fieldset>
+  </div>
 </div>
-<input type="button" value="Add User" onclick="submitUser()"/>
+<input type="button" value="Submit" onclick="submitUser()"/>
+<input type="button" value="Cancel" onclick="reset()"/>
+<input type="reset"/>

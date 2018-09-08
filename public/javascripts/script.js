@@ -1,6 +1,7 @@
 "use strict";
+
 // ==========================
-//  Initiate
+//  Initiate views
 // ==========================
 window.onload = function() {
     document.getElementById('ifPersonal').style.display = 'none';
@@ -11,9 +12,10 @@ window.onload = function() {
     document.getElementById('ServiceComment').style.display = 'none';
     toggleView("viewLogin");
 }
-// -------------------------------------------
+
+// ===========================================
 //  Global modal controls (source: w3schools)
-// -------------------------------------------
+// ===========================================
 var modal = document.getElementById('modalBox');
 // Get the button that opens the modal
 // var btn = document.getElementById("myBtn");
@@ -25,99 +27,101 @@ var span = document.getElementsByClassName("close")[0];
 //}
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-    modal.style.display = "none";
+  modal.style.display = "none";
 }
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-// =====================================
-// * Login and open view for user role *
-// =====================================
-function login() {
-  // -------------------------------
-  //  Authenticate user credentials
-  // -------------------------------
-  authenticateLogin((validUser) => {
-    console.log(">>> Valid User Data: ", validUser.body);
-    var user = validUser.body;
-    // var x-auth = validUser.x-auth;
-    // ------------------
-    //  Close login View
-    // ------------------
-    toggleView("viewLogin");
-    // --------------------------
-    //  Display Role View
-    // --------------------------
-    openView(user);
-  });
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
 }
 
-// -------------------------------
-//  Authenticate login credentials
-// -------------------------------
-function authenticateLogin(callback) {
-  // -------------------------------
-  //  Get login data from DOM input
-  // -------------------------------
+// =============================
+//  Login and startup functions
+// =============================
+
+// ----------------------------
+//  Validate login credentials
+// ----------------------------
+function validate(login, callback) {
+  //
+  // create server login request
+  //
+	var request = JSON.stringify({
+	    email: login[0].value,
+			password: login[1].value
+	});
+  var method = "POST";
+	var route = '/users/login';
+  var contentType = 'application/json';
+  //
+  //  Send login request to server
+  //
+  xhrRequest(method, route, contentType, request, (err, result) => {
+    if (!err) {
+      //
+      // Login credentials valid
+      //
+      var resHeader = result.getResponseHeader("x-auth");
+      var resBody = result.responseText;
+      var resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
+      var resObj = JSON.parse(resStr);
+      callback(resObj);
+    }
+    else {
+      //
+      // Login credentials invalid
+      //
+      var prompt = "Login invalid ... re-enter information";
+      document.getElementById("prompt").innerHTML = prompt;
+    }
+  });
+}
+// ----------------------------------------
+//  Validate login and open user role view
+// ----------------------------------------
+function login() {
+  //
+  //  Extract login credentials from login view
+  //
   var loginData = document.getElementsByName("logindata");
   if (loginData[0].value !== '' && loginData[1].value !== '') {
-    // --------------------------
-    //  create Login data object
-    // --------------------------
-		var loginData = {
-		    email: loginData[0].value,
-				password: loginData[1].value
-		};
-		var request = JSON.stringify(loginData);
-    var method = "POST";
-		var route = '/users/login';
-    var contentType = 'application/json';
-    //console.log(">>> Server Request:", request, path, contentType);
-    // --------------------
-    //  Send login Request
-    // --------------------
-    //xhttpRequest(request, path, contentType, function(err, result) {
-    xhrRequest(method, route, contentType, request, (err, result) => {
-      // ------------------------------
-      //  Process login Attempt Result
-      // ------------------------------
-      if (!err) {
-        // ---------------
-        // extract Result
-        // ---------------
-        var resHeader = result.getResponseHeader("x-auth");
-        var resBody = result.responseText;
-        //console.log(`>>> Result returned: Header = ${resHeader}, Body = ${resBody}`);
-        var resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
-        var resObj = JSON.parse(resStr);
-        //console.log(">>> Body Object: ", resObj);
-        var user = "User: " + resObj.body.email;
-        document.getElementById("user").innerHTML = user;
-        callback(resObj);
-      }
-      else {
-        var prompt = "Login invalid ... re-enter information";
-        document.getElementById("prompt").innerHTML = prompt;
-      }
+    validate(loginData, (validUser) => {
+      console.log("User  body data", validUser.body);
+      var user = validUser.body;
+      var auth = validUser.x-auth;
+      //
+      // Close login View
+      //
+      toggleView("viewLogin");
+      //
+      // Display user id in system header
+      //
+      //var user = "User: " + validUser.body.email;
+      document.getElementById("user").innerHTML = "User: " + user.email;
+      //
+      // Display Role View
+      //
+      openRoleView(user);
     });
   }
   else {
+    //
+    // No login credentials provided
+    //
     var prompt = "No login information ... please enter";
     document.getElementById("prompt").innerHTML = prompt;
   }
 }
 
-// ----------------------------
-//  Open role view
-// ----------------------------
-function openView(user) {
-  var userID = user._id;
-  var userPracCode = user.practiseCode;
+// ---------------------------
+//  Open view for user's role
+// ---------------------------
+function openRoleView(user) {
+  var userId = user._id;
   var userRole = user.roleCode;
-  console.log(`>>> User ID: ${userID}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
+  var userPracCode = user.practiceCode;
+  console.log(`>>> User Id: ${userId}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
   if (userRole==="A") {
     toggleView("viewAdmin");
     toggleView("navAdmin");
@@ -133,14 +137,22 @@ function openView(user) {
     toggleView("navAdviser");
     // showLeads(userID, userPracCode );
   }
-  else {
+  else if (userRole==="D"){
     toggleView("viewLead");
     toggleView("navLead");
   }
+  else {
+    console.log(`>>> Error - No role defined!
+      User ID: ${userID},
+      User Role: ${userRole},
+      Practice Code: ${userPracCode}`);
+  }
 }
+
 //================================
 // User Administration Processing
 //================================
+
 // --------------------------------------------------------------------
 //  List system users and enable add, update and remove user functions
 // --------------------------------------------------------------------
@@ -184,9 +196,9 @@ function listUsers() {
     }
   });
 }
-// ==================================
-//  Accreditation and Skill Switches
-// ==================================
+// ---------------------------------------
+//  User accreditation and skill switches
+// ---------------------------------------
 function isAdviser() {
   if (document.getElementById('roleC').checked) {
     // switch accreditation and skills on
@@ -201,9 +213,9 @@ function isAdviser() {
     document.getElementById('selectAbility').style.display = 'none';
   }
 }
-// ------------------------
-//  Open user capture form
-// ------------------------
+// ----------------------
+//  Open user modal form
+// ----------------------
 function addUser() {
   // open model window
   // var modal = document.getElementById('modalBox');
@@ -225,35 +237,167 @@ function deleteUser() {
 function updateUser() {
 
 }
-
+// -----------------------------------------------------
+//  Open or Close the display of a service type's items
+// -----------------------------------------------------
+function servPers() {
+  if (document.getElementById('pServType').checked) {
+    // if selected switch on
+    document.getElementById('dispPersServ').style.display = 'block';
+  }
+  else {
+    // if not selected switch off
+    document.getElementById('dispPersServ').style.display = 'none';
+  }
+}
+function servComm() {
+  if (document.getElementById('cServType').checked) {
+    document.getElementById('dispCommServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispCommServ').style.display = 'none';
+  }
+}
+function servSasr() {
+  if (document.getElementById('sServType').checked) {
+    document.getElementById('dispSasrServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispSasrServ').style.display = 'none';
+  }
+}
+function servAgri() {
+  if (document.getElementById('aServType').checked) {
+    document.getElementById('dispAgriServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispAgriServ').style.display = 'none';
+  }
+}
+function servSpec() {
+  if (document.getElementById('xServType').checked) {
+    document.getElementById('dispSpecServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispSpecServ').style.display = 'none';
+  }
+}
 // ----------------------------
 //  Submit User Data to Server
 // ----------------------------
 function submitUser() {
-  // -------------------
-  //  Get data from DOM
-  // -------------------
-  var userData = document.getElementsByName("userdata");
-  console.log("Login data input:", userData);
-  if(document.getElementById('roleA').checked) {
-    role = "A";
+  //
+  // Extract data from DOM
+  //
+  //
+  //  Extract New User Data
+  //
+  var formAddUser = document.getElementById("formAddUser");
+  var radioName = "";
+  var formElement = "";
+  var inputType = "";
+  //
+  // Extract text data from add user form
+  //
+  formElement = "input";
+  inputType = "text";
+  var userText = extractFormData(formAddUser, formElement, inputType);
+  //
+  // Extract email data from add user form
+  //
+  formElement = "input";
+  inputType = "email";
+  var userEmail = extractFormData(formAddUser, formElement, inputType);
+  //
+  // Extract user role from add user form
+  //
+  radioName = "role";
+  var userRole = getRadioCheckedValue(formAddUser, radioName);
+  //
+  // Extract Service Information for Adviser role
+  //
+  if (userRole.role === "C") {
+    //
+    // Extract adviser service line data
+    //
+    var checkboxName = "line";
+    var userLine = getCheckedValues(formAddUser, checkboxName);
+    if (Object.keys(userLine).length === 0 && userLine.constructor === Object) {
+      var name = "line";
+      var value = [];
+      value.push("none selected");
+      userLine[name] = value;
+    }
+    //
+    // Extract adviser service data
+    //
+    var checkboxName = "service";
+    var userService = getCheckedValues(formAddUser, checkboxName);
+    if (Object.keys(userService).length === 0 && userService.constructor === Object) {
+      var name = "service";
+      var value = [];
+      value.push("none selected");
+      userService[name] = value;
+    }
   }
-  else if(document.getElementById('roleB').checked) {
-    role = "B";
+  else{
+    var userLine = {line : ["n/a"]};
+    var userService = {service : ["n/a"]};
   }
-  else if(document.getElementById('roleC').checked) {
-    role = "C";
-  }
-  else if(document.getElementById('roleD').checked) {
-    role = "D";
-  }
-  name = userData[0].value;
-  surname = userData[1].value;
-  console.log("User data input:", name, surname, role);
+  //
+  //  create User data object
+  //
+  var userData = {
+    firstName : userText.firstName,
+    surname : userText.surname,
+    phone : userText.phone,
+    cell : userText.cell,
+    email : userEmail.email,
+    roleCode : userRole.role,
+    practiceCode : userText.practice,
+    accreditation : userLine.line,
+    skill : userService.service,
+    password : userText.password
+  };
+  var dataString = JSON.stringify(userData);
+  console.log(">>> User Data: ", dataString);
+  var method = "POST";
+  var route = "/users/add";
+  var contentType = "application/json";
+  //
+  //  Send Lead POST Request
+  //
+  xhrRequest(method, route, contentType, dataString, (err, result) => {
+    if (!err) {
+      var resBody = result.responseText;
+      //
+      // Clear create user form
+      //
+      document.getElementById("formAddUser").reset();
+      //
+      // switch accreditation and skills off
+      //
+      document.getElementById('selectAbility').style.display = 'none';
+      //
+      // Switch off skill sections
+      //
+      document.getElementById('dispPersServ').style.display = 'none';
+      document.getElementById('dispCommServ').style.display = 'none';
+      document.getElementById('dispSasrServ').style.display = 'none';
+      document.getElementById('dispAgriServ').style.display = 'none';
+      document.getElementById('dispSpecServ').style.display = 'none';
+    }
+    else {
+      var prompt = "Lead submit error";
+      document.getElementById("leadErr").innerHTML = prompt;
+    }
+  });
 }
+
 //====================================
 // Practise Administration Processing
 //====================================
+
 // -----------------------------------
 //  Open Practice Maintenance Display
 // -----------------------------------
@@ -320,122 +464,14 @@ function listPractices() {
     }
   });
 }
-//=================
-// Lead Processing
-//=================
-// ---------------------------
-//  Send lead data to server
-// ---------------------------
-function submitLead() {
-  console.log("*** Submit Lead Function ***");
-  //
-  //  Extract Contact Data
-  //
-  var contactData = document.getElementById("contactForm");
-  var radioName = "";
-  var formElement = "";
-  var inputType = "";
-  // extract language preference
-  radioName = "langPref";
-  var contactLanguage = getRadioCheckedValue(contactData, radioName);
-  // extract text data from contact form
-  formElement = "input";
-  inputType = "text";
-  var contactInfo = extractFormData(contactData, formElement, inputType);
-  // extract email data from contact form
-  formElement = "input";
-  inputType = "email";
-  var contactEmail = extractFormData(contactData, formElement, inputType);
-  // extract selected day checkbox values
-  var checkboxName = "contactDay";
-  var contactDays = getCheckedValues(contactData, checkboxName);
-  if (Object.keys(contactDays).length === 0 && contactDays.constructor === Object) {
-    var name = "contactDay";
-    var value = [];
-    value.push("any");
-    contactDays[name] = value;
-  }
-  // extract contact time
-  formElement = "input";
-  inputType = "time";
-  var contactTime = extractFormData(contactData, formElement, inputType);
-  // extract before or after
-  radioName = "timeBA";
-  var contactTimeBA = getRadioCheckedValue(contactData, radioName);
-  if (Object.keys(contactTimeBA).length === 0 && contactTimeBA.constructor === Object) {
-    var name = "timeBA";
-    var value = [];
-    value.push("n/a");
-    contactTimeBA[name] = value;
-  }
-  // extract comment data from contact form
-  var formElement = "textarea";
-  var contactComment = extractFormData(contactData, formElement);
-  // extract postal codes
-  formElement = "input";
-  inputType = "number";
-  var contactPostalCode = extractFormData(contactData, formElement, inputType);
-  //
-  //  Extract Cover Data
-  //
-  var coverData = document.getElementById("coverForm");
-  var checkboxName = "service";
-  var coverInfo = getCheckedValues(coverData, checkboxName);
-  if (Object.keys(coverInfo).length === 0 && coverInfo.constructor === Object) {
-  //var array = coverInfo.perService;
-  //if (array.length === 0 && array.constructor === Array) {
-    //
-    // ************ ERROR ***********
-    //  A sevice must be selected
-    //
-    var name = "service";
-    var value = [];
-    value.push("none selected");
-    coverInfo[name] = value;
-  }
-  formElement = "textarea";
-  var coverComment = extractFormData(coverData, formElement);
-  //
-  //  create Lead data object
-  //
-  var leadData = {
-    lead: [
-      contactLanguage,
-      contactInfo,
-      contactEmail,
-      contactDays,
-      contactTime,
-      contactTimeBA,
-      contactComment,
-      contactPostalCode,
-      coverInfo,
-      coverComment
-    ]
-  };
-  console.log("---> Lead Object: ", leadData);
-  var dataString = JSON.stringify(leadData);
-  console.log("---> Lead String: ", dataString);
-  var path = "/leads/add";
-  var contentType = "application/json";
-  //
-  //  Send Lead POST Request
-  //
-  xhttpRequest(dataString, path, contentType, function(err, result) {
-    if (!err) {
-      var resBody = result.responseText;
-      //console.log(`>>> Result returned: Header = ${resHeader}, Body = ${resBody}`);
-      console.log(`>>> Result returned: Body = ${resBody}`);
-      //var resObj = JSON.parse(resBody);
-    }
-    else {
-      var prompt = "Lead submit error";
-      document.getElementById("leadErr").innerHTML = prompt;
-    }
-  });
-}
-// =========================================================
-//  Lead Contact Form and Service Required Display Switches
-// =========================================================
+
+// ============================
+//  Capture Lead Functionality
+// ============================
+
+// ----------------------------------------------------------------------
+//  Lead Display Switches for Contact Form and Service Required Selector
+// ----------------------------------------------------------------------
 function leadOk() {
   if (document.getElementById('trfSTAYes').checked) {
     // switch Yes on
@@ -466,9 +502,9 @@ function leadOk() {
   //  document.getElementById('ifSpecialist').reset();
   }
 }
-// ==================================
-//  Lead Cover Form Display Switches
-// ==================================
+// --------------------------------------
+//  Display Switches for Lead Cover Form
+// --------------------------------------
 function line() {
   if (document.getElementById('personal').checked) {
     // switch on
@@ -514,9 +550,133 @@ function line() {
   }
   document.getElementById('ServiceComment').style.display = 'block';
 }
+// --------------------------
+//  Send lead data to server
+// --------------------------
+function submitLead() {
+  console.log("*** Submit Lead Function ***");
+  //
+  //  Extract Contact Data
+  //
+  var contactData = document.getElementById("contactForm");
+  var radioName = "";
+  var formElement = "";
+  var inputType = "";
+  //
+  // extract language preference
+  //
+  radioName = "langPref";
+  var contactLanguage = getRadioCheckedValue(contactData, radioName);
+  //
+  // extract text data from contact form
+  //
+  formElement = "input";
+  inputType = "text";
+  var contactInfo = extractFormData(contactData, formElement, inputType);
+  //
+  // extract email data from contact form
+  //
+  formElement = "input";
+  inputType = "email";
+  var contactEmail = extractFormData(contactData, formElement, inputType);
+  //
+  // extract selected day checkbox values
+  //
+  var checkboxName = "contactDay";
+  var contactDays = getCheckedValues(contactData, checkboxName);
+  if (Object.keys(contactDays).length === 0 && contactDays.constructor === Object) {
+    var name = "contactDay";
+    var value = [];
+    value.push("any");
+    contactDays[name] = value;
+  }
+  //
+  // extract contact time
+  //
+  formElement = "input";
+  inputType = "time";
+  var contactTime = extractFormData(contactData, formElement, inputType);
+  //
+  // extract before or after
+  //
+  radioName = "timeBA";
+  var contactTimeBA = getRadioCheckedValue(contactData, radioName);
+  if (Object.keys(contactTimeBA).length === 0 && contactTimeBA.constructor === Object) {
+    var name = "timeBA";
+    var value = [];
+    value.push("n/a");
+    contactTimeBA[name] = value;
+  }
+  //
+  // extract comment data from contact form
+  //
+  var formElement = "textarea";
+  var contactComment = extractFormData(contactData, formElement);
+  // extract postal codes
+  formElement = "input";
+  inputType = "number";
+  var contactPostalCode = extractFormData(contactData, formElement, inputType);
+  //
+  //  Extract Cover Data
+  //
+  var coverData = document.getElementById("coverForm");
+  var checkboxName = "service";
+  var coverInfo = getCheckedValues(coverData, checkboxName);
+  if (Object.keys(coverInfo).length === 0 && coverInfo.constructor === Object) {
+  //var array = coverInfo.perService;
+  //if (array.length === 0 && array.constructor === Array) {
+    //
+    // ************ ERROR ***********
+    //  A sevice must be selected
+    //
+    var name = "service";
+    var value = [];
+    value.push("none selected");
+    coverInfo[name] = value;
+  }
+  formElement = "textarea";
+  var coverComment = extractFormData(coverData, formElement);
+  //
+  //  create Lead data object
+  //
+  var leadData = {
+    lead: [
+      contactLanguage,
+      contactInfo,
+      contactEmail,
+      contactDays,
+      contactTime,
+      contactTimeBA,
+      contactComment,
+      contactPostalCode,
+      coverInfo,
+      coverComment
+    ]
+  };
+  var dataString = JSON.stringify(leadData);
+  var method = "POST";
+  var route = "/leads/add";
+  var contentType = "application/json";
+  //
+  //  Send Lead POST Request
+  //
+  xhrRequest(method, route, contentType, dataString, (err, result) => {
+    if (!err) {
+      var resBody = result.responseText;
+      document.getElementById("contactForm").reset();
+      document.getElementById("coverForm").reset();
+    }
+    else {
+      var prompt = "Lead submit error";
+      document.getElementById("leadErr").innerHTML = prompt;
+    }
+  });
+}
+
 // =======================================
 //  Practise Administration Functionality
 // =======================================
+
 // ------------------------
 //  Display practise leads
 // ------------------------
@@ -559,6 +719,9 @@ function listLeads() {
     }
   });
 }
+// ------------------
+//  Display Advisers
+// ------------------
 function listAdvisers() {
   //
   // Switch leads Display on
@@ -598,11 +761,11 @@ function listAdvisers() {
     }
   });
 }
+// --------------------------
+//  Allocate Adviser to Lead
+// --------------------------
 function allocateAdviser() {
   console.log("===> Allocate Adviser Started");
-
-  // var leadRef, adviserRef;
-  //
   //
   // Format Request
   //
@@ -610,13 +773,10 @@ function allocateAdviser() {
   var method = "POST";
   var route = "/leads/allocateAdviser";
   var contentType = "application/json";
-
   var request = JSON.stringify(message);
-
   //
   //  Send Allocate Request
   //
-
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var resBody = res.responseText;
@@ -630,9 +790,11 @@ function allocateAdviser() {
     }
   });
 }
+
 // =============================
 //  Form Data Extract Utilities
 // =============================
+
 // -------------------------------------------------------------
 //  Return values of specified element type from specified form
 // -------------------------------------------------------------
@@ -717,19 +879,11 @@ function formReset(form) {
 //  Create table and display content in DOM
 // =========================================
 function displayData(content, prompt, layoutId) {
-  //function displayData(listContent, listPrompt, objRules, dataSource) {
   console.log("Content: ", content);
-  //var rowCount = content.length;
-  //var contentColCount = content[0].length;
   // -----------------------------------
   //  Read layout definition
   // -----------------------------------
   var layout = readLayout(layoutId);
-  //var layoutColCount = layout.definition.length;
-  //if (layoutColCount !== contentColCount) {
-  //  console.log(`==> Err: Column Count issue: expected = ${layoutColCount} data = ${contentColCount}`);
-  //  alert(`==> Warning: Number of columns problem: expected = ${layoutColCount} but data = ${contentColCount}`);
-  //}
   // ------------------------------------
   //  Extract table content from content
   // ------------------------------------
@@ -739,14 +893,9 @@ function displayData(content, prompt, layoutId) {
   for (var i=0; i < rowCount; i++) {
     var cells = [];
     for (var j=0; j < colCount; j++) {
-      // objectName["propertyName"]
-      console.log(`---> layout Column: ${j} Field Name: ${layout.definition[j].fname}`);
       cells.push((typeof content[i][layout.definition[j].fname] === 'undefined') ? (" - ") : (content[i][layout.definition[j].fname]));
-      //cells.push((typeof content[i][layout.definition[j].fname] === 'undefined') ? (" - ") : (content[i][layout.definition[j].fname]));
-      console.log(`---> Data Row: ${i} Data: ${cells}`);
     }
     tableContent[i] = cells;
-    //console.log(`---> Report Row: ${i} Data: ${tableContent[i]}`);
   }
   // ---------------------------------
   //  Create content table

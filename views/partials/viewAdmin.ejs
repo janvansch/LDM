@@ -39,7 +39,7 @@
   </div>
   <hr/>
   <!--
-   Practise Maintenance Actions
+   User Maintenance Actions
   -->
   <input type="button" value="Add User" onclick="addUser()"/>
   <input type="button" value="Update User" onclick="javascript:updateUser();"/>
@@ -61,17 +61,23 @@
     </div>
     <div class="modal-body">
       <div id="addUser" style="display:none">
-        <% include ./userAdd %>
+        <form id="formAddUser">
+          <% include ./userAdd %>
+        </form>
       </div>
       <div id="updateUser" style="display:none">
-        <% include ./userUpdate %>
+        <form id="formUpdateUser">
+          <% include ./userUpdate %>
+        </form>
       </div>
       <div id="deleteUser" style="display:none">
-        <% include ./userDelete %>
+        <form id="formDeleteUser">
+          <% include ./userDelete %>
+        </form>
       </div>
     </div>
     <div class="modal-footer">
-      <h3>Modal Footer</h3>
+      * = mandatory
     </div>
   </div>
 </div>

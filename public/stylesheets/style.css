@@ -340,6 +340,7 @@ a:active {
 .modal-header {
     padding: 2px 16px;
     background-color: #5cb85c;
+    font-size: 80%;
     color: white;
 }
 
@@ -348,21 +349,23 @@ a:active {
 .modal-footer {
     padding: 2px 16px;
     background-color: #5cb85c;
+    font-size: 70%;
     color: white;
 }
 
 /* Start of flex container formatting
 ------------------------------------------------*/
 .flex-container {
-  /* display: -webkit-flex; */
+  /*display: -webkit-flex;*/
   display: flex;
   flex-direction: row;
+  /*align-items: flex-start | flex-end | center | baseline | stretch;*/
   justify-content: space-around;
   height: 50px;
 }
 
 .flex-item {
-  flex-grow: 0;
+  flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ];
   margin: auto;
 }
 

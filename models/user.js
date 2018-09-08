@@ -77,7 +77,7 @@ UserSchema.methods.toJSON = function () {
   var user = this;
   var userObject = user.toObject();
 
-  //return _.pick(userObject, ['_id', 'email', 'roleCode', 'practiseCode', 'skill']);
+  //return _.pick(userObject, ['_id', 'email', 'roleCode', 'practiceCode', 'skill']);
   // Maybe password should be excluded here,
   // then it will not be mistakenly returned to the client
   return userObject;
@@ -129,7 +129,7 @@ UserSchema.statics.findByCredentials = function (email, password) {
   var User = this;
   //
   // Consider limiting what data is returned -
-  // maybe only '_id', 'roleCode', 'practiseCode', 'email'
+  // maybe only '_id', 'roleCode', 'practiceCode', 'email'
   // then the _pick is not required in login function's Send
   // see toJSON method above
   //

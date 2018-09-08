@@ -14,7 +14,7 @@ var leadBody = (leadData) => {
     cellNumber: leadData[1].cellNumber,
     eMail: leadData[2].eMail,
     agentApproval: "Yes",
-    currentInsurer: "çurr ins",
+    currentInsurer: "curr ins",
     previousInsurer: "prev ins",
     lineOfBusiness: "line of Buss.",
     contactLocation: {
