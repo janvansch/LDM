@@ -1,0 +1,60 @@
+<!--
+=== User Maintenance Functions ===
+-->
+<!--
+=== Add User ===
+-->
+<div id="addUser" style="display:none">
+  <!-- The Modal -->
+  <div id="addUserModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2>Add User</h2>
+      </div>
+      <div class="modal-body">
+        <% include ./addUser %>
+      </div>
+      <div class="modal-footer">
+        <h3>Modal Footer</h3>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+=== End of Add User ===
+-->
+<!--
+=== Delete User ===
+-->
+<div id="deleteUser" style="display:none">
+  <fieldset>
+    <legend>Delete User</legend>
+    <label>
+      Firstname: <input type="text" name="userdelete" size="15"/>
+    </label>
+    <input type="button" value="Delete User" onclick="deleteUser()"/>
+  </fieldset>
+</div>
+<!--
+=== End of Delete User ===
+-->
+<!--
+=== Update User ===
+-->
+<div id="updateUser" style="display:none">
+  <fieldset>
+    <legend>Update User</legend>
+    <label>
+      Firstname: <input type="text" name="userupdate" size="15"/>
+    </label>
+    <label>
+      Surname: <input type="text" name="userupdate" size="20"/>
+    </label>
+    <input type="button" value="Update User" onclick="updateUser()"/>
+  </fieldset>
+</div>
+<!--
+=== End of Update User ===
+-->

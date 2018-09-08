@@ -12,7 +12,9 @@ const {sendSMS} = require('../utils/SMS');
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
-
+// ----------------------------------------
+//  Get all leads
+// ----------------------------------------
 // app.get('/leads', authenticate, (req, res) => {
 router.get('/list', (req, res) => {
   Lead.find(

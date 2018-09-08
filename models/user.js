@@ -5,37 +5,29 @@ const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 
 var UserSchema = new mongoose.Schema({
+  status: {
+    type: String,
+    trim: true
+  },
   firstName: {
     type: String,
+    trim: true,
     required: false
   },
   surname: {
     type: String,
+    trim: true,
     required: true
   },
   phone: {
     type: String,
+    trim: true,
     required: false
   },
 	cell: {
     type: String,
+    trim: true,
     required: true
-  },
-  roleCode: {
-    type: String,
-    required: true
-  },
-  practiseCode: {
-    type: String,
-    required: false
-  },
-  skill: {
-    accreditation: {
-      type: Array
-    },
-    experience: {
-      type: Array
-    },
   },
   email: {
     type: String,
@@ -47,6 +39,22 @@ var UserSchema = new mongoose.Schema({
       validator: validator.isEmail,
       message: '{VALUE} is not a valid email'
     }
+  },
+  roleCode: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  practiceCode: {
+    type: String,
+    trim: true,
+    required: false
+  },
+  accreditation: {
+      type: Array
+  },
+  skill: {
+    type: Array
   },
   password: {
     type: String,
@@ -69,7 +77,10 @@ UserSchema.methods.toJSON = function () {
   var user = this;
   var userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email', 'roleCode', 'practiseCode', 'skill']);
+  //return _.pick(userObject, ['_id', 'email', 'roleCode', 'practiceCode', 'skill']);
+  // Maybe password should be excluded here,
+  // then it will not be mistakenly returned to the client
+  return userObject;
 };
 
 UserSchema.methods.generateAuthToken = function () {
@@ -116,7 +127,12 @@ UserSchema.statics.findByToken = function (token) {
 
 UserSchema.statics.findByCredentials = function (email, password) {
   var User = this;
-
+  //
+  // Consider limiting what data is returned -
+  // maybe only '_id', 'roleCode', 'practiceCode', 'email'
+  // then the _pick is not required in login function's Send
+  // see toJSON method above
+  //
   return User.findOne({email}).then((user) => {
     if (!user) {
       return Promise.reject();

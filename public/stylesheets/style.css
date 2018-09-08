@@ -9,49 +9,66 @@ a {
 }
 
 header {
-    height: 100px;
-    background-color: darkblue;
-    color: white;
-    text-align: center;
-    padding: 5px;
+  height: 100px;
+  background-color: darkblue;
+  color: white;
+  text-align: center;
+  padding: 5px;
 }
 
 nav {
-    width: 8%;
-    line-height: 30px;
-    background-color: #ffeeff;
-    height: 300px;
-    font-size: 100%;
-    float: left;
-    padding: 5px;
+  width: 8%;
+  line-height: 30px;
+  background-color: #ffeeff;
+  height: 300px;
+  font-size: 100%;
+  float: left;
+  padding: 5px;
 }
 
 section {
-    width: 90%;
-    font-size: 100%;
-    float: left;
-    padding: 5px;
+  width: 90%;
+  font-size: 100%;
+  float: left;
+  padding: 5px;
 }
 
 footer {
-    background-color: firebrick;
-    color: white;
-    clear: both;
-    font-size: 90%;
-    text-align: center;
-    padding: 5px;
+  background-color: firebrick;
+  color: white;
+  clear: both;
+  font-size: 90%;
+  text-align: center;
+  padding: 5px;
+}
+/* ------ Table formatting ------ */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
 }
 
+th,td {
+    text-align: left;
+    padding: 3px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* ------ Form elements ------ */
 fieldset {
-    display: block;
-    font-size: 100%;
-    margin-left: 2px;
-    margin-right: 2px;
-    padding-top: 0.35em;
-    padding-bottom: 0.625em;
-    padding-left: 0.75em;
-    padding-right: 0.75em;
-    border: 2px groove (internal value);
+  display: block;
+  font-size: 100%;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 0.35em;
+  padding-bottom: 0.625em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  border: 2px groove (internal value);
 }
 
 legend {
@@ -62,6 +79,25 @@ legend {
 
 input {
   margin: 5px;
+}
+
+/* ------ Links ------ */
+a:link,
+a:visited {
+  /* color: #cf6317; */
+  color: #555;
+  text-decoration: none;
+  padding-bottom: 1px;
+  border-bottom: 1px solid #cf6317;
+  -webkit-transition: border-bottom 0.2s, color 0.2s;
+  transition: border-bottom 0.2s, color 0.2s;
+}
+
+a:hover,
+a:active {
+  /* color: #555; */
+  color: #cf6317;
+  border-bottom: 1px solid transparent;
 }
 
 .intense {
@@ -79,34 +115,123 @@ input {
 /*
 === Login View Styles ===
 */
+#navLogin {
+  display: block;
+  width: 99%;
+}
+
+#viewLogin {
+  display: block;
+  width: 99%;
+  text-align: center;
+}
+
 #version {
-    float: right;
-    color: white;
+  float: right;
+  color: white;
 }
 
 #user {
-    color: white;
-}
-
-#login {
-    display: block;
-    width: 90%;
-    text-align: center;
+  color: white;
 }
 
 #prompt {
-    color: crimson;
-    font-size: 100%;
-    font-weight: 900;
+  color: crimson;
+  font-size: 100%;
+  font-weight: 900;
 }
 /*
-=== Leads View Styles ===
+=== Administrator Navigation & View Styles ===
 */
-#leadView {
+#navAdmin {
+  display: none;
+  width: 99%;
+}
+#viewAdmin {
+  display: none;
+  width: 100%;
+  text-align: center;
+}
+#viewAdminPrac {
+  display: none;
+  width: 99%;
+  text-align: center;
+}
+#viewAdminUser {
+  display: none;
+  width: 99%;
+  text-align: center;
+}
+/*
+=== Administrator Sub Views ===
+*/
+  /*
+  === Practise Admin View Styles ===
+  */
+  #viewAdminPrac {
+    display: none;
+    width: 95%;
+    text-align: center;
+  }
+
+  #addPractise {
+    /* display: none; */
+    width: 99%;
+    text-align: center;
+    font-size: 95%;
+  }
+  #removePractise {
     display: none;
     width: 99%;
-    font-size: 95%;
     text-align: center;
+    font-size: 95%;
+  }
+  #updatePractise {
+    display: none;
+    width: 99%;
+    text-align: center;
+    font-size: 95%;
+  }
+
+  /*
+  === User Admin View Styles ===
+  */
+  #viewAdminUser {
+    display: none;
+    width: 90%;
+    text-align: center;
+  }
+  #addUser {
+    /* display: none; */
+    width: 99%;
+    text-align: center;
+    font-size: 95%;
+  }
+  #deleteUser {
+    display: none;
+    width: 99%;
+    text-align: center;
+    font-size: 95%;
+  }
+  #updateUser {
+    display: none;
+    width: 99%;
+    text-align: center;
+    font-size: 95%;
+  }
+
+/*
+=== Leads Navigation & View Styles ===
+*/
+#navLead {
+  display: none;
+  width: 99%;
+}
+#viewLead {
+  display: none;
+  width: 99%;
+  font-size: 95%;
+  text-align: center;
 }
 #contactComment {
   width: 88%;
@@ -122,67 +247,125 @@ input {
 }
 
 /*
-=== User View Styles ===
+=== Practise Navigation & View Styles ===
 */
-#userView {
-    display: none;
-    width: 95%;
-    text-align: center;
-}
-
-#addUser {
-  /* display: none; */
-  width: 99%;
-  text-align: center;
-  font-size: 95%;
-}
-#deleteUser {
+#navPractise {
   display: none;
   width: 99%;
-  text-align: center;
-  font-size: 95%;
 }
-#updateUser {
-  display: none;
-  width: 99%;
-  text-align: center;
-  font-size: 95%;
-}
-
-/*
-=== Practise View Styles ===
-*/
-#practiseView {
+#viewPractise {
   display: none;
   width: 99%;
   text-align: center;
 }
-#advAdmin {
+#viewAdminAdviser {
   display: none;
-  width: 95%;
+  width: 99%;
   text-align: center;
 }
 /*
-=== Adviser View Styles ===
+=== Adviser Navigation & View Styles ===
 */
-#adviserView {
+#navAdviser {
   display: none;
-  width: 95%;
+  width: 99%;
+}
+#viewAdviser {
+  display: none;
+  width: 99%;
   text-align: center;
+}
+/*
+============================================
+=== Modal Box Styles (source: w3schools) ===
+============================================
+*/
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    font-size: 80%;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    font-size: 70%;
+    color: white;
 }
 
 /* Start of flex container formatting
 ------------------------------------------------*/
 .flex-container {
-  /* display: -webkit-flex; */
+  /*display: -webkit-flex;*/
   display: flex;
   flex-direction: row;
+  /*align-items: flex-start | flex-end | center | baseline | stretch;*/
   justify-content: space-around;
   height: 50px;
 }
 
 .flex-item {
-  flex-grow: 0;
+  flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ];
   margin: auto;
 }
 
