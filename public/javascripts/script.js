@@ -113,7 +113,6 @@ function login() {
     document.getElementById("prompt").innerHTML = prompt;
   }
 }
-
 // ---------------------------
 //  Open view for user's role
 // ---------------------------
@@ -186,9 +185,13 @@ function listUsers() {
       var layoutId = '0';
       var prompt = 'User list:';
       //
-      // Display user data list as table
+      // Display user data in a table
       //
       displayData(data, prompt, layoutId);
+      //
+      // Add row select handlers to enable editing of rows
+      //
+      addRowHandlers(layoutId);
     }
     else {
       var prompt = "Lead request error";
@@ -213,9 +216,9 @@ function isAdviser() {
     document.getElementById('selectAbility').style.display = 'none';
   }
 }
-// ----------------------
-//  Open user modal form
-// ----------------------
+// -----------------------------
+//  Open add user in modal form
+// -----------------------------
 function addUser() {
   // open model window
   // var modal = document.getElementById('modalBox');
@@ -676,7 +679,7 @@ function submitLead() {
 // =======================================
 //  Practise Administration Functionality
 // =======================================
-
+//
 // ------------------------
 //  Display practise leads
 // ------------------------
@@ -709,9 +712,13 @@ function listLeads() {
       var layoutId = '1';
       var prompt = 'Lead data for: ' + request;
       //
-      // Display Report
+      // Display Leads List
       //
       displayData(data, prompt, layoutId);
+      //
+      // Add row select handlers to enable editing of rows
+      //
+      addRowHandlers(layoutId);
     }
     else {
       var prompt = "Lead request error";
@@ -751,9 +758,13 @@ function listAdvisers() {
       var layoutId = '1';
       var prompt = 'Adviser data for: ' + request;
       //
-      // Display Report
+      // Display Adviser List
       //
       displayData(data, prompt, layoutId);
+      //
+      // Add row select handlers to enable editing of rows
+      //
+      addRowHandlers(layoutId);
     }
     else {
       var prompt = "Lead request error";
@@ -794,7 +805,7 @@ function allocateAdviser() {
 // =============================
 //  Form Data Extract Utilities
 // =============================
-
+//
 // -------------------------------------------------------------
 //  Return values of specified element type from specified form
 // -------------------------------------------------------------
@@ -875,18 +886,23 @@ function getRadioCheckedValue(form, radioName) {
 function formReset(form) {
     document.getElementById(form).reset();
 }
-// =========================================
-//  Create table and display content in DOM
-// =========================================
-function displayData(content, prompt, layoutId) {
+//
+// ===================================
+// === Data List Display Functions ===
+// ===================================
+//
+// ----------------------------------
+//  Create table and display content
+// ----------------------------------
+function displayData(content, title, layoutId) {
   console.log("Content: ", content);
-  // -----------------------------------
+  //
   //  Read layout definition
-  // -----------------------------------
+  //
   var layout = readLayout(layoutId);
-  // ------------------------------------
-  //  Extract table content from content
-  // ------------------------------------
+  //
+  //  Extract table content
+  //
   var tableContent = [];
   var rowCount = content.length;
   var colCount = layout.definition.length;
@@ -897,55 +913,52 @@ function displayData(content, prompt, layoutId) {
     }
     tableContent[i] = cells;
   }
-  // ---------------------------------
-  //  Create content table
-  // ---------------------------------
   //
-  // creates a table element
+  // Create table element
   //
   var table = document.createElement('table');
   //
-  // Give table an id to reference it
+  // Give table an id as reference
   //
-  table.setAttribute('id','dataList');
+  var tableId = 'table' + layoutId;
+  table.setAttribute('id', tableId);
   //
-  // create header
+  // Create header
   //
   var header = table.createTHead();
   //
-  // create header row
+  // Create header row
   //
   var headerRow = header.insertRow(0);
   //
-  // create cells and insert label content
+  // Create cells and insert label content
   //
   for (var j = 0; j < colCount; j++) {
     var headerCell = headerRow.insertCell(-1);
     headerCell.innerHTML = layout.definition[j].label;
   }
   //
-  // create body
+  // Create body
   //
   var body = table.createTBody();
   //
-  //
-  // create a body row for each data row
+  // Create a body row for each data row
   //
   for (var i = 0; i < rowCount; i++) {
     //
-    // insert a body row for each data row
+    // Insert a body row for each data row
     //
     var tableRow = body.insertRow(-1);
     //
-    // insert a cell for each data column
+    // Insert a cell for each data column
     //
     for (var j = 0; j < colCount; j++) {
       //
-      // insert a cell
+      // Insert a cell
       //
       var tableCell = tableRow.insertCell(-1);
       //
-      // insert content into table cell
+      // Insert content into table cell
       //
       //console.log("Table Cell: ", i, j, listContent[i][j]);
       tableCell.innerHTML = (isString(tableContent[i][j]) ? (tableContent[i][j].trim()) : (tableContent[i][j]));
@@ -954,97 +967,66 @@ function displayData(content, prompt, layoutId) {
   //
   // Insert Table into DOM for display
   //
-  var tableId = "table" + layoutId;
-  var tablePos = document.getElementById(tableId);
-  tablePos.innerHTML = "";
-  tablePos.appendChild(table); // add child element to document
+  var elementId = "tPos" + layoutId;
+  var tPosElement = document.getElementById(elementId);
+  tPosElement.innerHTML = "";
+  tPosElement.appendChild(table); // add child element to document
   //
   // Update list section heading
   //
-  if (prompt !== null){
-    var listDesc = "list" + layoutId;
-    document.getElementById(listDesc).innerHTML = prompt;
+  if (title !== null){
+    var elementId = "title" + layoutId;
+    document.getElementById(elementId).innerHTML = title;
   }
   console.log("<<< Data list display updated >>>");
 }
-// ================================
-//  Generic XMLHttpRequest handler
-// ================================
-function xhrRequest(method, route, contentType, request, callback) {
-  //Validate params - if params not valid end immediately
-  if (request == null || route == null || contentType == null) {
-    console.log("<<< ERROR - required parameters not provided >>>");
+// --------------------------------------
+//  Add edit functionality to table rows
+// --------------------------------------
+function addRowHandlers(id) {
+  console.log("<<< Start adding Row Handlers >>>");
+  console.log("---> Table Id: ", id);
+  var elementId = "table" + id;
+  console.log("---> Element Id: ", elementId);
+  var rows = document.getElementById(elementId).rows;
+  var rowCount = document.getElementById(elementId).rows.length;
+  console.log("---> Table Rows: ", rowCount);
+  for (var i = 1; i < rowCount; i++) {
+      // ignore header, row 0
+      rows[i].onclick = function(){ editRow(this); };
+      rows[i].onmouseover = function(){ ChangeColor(this, true); };
+      rows[i].onmouseout = function(){ ChangeColor(this, false); };
   }
-  else if (typeof callback !== "function"){
-    console.log("<<< ERROR - the callback is not a function >>>");
+  console.log("<<< Row Handlers Added >>>");
+}
+// ----------------------------------------------
+//  Enable editing of selected row in modal form
+// ----------------------------------------------
+function editRow(rowData) {
+  //
+  // Extract data from selected row in DOM and insert into modal form fields
+  //
+  console.log(">>> Edit Row param: ", rowData);
+  var inputTag = '',
+      inputN = '';
+  console.log(">>> Row length: ", rowData.cells.length);
+  for (var c = 0, m = rowData.cells.length; c < m; c++) {
+      inputN = 'in' + c.toString();
+      // console.log(">>> Tag ID: ", inputB);
+      // console.log(">>> Cell content: ", rowData.cells[c].innerHTML);
+      inputTag = document.getElementById(inputN);
+      inputTag.value = rowData.cells[c].innerHTML;
   }
-  else {
-    if (window.XMLHttpRequest) {
-      var xhr = new XMLHttpRequest();
-    }
-    else {
-      // code for IE6, IE5
-      var xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xhr.onreadystatechange = function() {
-      // Monitor request progress
-      console.log("Ready state:", xhr.readyState);
-      if (xhr.readyState == 4) {
-        // Request complete
-        if (xhr.status == 200) {
-          // status 200 - success
-          var err = false;
-          callback(err, xhr);
-        }
-        else {
-          // Request failed
-          var err = true;
-          console.log(`*** XHR request failure - status = ${xhr.status} ***`);
-          console.log(">>> Error result: ", xhr.responseText);
-          callback(err, '');
-        }
-      }
-    }
-    //Request transact data from server
-    xhr.open(method, route);
-    xhr.setRequestHeader("Content-type", contentType);
-    xhr.send(request);
-  }
+  //
+  // Display edit form 
+  //
+  // toggleEdit('Edit Policy Detail:');
+  openModal('Edit Policy Detail:');
 }
-// ===============================
-//  Views display toggle function
-// ===============================
-function toggleView(viewID){
-    var state = '';
-    var login = document.getElementById(viewID);
-    if(login.style.display == "block") {
-        login.style.display = "none";
-        state = "OFF";
-    }
-    else {
-        login.style.display = "block";
-        state = "ON";
-    }
-    console.log(`---> ${viewID} is ${state}`);
-}
-// -------------------------------------------
-//  Switch policy edit section display on/off
-// -------------------------------------------
-function toggleEdit(edPrompt){
-    var edit = document.getElementById("poledit");
-    if(edit.style.display == "block") {
-        edit.style.display = "none";
-        clearEdit();
-    } else {
-        edit.style.display = "block";
-    }
-    document.getElementById("edHead").innerHTML = edPrompt;
-}
-//========================================================
-// Read required data definition as an object
-//========================================================
+// -------------------------
+//  List layout definitions
+// -------------------------
 function readLayout(definitionId) {
-
   switch (definitionId) {
     case '0':
       console.log("Rules case: 0 (User)");
@@ -1086,9 +1068,75 @@ function readLayout(definitionId) {
   console.log("JSON Definition: ", layout);
   return layout;
 }
+
+// ===============================
+//  Views display toggle function
+// ===============================
+
+function toggleView(viewID){
+  var state = '';
+  var login = document.getElementById(viewID);
+  if(login.style.display == "block") {
+      login.style.display = "none";
+      state = "OFF";
+  }
+  else {
+      login.style.display = "block";
+      state = "ON";
+  }
+  console.log(`---> ${viewID} is ${state}`);
+}
+
+// ================================
+//  Generic XMLHttpRequest handler
+// ================================
+
+function xhrRequest(method, route, contentType, request, callback) {
+  //Validate params - if params not valid end immediately
+  if (request == null || route == null || contentType == null) {
+    console.log("<<< ERROR - required parameters not provided >>>");
+  }
+  else if (typeof callback !== "function"){
+    console.log("<<< ERROR - the callback is not a function >>>");
+  }
+  else {
+    if (window.XMLHttpRequest) {
+      var xhr = new XMLHttpRequest();
+    }
+    else {
+      // code for IE6, IE5
+      var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhr.onreadystatechange = function() {
+      // Monitor request progress
+      console.log("Ready state:", xhr.readyState);
+      if (xhr.readyState == 4) {
+        // Request complete
+        if (xhr.status == 200) {
+          // status 200 - success
+          var err = false;
+          callback(err, xhr);
+        }
+        else {
+          // Request failed
+          var err = true;
+          console.log(`*** XHR request failure - status = ${xhr.status} ***`);
+          console.log(">>> Error result: ", xhr.responseText);
+          callback(err, '');
+        }
+      }
+    }
+    //Request transact data from server
+    xhr.open(method, route);
+    xhr.setRequestHeader("Content-type", contentType);
+    xhr.send(request);
+  }
+}
+
 // =====================
 // * General Utilities *
 // =====================
+
 // -----------------------
 //  disable & enable form
 // -----------------------
