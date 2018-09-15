@@ -29,8 +29,7 @@ router.post('/add', async (req, res) => {
       'email',
 	    'roleCode',
 	    'practiceCode',
-	    'accreditation',
-      'skill',
+	    'services',
       'password'
     ]);
     console.log(">>> body _.picked: ", body);
@@ -76,9 +75,8 @@ router.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);
 });
 // ----------------------------------------
-//  Get all leads
+//  Get all users
 // ----------------------------------------
-// app.get('/leads', authenticate, (req, res) => {
 router.get('/list', (req, res) => {
   User.find(
     { //_creator: req.user._id

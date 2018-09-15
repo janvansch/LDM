@@ -32,18 +32,17 @@
    List Users
   -->
   <h3 id="title0">User List</h3>
+  <!--
+   Add User Button
+  -->
+  <input type="button" value="Add User" onclick="javascript:addUser();"/>
   <hr/>
   <div id="tPos0">
     Place holder for the display of the list of Users
     <!-- Place holder for the display of the list of Leads -->
   </div>
   <hr/>
-  <!--
-   User Maintenance Actions
-  -->
-  <input type="button" value="Add User" onclick="addUser()"/>
-  <input type="button" value="Update User" onclick="javascript:updateUser();"/>
-  <input type="button" value="Delete User" onclick="javascript:deleteUser();"/>
+
 </div>
 
 <!--
@@ -57,7 +56,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Add User</h2>
+      <h2 id="modal-header-text">XXXXXX</h2>
     </div>
     <div class="modal-body">
       <div id="addUser" style="display:none">

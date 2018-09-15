@@ -50,12 +50,16 @@ var UserSchema = new mongoose.Schema({
     trim: true,
     required: false
   },
-  accreditation: {
-      type: Array
-  },
-  skill: {
-    type: Array
-  },
+  services: [{
+    line: {
+      type: String,
+      required: false
+    },
+    types: {
+      type: Array,
+      required: false
+    }
+  }],
   password: {
     type: String,
     require: true,

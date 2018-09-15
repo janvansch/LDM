@@ -216,9 +216,9 @@ function isAdviser() {
     document.getElementById('selectAbility').style.display = 'none';
   }
 }
-// -----------------------------
-//  Open add user in modal form
-// -----------------------------
+// --------------------------
+//  Open add user modal form
+// --------------------------
 function addUser() {
   // open model window
   // var modal = document.getElementById('modalBox');
@@ -226,7 +226,7 @@ function addUser() {
   //document.getElementById("viewAdminUser").style.display = 'block';
   // open add user form
   document.getElementById("addUser").style.display = 'block';
-
+  document.getElementById("modal-header-text").innerHTML = "Add User";
 }
 // ---------------------
 //  Delete User
@@ -240,6 +240,108 @@ function deleteUser() {
 function updateUser() {
 
 }
+
+// ------------------
+//  Edit user record
+// ------------------
+function displayUser(user) {
+  //
+  // open model window
+  //
+  // var modal = document.getElementById('modalBox');
+  modal.style.display = "block";
+  //
+  // Display user form
+  //
+  document.getElementById("addUser").style.display = 'block';
+  document.getElementById("modal-header-text").innerHTML = "Update User";
+  //
+  // Extract data from selected user and insert into modal form fields
+  //
+  console.log(">>> Edit User: ", user);
+  var inputTag = '',
+      field = '',
+      fieldNr = 0;
+  console.log(">>> Row length: ", user.cells.length);
+  for (var c = 0, m = user.cells.length; c < m; c++) {
+    if (c === 5) {
+      var role = user.cells[c].innerHTML;
+      console.log(">>> Role: ", role);
+      if (role === "A") {
+        document.getElementById("roleA").checked = true;
+      }
+      else if (role === "B") {
+        document.getElementById("roleB").checked = true;
+      }
+      else if (role === "C") {
+        document.getElementById("roleC").checked = true;
+      }
+      else if (role === "D") {
+        document.getElementById("roleD").checked = true;
+      }
+      else {
+        console.log(">>> ERROR: Invalid Role: ", role);
+      }
+    }
+    else if (c === 7) {
+      var services = user.cells[c].innerHTML;
+      console.log(">>> Services Detail: ", c, fieldNr, services[0].line, services[0].types);
+      for (var i = 0, j = services.length; i < j; i++) {
+        console.log(">>> Services Detail: ", i, services[i].line);
+        if (services[i].line === "PL") {
+          document.getElementById("pServType").checked = true;
+          for (var x = 0, z = services[i].types.length; x < z; x++) {
+            console.log(">>> Services Detail: ", x, services[i].types[x]);
+            if (services[i].types === "Vehicle") {
+              document.getElementById("pVehicle").checked = true;
+            }
+            else if (services[i].types === "Home Contents") {
+              document.getElementById("pHomeContents").checked = true;
+            }
+
+
+          }
+        }
+      }
+      services[i].types[0]
+    }
+    else {
+      field = 'u' + fieldNr.toString();
+      inputTag = document.getElementById(field);
+      console.log(">>> Input Tag Detail: ", c, fieldNr, inputTag);
+      if (inputTag.name === "password") {
+        inputTag.value = "********";
+        fieldNr++;
+        field = 'u' + fieldNr.toString();
+        inputTag = document.getElementById(field);
+        console.log(">>> Input Tag Detail: ", c, fieldNr, inputTag);
+        inputTag.value = user.cells[c].innerHTML;
+        fieldNr++;
+      }
+      else {
+        inputTag.value = user.cells[c].innerHTML;
+        fieldNr++;
+      }
+    }
+  }
+  /*
+    <tr style="background-color: rgb(247, 183, 51);">
+    0/0 <td>Cameron</td>
+    1/1 <td>van Schalkwyk</td>
+    -/2 password ******
+    2/3 <td>123</td>
+    3/4 <td>456</td>
+    4/5 <td>cameron@example.com</td>
+    5/6 <td>C</td>
+    6/7 <td>P11</td>
+    7/8 <td>PL,CL,SL,AL,XL</td>
+    8/9 <td>
+    pVehicle,pHomeContents,pSOS,pBuilding,pWatercraft,pAllRisk,cBusiness,cGuesthouse,cTourLeisEnter,cSmallBusiness,cDental,cMedical,sVehicle,sProperty,sAsset,aAsset,aGame,aFire,aCrop,aDairy,xAviation,xBondsGuarantee,xCellCapt,xCoporateProperty,xCrop,xEngineering,xHeavyHaulage,xHospitalityInd,xLiability,xMarine,xPrivateClient,xSeamlessProd,xSpecRealEst,xStructuredInsurance,xTaxiSEM,xTravel
+    </td>
+    </tr>
+  */
+}
+
 // -----------------------------------------------------
 //  Open or Close the display of a service type's items
 // -----------------------------------------------------
@@ -324,28 +426,49 @@ function submitUser() {
     // Extract adviser service line data
     //
     var checkboxName = "line";
-    var userLine = getCheckedValues(formAddUser, checkboxName);
-    if (Object.keys(userLine).length === 0 && userLine.constructor === Object) {
+    var insLine = getCheckedValues(formAddUser, checkboxName);
+    if (Object.keys(insLine).length === 0 && insLine.constructor === Object) {
       var name = "line";
       var value = [];
       value.push("none selected");
-      userLine[name] = value;
+      insLine[name] = value;
     }
-    //
-    // Extract adviser service data
-    //
-    var checkboxName = "service";
-    var userService = getCheckedValues(formAddUser, checkboxName);
-    if (Object.keys(userService).length === 0 && userService.constructor === Object) {
-      var name = "service";
-      var value = [];
-      value.push("none selected");
-      userService[name] = value;
+    else {
+      //
+      // Extract adviser services for each of the insurance lines selected
+      //
+      console.log("---> The Lines obj: ", insLine.line);
+      var lines = insLine.line;
+      console.log("---> The Lines: ", lines);
+      var userServices = [];
+      lines.forEach((element) => {
+        var checkboxName = element;
+        console.log("---> The Element: ", element);
+        var selection = getCheckedValues(formAddUser, checkboxName);
+        console.log("---> The Types selected: ", selection);
+        if (Object.keys(selection).length === 0 && selection.constructor === Object) {
+          var value = [];
+          value.push("none selected");
+          selection[checkboxName] = value;
+        }
+        var lineTypes = {
+          line : element,
+          types : selection[element]
+        };
+        console.log("---> Insurance Line Cover Types: ", lineTypes);
+        
+        userServices.push(lineTypes);
+        console.log("---> User Services: ", userServices);
+      })
     }
   }
   else{
-    var userLine = {line : ["n/a"]};
-    var userService = {service : ["n/a"]};
+    var userServices = [
+      {
+        "line" : "n/a",
+        "types" : ["n/a"]
+      }
+    ];
   }
   //
   //  create User data object
@@ -358,8 +481,7 @@ function submitUser() {
     email : userEmail.email,
     roleCode : userRole.role,
     practiceCode : userText.practice,
-    accreditation : userLine.line,
-    skill : userService.service,
+    services : userServices,
     password : userText.password
   };
   var dataString = JSON.stringify(userData);
@@ -406,32 +528,32 @@ function submitUser() {
 // -----------------------------------
 function listPractices() {
   //
-  // Switch User Maintenance Display on
+  // Switch Practice Maintenance Display on
   //
   document.getElementById('panelAdminPrac').style.display = 'block';
   //
-  // Switch Practise Maintenance Display off
+  // Switch User Maintenance Display off
   //
   document.getElementById('panelAdminUser').style.display = 'none';
   //
-  // Create User Data request
+  // Create Practise Data request
   //
   var request = "XXXX";
   var method = "GET";
-  var route = "/users/list";
+  var route = "/practices/list";
   var contentType = "application/json";
   //
-  //  Request User Data from Server
+  //  Request Practise Data from Server
   //
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var data = JSON.parse(res.responseText);
-      console.log(">>> lead Docs: ", data);
+      console.log(">>> Practice docs: ", data);
       //
       // load table layout definition
       //
       var dataSource = '2';
-      var objRules = readRules(dataSource);
+      var objRules = readLayout(dataSource);
       var prompt = 'Lead data for: ' + request;
       var formatData = [];
       var rowCount = data.length;
@@ -980,9 +1102,9 @@ function displayData(content, title, layoutId) {
   }
   console.log("<<< Data list display updated >>>");
 }
-// --------------------------------------
-//  Add edit functionality to table rows
-// --------------------------------------
+// -----------------------------
+//  Add table row functionality 
+// -----------------------------
 function addRowHandlers(id) {
   console.log("<<< Start adding Row Handlers >>>");
   console.log("---> Table Id: ", id);
@@ -991,37 +1113,16 @@ function addRowHandlers(id) {
   var rows = document.getElementById(elementId).rows;
   var rowCount = document.getElementById(elementId).rows.length;
   console.log("---> Table Rows: ", rowCount);
+  if (id === "0"){
+    var rowFunc = function(){ displayUser(this); };
+  }
   for (var i = 1; i < rowCount; i++) {
       // ignore header, row 0
-      rows[i].onclick = function(){ editRow(this); };
+      rows[i].onclick = rowFunc;
       rows[i].onmouseover = function(){ ChangeColor(this, true); };
       rows[i].onmouseout = function(){ ChangeColor(this, false); };
   }
   console.log("<<< Row Handlers Added >>>");
-}
-// ----------------------------------------------
-//  Enable editing of selected row in modal form
-// ----------------------------------------------
-function editRow(rowData) {
-  //
-  // Extract data from selected row in DOM and insert into modal form fields
-  //
-  console.log(">>> Edit Row param: ", rowData);
-  var inputTag = '',
-      inputN = '';
-  console.log(">>> Row length: ", rowData.cells.length);
-  for (var c = 0, m = rowData.cells.length; c < m; c++) {
-      inputN = 'in' + c.toString();
-      // console.log(">>> Tag ID: ", inputB);
-      // console.log(">>> Cell content: ", rowData.cells[c].innerHTML);
-      inputTag = document.getElementById(inputN);
-      inputTag.value = rowData.cells[c].innerHTML;
-  }
-  //
-  // Display edit form 
-  //
-  // toggleEdit('Edit Policy Detail:');
-  openModal('Edit Policy Detail:');
 }
 // -------------------------
 //  List layout definitions
@@ -1029,7 +1130,7 @@ function editRow(rowData) {
 function readLayout(definitionId) {
   switch (definitionId) {
     case '0':
-      console.log("Rules case: 0 (User)");
+      console.log("List Layout: 0 (Users)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
@@ -1037,14 +1138,50 @@ function readLayout(definitionId) {
         '{ "fname" : "cell" , "label" : "Cell" },' +
         '{ "fname" : "email" , "label" : "email" },' +
         '{ "fname" : "roleCode" , "label" : "Role" },' +
-        '{ "fname" : "practiceCode" , "label" : "Practice Code" },' +
-        '{ "fname" : "accreditation" , "label" : "Accreditation" },' +
-        '{ "fname" : "skill" , "label" : "Skills" }' +
+        '{ "fname" : "practiceCode" , "label" : "Practice Code" }' +
         ']}'
       ;
     break;
     case '1':
-      console.log("Rules case: 1 (Practise Lead)");
+      console.log("List Layout: 1 (Leads)");
+      var layoutDef = '{ "definition" : [' +
+        '{ "fname" : "status" , "label" : "Status" },' +
+        '{ "fname" : "firstName" , "label" : "First Name" },' +
+        '{ "fname" : "surname" , "label" : "Surname" },' +
+        '{ "fname" : "langPref" , "label" : "Language" },' +
+        '{ "fname" : "contactNum" , "label" : "Contact #" },' +
+        '{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        '{ "fname" : "eMail" , "label" : "eMail" },' +
+        '{ "fname" : "postal" , "label" : "Postal" },' +
+        '{ "fname" : "suburb" , "label" : "Suburb" },' +
+        '{ "fname" : "service" , "label" : "Service Required" },' +
+        '{ "fname" : "comment1" , "label" : "Comment" },' +
+        '{ "fname" : "comment2" , "label" : "Service Comment" }' +
+        ']}'
+      ;
+    break;
+    case '2':
+      console.log("List Layout: 2 (Practices)");
+      var layoutDef = '{ "definition" : [' +
+        '{ "fname" : "status" , "label" : "Status" },' +
+        '{ "fname" : "firstName" , "label" : "First Name" },' +
+        '{ "fname" : "surname" , "label" : "Surname" },' +
+        '{ "fname" : "langPref" , "label" : "Language" },' +
+        '{ "fname" : "contactNum" , "label" : "Contact #" },' +
+        '{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        '{ "fname" : "eMail" , "label" : "eMail" },' +
+        '{ "fname" : "postal" , "label" : "Postal" },' +
+        '{ "fname" : "suburb" , "label" : "Suburb" },' +
+        '{ "fname" : "service" , "label" : "Service Required" },' +
+        '{ "fname" : "comment1" , "label" : "Comment" },' +
+        '{ "fname" : "comment2" , "label" : "Service Comment" }' +
+        ']}'
+      ;
+    break;
+    case '3':
+      console.log("List Layout: 3 (Advisers)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "status" , "label" : "Status" },' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
@@ -1065,7 +1202,7 @@ function readLayout(definitionId) {
   }
   // console.log("Definition set: ", jText);
   var layout = JSON.parse(layoutDef); // convert JSON text into JS object
-  console.log("JSON Definition: ", layout);
+  // console.log("JSON Definition: ", layout);
   return layout;
 }
 
