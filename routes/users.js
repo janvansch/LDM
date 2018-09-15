@@ -65,6 +65,25 @@ router.post('/add', async (req, res) => {
 //   }
 // });
 
+// ----------------------------------------
+//  Get user detail
+// ----------------------------------------
+router.post('/user', (req, res) => {
+  console.log(">>> Request body and url: ", req.body, req.url);
+  User.find(
+    { email: req.body.userId 
+    },
+    {
+      password : 0,
+      tokens : 0
+    }
+    ).then((user) => {
+      console.log(">>> Res - User data: ", user);
+      res.send(user);
+    }, (e) => {
+      res.status(400).send(e);
+    });
+});
 
 
 
@@ -79,27 +98,19 @@ router.get('/users/me', authenticate, (req, res) => {
 // ----------------------------------------
 router.get('/list', (req, res) => {
   User.find(
-    { //_creator: req.user._id
+    { //_creator: req.user._id 
     },
     {
+      services : 0,
       password : 0,
       tokens : 0
-    // status : 1,
-    // firstName : 1,
-    // surname : 1,
-    // phone : 1,
-    // cell : 1,
-    // roleCode : 1,
-    // practiceCode : 1,
-    // eMail : 1
     }
-  ).then((users) => {
-    res.send(users);
-  }, (e) => {
-    res.status(400).send(e);
-  });
+    ).then((users) => {
+      res.send(users);
+    }, (e) => {
+      res.status(400).send(e);
+    });
 });
-
 //----------------------------------------
 //	Delete User?
 //----------------------------------------

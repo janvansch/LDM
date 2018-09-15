@@ -25,17 +25,37 @@ var span = document.getElementsByClassName("close")[0];
 //btn.onclick = function() {
 //    modal.style.display = "block";
 //}
-// When the user clicks on <span> (x), close the modal
+// -----------------------------------------------------
+//  When the user clicks on <span> (x), close the modal
+// -----------------------------------------------------
 span.onclick = function() {
+  resetform("formAddUser");
+  document.getElementById('selectAbility').style.display = 'none';
+  document.getElementById('dispPersServ').style.display = 'none';
+  document.getElementById('dispCommServ').style.display = 'none';
+  document.getElementById('dispSasrServ').style.display = 'none';
+  document.getElementById('dispAgriServ').style.display = 'none';
+  document.getElementById('dispSpecServ').style.display = 'none';
   modal.style.display = "none";
 }
-// When the user clicks anywhere outside of the modal, close it
+// --------------------------------------------------------------
+//  When the user clicks anywhere outside of the modal, close it
+// --------------------------------------------------------------
 window.onclick = function(event) {
   if (event.target == modal) {
-      modal.style.display = "none";
+    resetform("formAddUser");
+    document.getElementById('selectAbility').style.display = 'none';
+    document.getElementById('dispPersServ').style.display = 'none';
+    document.getElementById('dispCommServ').style.display = 'none';
+    document.getElementById('dispSasrServ').style.display = 'none';
+    document.getElementById('dispAgriServ').style.display = 'none';
+    document.getElementById('dispSpecServ').style.display = 'none';
+    modal.style.display = "none";
   }
 }
-
+function resetform(form) {
+  document.getElementById(form).reset();
+}
 // =============================
 //  Login and startup functions
 // =============================
@@ -152,9 +172,9 @@ function openRoleView(user) {
 // User Administration Processing
 //================================
 
-// --------------------------------------------------------------------
-//  List system users and enable add, update and remove user functions
-// --------------------------------------------------------------------
+// ----------------------------------------------------
+//  List system users and add row select functionality
+// ----------------------------------------------------
 function listUsers() {
   //
   // Switch User Maintenance Display on
@@ -199,9 +219,9 @@ function listUsers() {
     }
   });
 }
-// ---------------------------------------
-//  User accreditation and skill switches
-// ---------------------------------------
+// -------------------------------------------------------
+//  If adviser role is selected display service else hide
+// -------------------------------------------------------
 function isAdviser() {
   if (document.getElementById('roleC').checked) {
     // switch accreditation and skills on
@@ -256,90 +276,250 @@ function displayUser(user) {
   document.getElementById("addUser").style.display = 'block';
   document.getElementById("modal-header-text").innerHTML = "Update User";
   //
-  // Extract data from selected user and insert into modal form fields
+  // Get user id (email)
   //
-  console.log(">>> Edit User: ", user);
-  var inputTag = '',
-      field = '',
-      fieldNr = 0;
-  console.log(">>> Row length: ", user.cells.length);
-  for (var c = 0, m = user.cells.length; c < m; c++) {
-    if (c === 5) {
-      var role = user.cells[c].innerHTML;
+  var userId = user.cells[4].innerHTML;
+  console.log(">>> User Email: ", userId);
+  //
+  // Create User Data request
+  //
+  var userKey = {
+    userId : userId
+  };
+  //var dataString = JSON.stringify(leadData);
+  var request = JSON.stringify(userKey);
+  var method = "POST";
+  var route = "/users/user";
+  var contentType = "application/json";
+  //
+  //  Request User Data from Server
+  //
+  console.log(">>> Request: ", request);
+  xhrRequest(method, route, contentType, request, (err, res) => {
+    if (!err) {
+      var user = JSON.parse(res.responseText);
+      console.log(">>> User Detail: ", user);
+      //
+      // Fill form with user's data
+      //
+      console.log("---> firstname: ", user[0].firstName);
+      document.getElementById("u0").value = user[0].firstName;
+      document.getElementById("u1").value = user[0].surname;
+      document.getElementById("u2").value = "********";
+      document.getElementById("u3").value = user[0].phone;
+      document.getElementById("u4").value = user[0].cell;
+      document.getElementById("u5").value = user[0].email;
+      document.getElementById("u6").value = user[0].practice;
+      var fName = document.getElementById("u0").innerHTML;
+      console.log("===> firstname: ", fName);
+      //
+      // Set user role radio button 
+      //
+      var role = user[0].roleCode;
       console.log(">>> Role: ", role);
       if (role === "A") {
+        // user has an Admin role
         document.getElementById("roleA").checked = true;
       }
       else if (role === "B") {
+        // user has a Practice Backoffice role
         document.getElementById("roleB").checked = true;
       }
       else if (role === "C") {
+        // user has an Adviser role
         document.getElementById("roleC").checked = true;
       }
       else if (role === "D") {
+        // user has a Lead Recorder role 
         document.getElementById("roleD").checked = true;
       }
       else {
         console.log(">>> ERROR: Invalid Role: ", role);
       }
-    }
-    else if (c === 7) {
-      var services = user.cells[c].innerHTML;
-      console.log(">>> Services Detail: ", c, fieldNr, services[0].line, services[0].types);
-      for (var i = 0, j = services.length; i < j; i++) {
-        console.log(">>> Services Detail: ", i, services[i].line);
-        if (services[i].line === "PL") {
-          document.getElementById("pServType").checked = true;
-          for (var x = 0, z = services[i].types.length; x < z; x++) {
-            console.log(">>> Services Detail: ", x, services[i].types[x]);
-            if (services[i].types === "Vehicle") {
-              document.getElementById("pVehicle").checked = true;
+      //
+      // If user is an adviser Extract and set selection boxes to indicat adviser services
+      //
+      if (role === "C") {
+        var services = user[0].services;
+        //
+        // Display insurance line selector 
+        //
+        document.getElementById('selectAbility').style.display = 'block';
+        for (var i = 0, j = services.length; i < j; i++) {
+          if (services[i].line === "PL") {
+            //
+            // Set product line selector tickbox to selected
+            //
+            document.getElementById("pServType").checked = true;
+            //
+            // Display insurance type selector
+            //
+            document.getElementById('dispPersServ').style.display = 'block';
+            for (var x = 0, z = services[i].types.length; x < z; x++) {
+              console.log(">>> Services Detail: ", x, services[i].types[x]);
+              if (services[i].types[x] === "Vehicle") {
+                document.getElementById("pVehicle").checked = true;
+              }
+              else if (services[i].types[x] === "Home Contents") {
+                document.getElementById("pHomeContents").checked = true;
+              }
+              else if (services[i].types[x] === "SOS") {
+                document.getElementById("pSOS").checked = true;
+              }
+              else if (services[i].types[x] === "Building") {
+                document.getElementById("pBuilding").checked = true;
+              }
+              else if (services[i].types[x] === "Watercraft") {
+                document.getElementById("pWatercraft").checked = true;
+              }
+              else if (services[i].types[x] === "All Risk") {
+                document.getElementById("pAllRisk").checked = true;
+              }
+              else {
+                console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+              }
             }
-            else if (services[i].types === "Home Contents") {
-              document.getElementById("pHomeContents").checked = true;
+          }
+          if (services[i].line === "CL") {
+            document.getElementById("cServType").checked = true;
+            document.getElementById('dispCommServ').style.display = 'block';
+            for (var x = 0, z = services[i].types.length; x < z; x++) {
+              console.log(">>> Services Detail: ", x, services[i].types[x]);
+              if (services[i].types[x] === "Business") {
+                document.getElementById("cBusiness").checked = true;
+              }
+              else if (services[i].types[x] === "Guesthouse") {
+                document.getElementById("cGuesthouse").checked = true;
+              }
+              else if (services[i].types[x] === "Tourism,Leisure & Entertainment") {
+                document.getElementById("cTourLeisEnter").checked = true;
+              }
+              else if (services[i].types[x] === "Small Business") {
+                document.getElementById("cSmallBusiness").checked = true;
+              }
+              else if (services[i].types[x] === "Dental") {
+                document.getElementById("cDental").checked = true;
+              }
+              else if (services[i].types[x] === "Medical") {
+                document.getElementById("cMedical").checked = true;
+              }
+              else {
+                console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+              }
             }
-
-
+          }
+          if (services[i].line === "SL") {
+            document.getElementById("sServType").checked = true;
+            document.getElementById('dispSasrServ').style.display = 'block';
+            for (var x = 0, z = services[i].types.length; x < z; x++) {
+              console.log(">>> Services Detail: ", x, services[i].types[x]);
+              if (services[i].types[x] === "Vehicle") {
+                document.getElementById("sVehicle").checked = true;
+              }
+              else if (services[i].types[x] === "Property") {
+                document.getElementById("sProperty").checked = true;
+              }
+              else if (services[i].types[x] === "Asset") {
+                document.getElementById("sAsset").checked = true;
+              }
+              else {
+                console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+              }
+            }
+          }
+          if (services[i].line === "AL") {
+            document.getElementById("aServType").checked = true;
+            document.getElementById('dispAgriServ').style.display = 'block';
+            for (var x = 0, z = services[i].types.length; x < z; x++) {
+              console.log(">>> Services Detail: ", x, services[i].types[x]);
+              if (services[i].types[x] === "Asset") {
+                document.getElementById("aAsset").checked = true;
+              }
+              else if (services[i].types[x] === "Game") {
+                document.getElementById("aGame").checked = true;
+              }
+              else if (services[i].types[x] === "Fire") {
+                document.getElementById("aFire").checked = true;
+              }
+              else if (services[i].types[x] === "Crop") {
+                document.getElementById("aCrop").checked = true;
+              }
+              else if (services[i].types[x] === "Dairy") {
+                document.getElementById("aDairy").checked = true;
+              }
+              else {
+                console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+              }
+            }
+          }
+          if (services[i].line === "XL") {
+            document.getElementById("xServType").checked = true;
+            document.getElementById('dispSpecServ').style.display = 'block';
+            for (var x = 0, z = services[i].types.length; x < z; x++) {
+              console.log(">>> Services Detail: ", x, services[i].types[x]);
+              if (services[i].types[x] === "Aviation") {
+                document.getElementById("xAviation").checked = true;
+              }
+              else if (services[i].types[x] === "Bonds & Guarantees") {
+                document.getElementById("xBondsGuarantees").checked = true;
+              }
+              else if (services[i].types[x] === "Cell Captive") {
+                document.getElementById("xCellCapt").checked = true;
+              }
+              else if (services[i].types[x] === "Coporate Property") {
+                document.getElementById("xCoporateProperty").checked = true;
+              }
+              else if (services[i].types[x] === "Crop") {
+                document.getElementById("xCrop").checked = true;
+              }
+              else if (services[i].types[x] === "Engineering") {
+                document.getElementById("xEngineering").checked = true;
+              }
+              else if (services[i].types[x] === "Heavy Haulage") {
+                document.getElementById("xHeavyHaulage").checked = true;
+              }
+              else if (services[i].types[x] === "Hospitality Industry") {
+                document.getElementById("xHospitalityInd").checked = true;
+              }
+              else if (services[i].types[x] === "Liability") {
+                document.getElementById("xLiability").checked = true;
+              }
+              else if (services[i].types[x] === "Marine") {
+                document.getElementById("xMarine").checked = true;
+              }
+              if (services[i].types[x] === "Private Client") {
+                document.getElementById("xPrivateClient").checked = true;
+              }
+              else if (services[i].types[x] === "Seamless Prod") {
+                document.getElementById("xSeamless Prod").checked = true;
+              }
+              else if (services[i].types[x] === "Specialist Real Estate") {
+                document.getElementById("xSpecRealEst").checked = true;
+              }
+              else if (services[i].types[x] === "Structured Insurance") {
+                document.getElementById("xStructuredInsurance").checked = true;
+              }
+              else if (services[i].types[x] === "Taxi & SEM") {
+                document.getElementById("xTaxiSEM").checked = true;
+              }
+              else if (services[i].types[x] === "Travel") {
+                document.getElementById("xTravel").checked = true;
+              }
+              else {
+                console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+              }
+            }
           }
         }
       }
-      services[i].types[0]
     }
     else {
-      field = 'u' + fieldNr.toString();
-      inputTag = document.getElementById(field);
-      console.log(">>> Input Tag Detail: ", c, fieldNr, inputTag);
-      if (inputTag.name === "password") {
-        inputTag.value = "********";
-        fieldNr++;
-        field = 'u' + fieldNr.toString();
-        inputTag = document.getElementById(field);
-        console.log(">>> Input Tag Detail: ", c, fieldNr, inputTag);
-        inputTag.value = user.cells[c].innerHTML;
-        fieldNr++;
-      }
-      else {
-        inputTag.value = user.cells[c].innerHTML;
-        fieldNr++;
-      }
+      var prompt = "User detail request error";
+      document.getElementById("userErr").innerHTML = prompt;
     }
-  }
-  /*
-    <tr style="background-color: rgb(247, 183, 51);">
-    0/0 <td>Cameron</td>
-    1/1 <td>van Schalkwyk</td>
-    -/2 password ******
-    2/3 <td>123</td>
-    3/4 <td>456</td>
-    4/5 <td>cameron@example.com</td>
-    5/6 <td>C</td>
-    6/7 <td>P11</td>
-    7/8 <td>PL,CL,SL,AL,XL</td>
-    8/9 <td>
-    pVehicle,pHomeContents,pSOS,pBuilding,pWatercraft,pAllRisk,cBusiness,cGuesthouse,cTourLeisEnter,cSmallBusiness,cDental,cMedical,sVehicle,sProperty,sAsset,aAsset,aGame,aFire,aCrop,aDairy,xAviation,xBondsGuarantee,xCellCapt,xCoporateProperty,xCrop,xEngineering,xHeavyHaulage,xHospitalityInd,xLiability,xMarine,xPrivateClient,xSeamlessProd,xSpecRealEst,xStructuredInsurance,xTaxiSEM,xTravel
-    </td>
-    </tr>
-  */
+    var fName = document.getElementById("u1").innerHTML;
+      console.log(">>>> surname: ", fName);
+  });
 }
 
 // -----------------------------------------------------
@@ -1112,7 +1292,8 @@ function addRowHandlers(id) {
   console.log("---> Element Id: ", elementId);
   var rows = document.getElementById(elementId).rows;
   var rowCount = document.getElementById(elementId).rows.length;
-  console.log("---> Table Rows: ", rowCount);
+  console.log("---> Table Rows - number: ", rowCount);
+  console.log("---> Table Rows - detail: ", rows);
   if (id === "0"){
     var rowFunc = function(){ displayUser(this); };
   }
