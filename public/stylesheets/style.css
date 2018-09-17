@@ -163,8 +163,10 @@ a:active {
   text-align: center;
 }
 /*
-=== Administrator Sub Views ===
-*/
+ ===============================
+ === Administrator Sub Views ===
+ ===============================
+*/ 
   /*
   === Practise Admin View Styles ===
   */
@@ -219,7 +221,7 @@ a:active {
     text-align: center;
     font-size: 95%;
   }
-
+  
 /*
 === Leads Navigation & View Styles ===
 */
@@ -353,27 +355,4 @@ a:active {
     color: white;
 }
 
-/* Start of flex container formatting
-------------------------------------------------*/
-.flex-container {
-  /*display: -webkit-flex;*/
-  display: flex;
-  flex-direction: row;
-  /*align-items: flex-start | flex-end | center | baseline | stretch;*/
-  justify-content: space-around;
-  height: 50px;
-}
 
-.flex-item {
-  flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ];
-  margin: auto;
-}
-
-.flex-item input {
-  margin-top: 3px;
-  margin-bottom: 5px;
-  padding: 1px;
-}
-
-/* End of flex container formatting
------------------------------------------------------------------*/

@@ -247,6 +247,9 @@ function addUser() {
   // open add user form
   document.getElementById("addUser").style.display = 'block';
   document.getElementById("modal-header-text").innerHTML = "Add User";
+  document.getElementById("addUserButtons").style.display = "block";
+  document.getElementById("updateUserButtons").style.display = "none";
+  
 }
 // ---------------------
 //  Delete User
@@ -274,7 +277,10 @@ function displayUser(user) {
   // Display user form
   //
   document.getElementById("addUser").style.display = 'block';
-  document.getElementById("modal-header-text").innerHTML = "Update User";
+  document.getElementById("modal-header-text").innerHTML = "Selected User's Detail - Update/Delete";
+  document.getElementById("addUserButtons").style.display = "none";
+  document.getElementById("updateUserButtons").style.display = "block";
+  
   //
   // Get user id (email)
   //
@@ -309,7 +315,7 @@ function displayUser(user) {
       document.getElementById("u3").value = user[0].phone;
       document.getElementById("u4").value = user[0].cell;
       document.getElementById("u5").value = user[0].email;
-      document.getElementById("u6").value = user[0].practice;
+      document.getElementById("u6").value = user[0].practiceCode;
       var fName = document.getElementById("u0").innerHTML;
       console.log("===> firstname: ", fName);
       //
@@ -357,7 +363,7 @@ function displayUser(user) {
             document.getElementById('dispPersServ').style.display = 'block';
             for (var x = 0, z = services[i].types.length; x < z; x++) {
               console.log(">>> Services Detail: ", x, services[i].types[x]);
-              if (services[i].types[x] === "Vehicle") {
+              if (services[i].types[x] === "Private Vehicle") {
                 document.getElementById("pVehicle").checked = true;
               }
               else if (services[i].types[x] === "Home Contents") {
@@ -570,12 +576,10 @@ function servSpec() {
 // ----------------------------
 //  Submit User Data to Server
 // ----------------------------
-function submitUser() {
+function submitUser(action) {
+  console.log("---> Action: ", action);
   //
-  // Extract data from DOM
-  //
-  //
-  //  Extract New User Data
+  //  Extract new/update user data from document
   //
   var formAddUser = document.getElementById("formAddUser");
   var radioName = "";
@@ -666,11 +670,19 @@ function submitUser() {
   };
   var dataString = JSON.stringify(userData);
   console.log(">>> User Data: ", dataString);
+  //
+  //  Create AJAX Request
+  //
   var method = "POST";
-  var route = "/users/add";
+  if (action === "update") {
+    var route = "/users/update";
+  }
+  else {
+    var route = "/users/add";
+  }
   var contentType = "application/json";
   //
-  //  Send Lead POST Request
+  //  Send User POST Request
   //
   xhrRequest(method, route, contentType, dataString, (err, result) => {
     if (!err) {
@@ -691,6 +703,15 @@ function submitUser() {
       document.getElementById('dispSasrServ').style.display = 'none';
       document.getElementById('dispAgriServ').style.display = 'none';
       document.getElementById('dispSpecServ').style.display = 'none';
+      //
+      // Close form and modal
+      //
+      document.getElementById("addUser").style.display = 'block';
+      modal.style.display = "none";
+      //
+      // Update list
+      //
+      listUsers();
     }
     else {
       var prompt = "Lead submit error";

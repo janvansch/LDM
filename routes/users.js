@@ -15,9 +15,9 @@ router.get('/', function(req, res, next) {
 
 // module.exports = router;
 
-//----------------------------------------
+// ----------------------------------------
 //	Add User
-//----------------------------------------
+// ----------------------------------------
 router.post('/add', async (req, res) => {
   console.log(">>> Router - Add User request received: ", req.url, req.body);
   try {
@@ -85,7 +85,48 @@ router.post('/user', (req, res) => {
     });
 });
 
-
+// ----------------------------------------
+//  Update user detail
+// ----------------------------------------
+router.post('/update', (req, res) => {
+  console.log(">>> Request body and url: ", req.body, req.url);
+  const body = _.pick(req.body, [
+    'firstName',
+    'surname',
+    'phone',
+    'cell',
+    'email',
+    'roleCode',
+    'practiceCode',
+    'services'
+    
+  ]);
+  console.log(">>> Body data: ", body);
+  User.findOneAndUpdate(
+    { email: body.email 
+    },
+    {
+      'firstName' : body.firstName,
+      'surname' : body.surname,
+      'phone' : body.phone,
+      'cell' : body.cell,
+      'email' : body.email,
+      'roleCode' : body.roleCode,
+      'services' : body.services
+    },
+    {
+      upsert: false,
+      new: true
+    }
+  )
+  .then((user) => {
+      console.log(">>> Res: ", user);
+      res.send(user);
+    }, (e) => {
+      console.log(">>> Res: ", user);
+      res.status(400).send(e);
+    });
+});
 
 //----------------------------------------
 //	Authenticate a user
@@ -93,6 +134,7 @@ router.post('/user', (req, res) => {
 router.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);
 });
+
 // ----------------------------------------
 //  Get all users
 // ----------------------------------------
@@ -111,6 +153,7 @@ router.get('/list', (req, res) => {
       res.status(400).send(e);
     });
 });
+
 //----------------------------------------
 //	Delete User?
 //----------------------------------------
@@ -123,6 +166,7 @@ router.delete('/users/me/token', authenticate, async (req, res) => {
     res.status(400).send();
   }
 });
+
 //----------------------------------------
 //	User Login
 //----------------------------------------

@@ -95,6 +95,13 @@ during the leads allocation process.
     </fieldset>
   </div>
 </div>
-<input type="button" value="Update User" onclick="submitUser()"/>
-<input type="button" value="Delete User" onclick="deleteUser()"/>
-<input type="reset"/>
+<div id="addUserButtons" style="display:none">
+  <input id="formAddUser" type="button" value="Add User" onclick="submitUser('add')"/>
+</div>
+<div id="updateUserButtons" style="display:none">
+  <input id="formAddUser" type="button" value="Update User" onclick="submitUser('update')"/>
+  <input id="formAddUser" type="button" value="Delete User" onclick="deleteUser()"/>
+</div>
+
+
+<!--<input type="reset"/>-->
