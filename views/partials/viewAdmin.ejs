@@ -9,18 +9,17 @@
    List practices
   -->
   <h3 id="title2">Practice List</h3>
+  <!--
+   Add Practice Button
+  -->
+  <input type="button" value="Add User" onclick="javascript:addPractice();"/>
   <hr/>
   <div id="tPos2">
     Place holder for the display of the list of Practices
     <!-- Place holder for the display of the list of practices -->
   </div>
   <hr/>
-  <!--
-   Practice Maintenance Actions
-  -->
-  <input type="button" value="Add Practice" onclick="javascript:addPractice();"/>
-  <input type="button" value="Update Practice" onclick="javascript:updatePractice();"/>
-  <input type="button" value="Delete Practice" onclick="javascript:deletePractice();"/>
+    
 </div>
 <!--
 =================================
@@ -77,6 +76,25 @@
 === Practise Maintenance Functions ===
 ======================================
 -->
-<div id="viewAdminPrac">
-  <% include ./panelAdminPrac %>
+<!-- The Practice Modal (source w3schools) -->
+<div id="modalPrac" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2 id="modal-header-prac">XXXXXX</h2>
+    </div>
+    <div class="modal-body">
+      <div id="addPractice" style="display:none">
+        <form id="formAddPractice">
+          <% include ./practiceAdd %>
+        </form>
+      </div>
+      
+    </div>
+    <div class="modal-footer">
+      * = mandatory
+      <span id="practiceErr"> </span>
+    </div>
+  </div>
 </div>

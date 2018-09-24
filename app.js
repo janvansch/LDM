@@ -9,6 +9,7 @@ const fs = require('fs');
 
 const indexRouter = require('./routes/index');
 const leadsRouter = require('./routes/leads');
+const practicesRouter = require('./routes/practices');
 const usersRouter = require('./routes/users');
 
 //var {mongoose} = require('./db/mongoose');
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //===============================
 app.use('/', indexRouter);
 app.use('/leads', leadsRouter);
+app.use('/practices', practicesRouter);
 app.use('/users', usersRouter);
 
 //========================================

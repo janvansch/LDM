@@ -34,7 +34,29 @@ router.get('/list', (req, res) => {
     "comments.comment1" : 1,
     "comments.comment2" : 1
   }).then((leads) => {
-    res.send(leads);
+    console.log(">>> Data Returned: ", leads);
+    const listData = [];
+    for (var i = 0, j = leads.length; i < j; i++) {
+      listData.push(
+        {
+          status : leads[i].status,
+          firstName : leads[i].firstName,
+          surname : leads[i].surname,
+          langPref : leads[i].langPref,
+          //contactNum : leads[i].contactNum,
+          //altNumber : leads[i].altNumber,
+          //cellNumber : leads[i].cellNumber,
+          //eMail : leads[i].eMail,
+          postal : leads[i].contactLocation.postal,
+          suburb : leads[i].contactLocation.suburb,
+          service : leads[i].service,
+          comment1 : leads[i].comments.comment1,
+          comment2 : leads[i].comments.comment2
+        }
+      );
+    }
+    console.log(">>> Data list: ", listData);
+    res.send(listData);
   }, (e) => {
     res.status(400).send(e);
   });

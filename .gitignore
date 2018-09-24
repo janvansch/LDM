@@ -1,7 +1,6 @@
 node_modules/
 config/config.json
-@docs/
-sandbox/
+@sundry/
 /*.bat
 *_bak*.*
 *-bak*.*

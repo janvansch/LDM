@@ -43,28 +43,6 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// router.post('/add', async (req, res) => {
-//   try {
-//     var leadData = req.body.lead;
-//     // LeadData is an object because Express.js 4
-//     // converts the request string automatically
-//     console.log("===> add Lead path found: ", leadData);
-//     var body = leadBody(leadData);
-//     body.createdAt = new Date().getTime();
-//     console.log("===> Lead body: ", body);
-//     const lead = new Lead(body);
-//     await lead.save();
-//     var message = "Lead allocated to practise";
-//     sendSMS(message);
-//     res.status(200).send("ok");
-//   }
-//   catch (e) {
-//     console.log("===> ERROR: ", e.errors);
-//     var errData = JSON.stringify(e);
-//     res.status(400).send(errData);
-//   }
-// });
-
 // ----------------------------------------
 //  Get user detail
 // ----------------------------------------
@@ -138,24 +116,44 @@ router.get('/users/me', authenticate, (req, res) => {
 // ----------------------------------------
 //  Get all users
 // ----------------------------------------
-router.get('/list', (req, res) => {
-  User.find(
-    { //_creator: req.user._id 
-    },
-    {
-      services : 0,
-      password : 0,
-      tokens : 0
-    }
-    ).then((users) => {
-      res.send(users);
-    }, (e) => {
-      res.status(400).send(e);
-    });
+router.get('/list', async (req, res) => {
+  console.log(">>> Request body and url: ", req.body, req.url);
+  try {
+    const users = await User.find(
+      {},
+      {
+        services : 0,
+        password : 0,
+        tokens : 0
+      }
+    );
+    res.send(users);
+  }
+  catch (e) {
+    console.log("===> ERROR: ", e);
+    var errData = JSON.stringify(e);
+    console.log("===> ERROR Data: ", errData);
+    res.status(400).send(errData);
+  }
 });
+// router.get('/list', (req, res) => {
+//   User.find(
+//     { //_creator: req.user._id 
+//     },
+//     {
+//       services : 0,
+//       password : 0,
+//       tokens : 0
+//     }
+//     ).then((users) => {
+//       res.send(users);
+//     }, (e) => {
+//       res.status(400).send(e);
+//     });
+// });
 
 //----------------------------------------
-//	Delete User?
+//	Suspend User
 //----------------------------------------
 router.delete('/users/me/token', authenticate, async (req, res) => {
   try {

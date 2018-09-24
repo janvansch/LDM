@@ -1,5 +1,5 @@
 // var xhr = new XMLHttpRequest();
-// xhr.open("GET", "https://platform.clickatell.com/messages/http/send?apiKey=k4ruIRQRQCumkJWOjvgTeA==&to=27824631521&content=Testing, testing, 123", true);
+// xhr.open("GET", "https://platform.clickatell.com/messages/http/send?apiKey=k4ruIRQRQCumkJWOjvgTeA==&to=27.........&content=Testing, testing, 123", true);
 // xhr.onreadystatechange = function(){
 //     if (xhr.readyState == 4 && xhr.status == 200){
 //         console.log('success')

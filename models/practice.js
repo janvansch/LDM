@@ -5,30 +5,32 @@ const validator = require('validator');
 //const bcrypt = require('bcryptjs');
 
 var PracticeSchema = new mongoose.Schema({
-  practise: {
-    Name: {
-      type: String,
-      required: false
-    },
-    Code: {
-      type: String,
-      required: true
-    },
-    phone: {
-      type: String,
-      required: true
-    },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 1,
-      unique: true,
-      validate: {
-        validator: validator.isEmail,
-        message: '{VALUE} is not a valid email'
-      }
+  pracCode: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  pracName: {
+    type: String,
+    required: false
+  },
+  pracPhone: {
+    type: String,
+    required: true
+  },
+  pracEmail: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 1,
+    validate: {
+      validator: validator.isEmail,
+      message: '{VALUE} is not a valid email'
     }
+  },
+  pracLeadCount: {
+    type: Number,
+    required: true
   },
   principle: {
     firstName: {
@@ -52,7 +54,6 @@ var PracticeSchema = new mongoose.Schema({
       required: true,
       trim: true,
       minlength: 1,
-      unique: true,
       validate: {
         validator: validator.isEmail,
         message: '{VALUE} is not a valid email'
@@ -60,13 +61,15 @@ var PracticeSchema = new mongoose.Schema({
     }
   },
   backOffice: {
-    firstName: {
-      type: String,
-      required: true
-    },
-    surname: {
-      type: String,
-      required: true
+    contact: {
+      firstName: {
+        type: String,
+        required: true
+      },
+      surname: {
+        type: String,
+        required: true
+      }
     },
     phone: {
     type: String,
@@ -81,25 +84,39 @@ var PracticeSchema = new mongoose.Schema({
       required: true,
       trim: true,
       minlength: 1,
-      unique: true,
       validate: {
         validator: validator.isEmail,
         message: '{VALUE} is not a valid email'
       }
     }
   },
-  Area: {
-    type: array,
-    required: true
+  area: [{
+    startCode: {
+      type: String,
+      required: true
+    },
+    endCode: {
+      type: String,
+      required: true
+    }
+    
+  }],
+  createdWhen: {
+    type: Number,
+    default: null
+  },
+  createdBy: {
+    type: String,
+    required: false
   }
 });
 
-UserSchema.methods.toJSON = function () {
-  var user = this;
-  var userObject = user.toObject();
-  return _.pick(userObject, ['_id', 'email', 'roleCode', 'practiseCode', 'skill']);
-};
+// PracticeSchema.methods.toJSON = function () {
+//   var user = this;
+//   var practiceObject = user.toObject();
+//   return _.pick(practiceObject, ['practice', 'principle', 'backOffice', 'area', 'email', 'createdWhen', 'createdBy']);
+// };
 
-var Practice = mongoose.model('Practice', PractiseSchema);
+var Practice = mongoose.model('Practice', PracticeSchema);
 
 module.exports = {Practice}

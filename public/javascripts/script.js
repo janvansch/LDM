@@ -17,6 +17,7 @@ window.onload = function() {
 //  Global modal controls (source: w3schools)
 // ===========================================
 var modal = document.getElementById('modalBox');
+var modalPrac = document.getElementById('modalPrac');
 // Get the button that opens the modal
 // var btn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
@@ -168,9 +169,9 @@ function openRoleView(user) {
   }
 }
 
-//================================
-// User Administration Processing
-//================================
+//============================================================================
+// Administration - System Users
+//============================================================================
 
 // ----------------------------------------------------
 //  List system users and add row select functionality
@@ -200,7 +201,7 @@ function listUsers() {
       var data = JSON.parse(res.responseText);
       console.log(">>> Users: ", data);
       //
-      // load user table layout definition
+      // Table layout & heading
       //
       var layoutId = '0';
       var prompt = 'User list:';
@@ -209,13 +210,13 @@ function listUsers() {
       //
       displayData(data, prompt, layoutId);
       //
-      // Add row select handlers to enable editing of rows
+      // Add row select handlers to enable editing
       //
       addRowHandlers(layoutId);
     }
     else {
-      var prompt = "Lead request error";
-      document.getElementById("leadErr").innerHTML = prompt;
+      var prompt = "User request error";
+      document.getElementById("userErr").innerHTML = prompt;
     }
   });
 }
@@ -280,7 +281,6 @@ function displayUser(user) {
   document.getElementById("modal-header-text").innerHTML = "Selected User's Detail - Update/Delete";
   document.getElementById("addUserButtons").style.display = "none";
   document.getElementById("updateUserButtons").style.display = "block";
-  
   //
   // Get user id (email)
   //
@@ -720,9 +720,9 @@ function submitUser(action) {
   });
 }
 
-//====================================
-// Practise Administration Processing
-//====================================
+//============================================================================
+// Administration - Practices
+//============================================================================
 
 // -----------------------------------
 //  Open Practice Maintenance Display
@@ -749,51 +749,54 @@ function listPractices() {
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var data = JSON.parse(res.responseText);
-      console.log(">>> Practice docs: ", data);
+      console.log(">>> Practice data returned: ", data);
       //
-      // load table layout definition
+      // Extract list data
       //
-      var dataSource = '2';
-      var objRules = readLayout(dataSource);
-      var prompt = 'Lead data for: ' + request;
-      var formatData = [];
-      var rowCount = data.length;
-      for (var i=0; i < rowCount; i++) {
-        //
-        // Extract data into list
-        //
-        var cells = [];
-        cells.push((typeof data[i].status === 'undefined') ? (" - ") : (data[i].status));
-        cells.push((typeof data[i].firstName === 'undefined') ? (" - ") : (data[i].firstName));
-        cells.push((typeof data[i].surname === 'undefined') ? (" - ") : (data[i].surname));
-        cells.push((typeof data[i].langPref === 'undefined') ? (" - ") : (data[i].langPref));
-        cells.push((typeof data[i].contactNum === 'undefined') ? (" - ") : (data[i].contactNum));
-        cells.push((typeof data[i].altNumber === 'undefined') ? (" - ") : (data[i].altNumber));
-        cells.push((typeof data[i].cellNumber === 'undefined') ? (" - ") : (data[i].cellNumber));
-        cells.push((typeof data[i].eMail === 'undefined') ? (" - ") : (data[i].eMail));
-        cells.push((typeof data[i].contactLocation.postal === 'undefined') ? (" - ") : (data[i].contactLocation.postal));
-        cells.push((typeof data[i].contactLocation.suburb === 'undefined') ? (" - ") : (data[i].contactLocation.suburb));
-        cells.push((typeof data[i].service === 'undefined') ? (" - ") : (data[i].service));
-        cells.push((typeof data[i].comments.comment1 === 'undefined') ? (" - ") : (data[i].comments.comment1));
-        cells.push((typeof data[i].comments.comment2 === 'undefined') ? (" - ") : (data[i].comments.comment2));
-        formatData[i] = cells;
-        console.log("---> Report Row Data: ", i, formatData[i]);
-      }
+      // === None required ===
       //
-      // Display data list as table
+      // Table layout & heading
       //
-      displayData(formatData, prompt, objRules, dataSource);
+      var layoutId = '2';
+      var prompt = 'Practice list:';
+      //
+      // Display practice data in a table
+      //
+      displayData(data, prompt, layoutId);
+      //
+      // Add row select handlers to enable practice editing
+      //
+      addRowHandlers(layoutId);
     }
     else {
-      var prompt = "Lead request error";
-      document.getElementById("leadErr").innerHTML = prompt;
+      var prompt = "User request error";
+      document.getElementById("practiceErr").innerHTML = prompt;
     }
   });
 }
 
-// ============================
-//  Capture Lead Functionality
-// ============================
+// ------------------------------
+//  Open add practice modal form
+// ------------------------------
+function addPractice() {
+  // open model window
+  // var modal = document.getElementById('modalBox');
+  modalPrac.style.display = "block";
+  //document.getElementById("viewAdminUser").style.display = 'block';
+  // open add user form
+  document.getElementById("addPractice").style.display = 'block';
+  document.getElementById("modal-header-prac").innerHTML = "Add Practice";
+  document.getElementById("addPracticeButtons").style.display = "block";
+  document.getElementById("updatePracticeButtons").style.display = "none";
+}
+
+function displayPractice(practice) {
+
+}
+
+// ===========================================================================
+//  Leads Capture
+// ===========================================================================
 
 // ----------------------------------------------------------------------
 //  Lead Display Switches for Contact Form and Service Required Selector
@@ -999,9 +1002,9 @@ function submitLead() {
   });
 }
 
-// =======================================
-//  Practise Administration Functionality
-// =======================================
+// ===========================================================================
+//  Practise 
+// ===========================================================================
 //
 // ------------------------
 //  Display practise leads
@@ -1125,9 +1128,9 @@ function allocateAdviser() {
   });
 }
 
-// =============================
-//  Form Data Extract Utilities
-// =============================
+// ===============================
+//  Utilities - Form Data Extract
+// ===============================
 //
 // -------------------------------------------------------------
 //  Return values of specified element type from specified form
@@ -1210,19 +1213,20 @@ function formReset(form) {
     document.getElementById(form).reset();
 }
 //
-// ===================================
-// === Data List Display Functions ===
-// ===================================
+// ==================================================================================
+//  Utilities - Data List Display 
+// ==================================================================================
 //
 // ----------------------------------
 //  Create table and display content
 // ----------------------------------
 function displayData(content, title, layoutId) {
-  console.log("Content: ", content);
+  console.log("---> List content: ", content);
   //
   //  Read layout definition
   //
   var layout = readLayout(layoutId);
+  console.log("---> Layout definition: ", layout);
   //
   //  Extract table content
   //
@@ -1232,6 +1236,9 @@ function displayData(content, title, layoutId) {
   for (var i=0; i < rowCount; i++) {
     var cells = [];
     for (var j=0; j < colCount; j++) {
+      //
+      // If there is no data for a cell create it as a dash 
+      //
       cells.push((typeof content[i][layout.definition[j].fname] === 'undefined') ? (" - ") : (content[i][layout.definition[j].fname]));
     }
     tableContent[i] = cells;
@@ -1315,8 +1322,14 @@ function addRowHandlers(id) {
   var rowCount = document.getElementById(elementId).rows.length;
   console.log("---> Table Rows - number: ", rowCount);
   console.log("---> Table Rows - detail: ", rows);
+  //
+  // Add row function as required for dtype of list
+  //
   if (id === "0"){
     var rowFunc = function(){ displayUser(this); };
+  }
+  if (id === "2"){
+    var rowFunc = function(){ displayPractice(this); };
   }
   for (var i = 1; i < rowCount; i++) {
       // ignore header, row 0
@@ -1351,10 +1364,10 @@ function readLayout(definitionId) {
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
         '{ "fname" : "langPref" , "label" : "Language" },' +
-        '{ "fname" : "contactNum" , "label" : "Contact #" },' +
-        '{ "fname" : "altNumber" , "label" : "Alternate #" },' +
-        '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
-        '{ "fname" : "eMail" , "label" : "eMail" },' +
+        //'{ "fname" : "contactNum" , "label" : "Contact #" },' +
+        //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        //'{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        //'{ "fname" : "eMail" , "label" : "eMail" },' +
         '{ "fname" : "postal" , "label" : "Postal" },' +
         '{ "fname" : "suburb" , "label" : "Suburb" },' +
         '{ "fname" : "service" , "label" : "Service Required" },' +
@@ -1366,19 +1379,21 @@ function readLayout(definitionId) {
     case '2':
       console.log("List Layout: 2 (Practices)");
       var layoutDef = '{ "definition" : [' +
-        '{ "fname" : "status" , "label" : "Status" },' +
-        '{ "fname" : "firstName" , "label" : "First Name" },' +
-        '{ "fname" : "surname" , "label" : "Surname" },' +
-        '{ "fname" : "langPref" , "label" : "Language" },' +
-        '{ "fname" : "contactNum" , "label" : "Contact #" },' +
-        '{ "fname" : "altNumber" , "label" : "Alternate #" },' +
-        '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
-        '{ "fname" : "eMail" , "label" : "eMail" },' +
-        '{ "fname" : "postal" , "label" : "Postal" },' +
-        '{ "fname" : "suburb" , "label" : "Suburb" },' +
-        '{ "fname" : "service" , "label" : "Service Required" },' +
-        '{ "fname" : "comment1" , "label" : "Comment" },' +
-        '{ "fname" : "comment2" , "label" : "Service Comment" }' +
+        '{ "fname" : "pracCode" , "label" : "Code" },' +
+        '{ "fname" : "pracName" , "label" : "Name" },' +
+        '{ "fname" : "pracPhone" , "label" : "Phone" },' +
+        '{ "fname" : "pracEmail" , "label" : "Email" },' +
+        '{ "fname" : "pracLeadCount" , "label" : "Lead Count" },' +
+        '{ "fname" : "prinFirstName" , "label" : "Principle First Name" },' +
+        '{ "fname" : "prinSurname" , "label" : "Principle Surname" }' +
+        // '{ "fname" : "principle.phone" , "label" : "Principle Phone" },' +
+        // '{ "fname" : "principle.cell" , "label" : "Principle Cell" },' +
+        // '{ "fname" : "principle.email" , "label" : "Principle Email" },' +
+        // '{ "fname" : "backOffice.contact.firstName" , "label" : "Contact First Name" },' +
+        // '{ "fname" : "backOffice.contact.surname" , "label" : "Contact Surname" },' +
+        // '{ "fname" : "backOffice.contact.phone" , "label" : "Contact Phone" },' +
+        // '{ "fname" : "backOffice.contact.cell" , "label" : "Contact Cell" },' +
+        // '{ "fname" : "backOffice.contact.email" , "label" : "Contact Email" }' +
         ']}'
       ;
     break;
@@ -1408,9 +1423,9 @@ function readLayout(definitionId) {
   return layout;
 }
 
-// ===============================
-//  Views display toggle function
-// ===============================
+// ==================================
+//  Utilities - Views display toggle
+// ==================================
 
 function toggleView(viewID){
   var state = '';
@@ -1426,9 +1441,9 @@ function toggleView(viewID){
   console.log(`---> ${viewID} is ${state}`);
 }
 
-// ================================
-//  Generic XMLHttpRequest handler
-// ================================
+// ============================================
+//  Utilities - Generic XMLHttpRequest handler
+// ============================================
 
 function xhrRequest(method, route, contentType, request, callback) {
   //Validate params - if params not valid end immediately
@@ -1473,7 +1488,7 @@ function xhrRequest(method, route, contentType, request, callback) {
 }
 
 // =====================
-// * General Utilities *
+//  Utilities - General 
 // =====================
 
 // -----------------------
@@ -1518,48 +1533,48 @@ function isNumber(o) {
     return typeof o == "number" || (typeof o == "object" && o.constructor === Number);
 }
 
-// ===========================================
-//  Functions to add elements and text to DOM
-// ===========================================
-/*******************************************************************************************
- * By https://www.scribd.com/document/2279811/DOM-Append-Text-and-Elements-With-Javascript *
- *******************************************************************************************/
-// ------------------------------
-//  add text to existing element
-// ------------------------------
-/**************************************************************
- * Add test:                                                  *
- * node: The element/node that the text is to be appended to. *
- * txt: The text to append to the node.                       *
- **************************************************************/
-function appendText(node,txt) {
-    node.appendChild(document.createTextNode(txt));
-}
-// --------------------
-//  add element to DOM
-// --------------------
-/********************************************************
- * Add new element:                                     *
- *      node = element where to add new element         *
- *      tag = the type of element to add                *
- *      id = optional id for element                    *
- *      htm = optional internal html text for element   *
- ********************************************************/
-function appendElement(node,tag,id,htm) {
-    var ne = document.createElement(tag);
-    if(id) ne.id = id;
-    if(htm) ne.innerHTML = htm;
-    node.appendChild(ne);
-}
-function addElementBefore(node,tag,id,htm) {
-    var ne = document.createElement(tag);
-    if(id) ne.id = id;
-    if(htm) ne.innerHTML = htm;
-    node.parentNode.insertBefore(ne,node);
-}
-function addElementAfter(node,tag,id,htm) {
-    var ne = document.createElement(tag);
-    if(id) ne.id = id;
-    if(htm) ne.innerHTML = htm;
-    node.parentNode.insertBefore(ne,node.nextSibling);
-}
+// // ===========================================
+// //  Functions to add elements and text to DOM
+// // ===========================================
+// /*******************************************************************************************
+//  * By https://www.scribd.com/document/2279811/DOM-Append-Text-and-Elements-With-Javascript *
+//  *******************************************************************************************/
+// // ------------------------------
+// //  add text to existing element
+// // ------------------------------
+// /**************************************************************
+//  * Add test:                                                  *
+//  * node: The element/node that the text is to be appended to. *
+//  * txt: The text to append to the node.                       *
+//  **************************************************************/
+// function appendText(node,txt) {
+//     node.appendChild(document.createTextNode(txt));
+// }
+// // --------------------
+// //  add element to DOM
+// // --------------------
+// /********************************************************
+//  * Add new element:                                     *
+//  *      node = element where to add new element         *
+//  *      tag = the type of element to add                *
+//  *      id = optional id for element                    *
+//  *      htm = optional internal html text for element   *
+//  ********************************************************/
+// function appendElement(node,tag,id,htm) {
+//     var ne = document.createElement(tag);
+//     if(id) ne.id = id;
+//     if(htm) ne.innerHTML = htm;
+//     node.appendChild(ne);
+// }
+// function addElementBefore(node,tag,id,htm) {
+//     var ne = document.createElement(tag);
+//     if(id) ne.id = id;
+//     if(htm) ne.innerHTML = htm;
+//     node.parentNode.insertBefore(ne,node);
+// }
+// function addElementAfter(node,tag,id,htm) {
+//     var ne = document.createElement(tag);
+//     if(id) ne.id = id;
+//     if(htm) ne.innerHTML = htm;
+//     node.parentNode.insertBefore(ne,node.nextSibling);
+// }
