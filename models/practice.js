@@ -35,23 +35,23 @@ var PracticeSchema = new mongoose.Schema({
   principle: {
     firstName: {
       type: String,
-      required: true
+      //required: true
     },
     surname: {
       type: String,
-      required: true
+      //required: true
     },
     phone: {
       type: String,
-      required: true
+      //required: true
     },
   	cell: {
       type: String,
-      required: true
+      //required: true
     },
     email: {
       type: String,
-      required: true,
+      //required: true,
       trim: true,
       minlength: 1,
       validate: {
@@ -64,11 +64,11 @@ var PracticeSchema = new mongoose.Schema({
     contact: {
       firstName: {
         type: String,
-        required: true
+        //required: true
       },
       surname: {
         type: String,
-        required: true
+        //required: true
       }
     },
     phone: {
@@ -90,26 +90,15 @@ var PracticeSchema = new mongoose.Schema({
       }
     }
   },
-  area: [{
-    startCode: {
-      type: String,
-      required: true
-    },
-    endCode: {
-      type: String,
-      required: true
-    }
-    
-  }],
-  createdWhen: {
-    type: Number,
-    default: null
+  area: {
+    type: Array,
+    required: true
   },
-  createdBy: {
+  who: {
     type: String,
     required: false
-  }
-});
+  },
+}, {timestamps: true});
 
 // PracticeSchema.methods.toJSON = function () {
 //   var user = this;

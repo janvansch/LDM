@@ -1,87 +1,22 @@
+/* =========================== */
+/*     General UI elements     */
+/* =========================== */
 body {
   width: 1200px;
   padding: 10px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /*
+  ----------------------------------------------
+   Background image from www.subtlepatterns.com 
+  ----------------------------------------------
+  */
+  /* background-image: url("../images/random_grey_variations.png"); */
+  /* background-repeat: repeat-x; */
 }
 
 a {
   color: #00B7FF;
 }
-
-header {
-  height: 100px;
-  background-color: darkblue;
-  color: white;
-  text-align: center;
-  padding: 5px;
-}
-
-nav {
-  width: 8%;
-  line-height: 30px;
-  background-color: #ffeeff;
-  height: 300px;
-  font-size: 100%;
-  float: left;
-  padding: 5px;
-}
-
-section {
-  width: 90%;
-  font-size: 100%;
-  float: left;
-  padding: 5px;
-}
-
-footer {
-  background-color: firebrick;
-  color: white;
-  clear: both;
-  font-size: 90%;
-  text-align: center;
-  padding: 5px;
-}
-/* ------ Table formatting ------ */
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #ddd;
-}
-
-th,td {
-    text-align: left;
-    padding: 3px;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-/* ------ Form elements ------ */
-fieldset {
-  display: block;
-  font-size: 100%;
-  margin-left: 2px;
-  margin-right: 2px;
-  padding-top: 0.35em;
-  padding-bottom: 0.625em;
-  padding-left: 0.75em;
-  padding-right: 0.75em;
-  border: 2px groove (internal value);
-}
-
-legend {
-  color:  darkblue;
-  font-size: 100%;
-  font-weight: 700;
-}
-
-input {
-  margin: 5px;
-}
-
-/* ------ Links ------ */
 a:link,
 a:visited {
   /* color: #cf6317; */
@@ -112,9 +47,86 @@ a:active {
   font-size: 100%;
   font-weight: 900;
 }
-/*
-=== Login View Styles ===
-*/
+
+input:valid {
+  border-bottom: 1px solid color rgb(33, 190, 12);
+}
+input:invalid {
+  border-bottom: 1px solid color crimson;
+}
+
+#uErrMsg, #pErrMsg {
+  color:  crimson;
+}
+
+/* ============================== */
+/*            Layout              */
+/* ============================== */
+
+header {
+  height: 100px;
+  background-color: darkblue;
+  color: white;
+  text-align: center;
+  padding: 5px;
+}
+
+nav {
+  width: 8%;
+  line-height: 30px;
+  background-color: #ffeeff;
+  height: 300px;
+  font-size: 100%;
+  float: left;
+  padding: 5px;
+}
+
+section {
+  width: 90%;
+  /* height: 300px; */
+  font-size: 100%;
+  background-color: rgb(244, 244, 248);
+  float: left;
+  padding: 5px;
+}
+
+footer {
+  background-color: firebrick;
+  color: white;
+  clear: both;
+  font-size: 90%;
+  text-align: center;
+  padding: 5px;
+}
+
+/* ============================ */
+/*     General Form elements    */
+/* ============================ */
+fieldset {
+  display: block;
+  font-size: 100%;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 0.35em;
+  padding-bottom: 0.625em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  border: 2px groove (internal value);
+}
+
+legend {
+  color:  darkblue;
+  font-size: 100%;
+  font-weight: 700;
+}
+
+input {
+  margin: 5px;
+}
+
+/* =============================== */
+/*     Login View & Navigation     */
+/* =============================== */
 #navLogin {
   display: block;
   width: 99%;
@@ -140,9 +152,10 @@ a:active {
   font-size: 100%;
   font-weight: 900;
 }
-/*
-=== Administrator Navigation & View Styles ===
-*/
+
+/* ======================================== */
+/*     Administration View & Navigation     */
+/* ======================================== */
 #navAdmin {
   display: none;
   width: 99%;
@@ -162,69 +175,65 @@ a:active {
   width: 99%;
   text-align: center;
 }
-/*
- ===============================
- === Administrator Sub Views ===
- ===============================
-*/ 
-  /*
-  === Practise Admin View Styles ===
-  */
-  #viewAdminPrac {
-    display: none;
-    width: 95%;
-    text-align: center;
-  }
+/* ------------------------------ */
+/*     Practice Administration    */
+/* ------------------------------ */
+#viewAdminPrac {
+  display: none;
+  width: 95%;
+  text-align: center;
+}
+#addPractise {
+  /* display: none; */
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#removePractise {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#updatePractise {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#addPracticeBtn {
+  text-align: right;
+}
+/* --------------------------- */
+/*     User Administration     */
+/* --------------------------- */
+#viewAdminUser {
+  display: none;
+  width: 90%;
+  text-align: center;
+}
+#addUser {
+  /* display: none; */
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#deleteUser {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
+#updateUser {
+  display: none;
+  width: 99%;
+  text-align: center;
+  font-size: 95%;
+}
 
-  #addPractise {
-    /* display: none; */
-    width: 99%;
-    text-align: center;
-    font-size: 95%;
-  }
-  #removePractise {
-    display: none;
-    width: 99%;
-    text-align: center;
-    font-size: 95%;
-  }
-  #updatePractise {
-    display: none;
-    width: 99%;
-    text-align: center;
-    font-size: 95%;
-  }
-
-  /*
-  === User Admin View Styles ===
-  */
-  #viewAdminUser {
-    display: none;
-    width: 90%;
-    text-align: center;
-  }
-  #addUser {
-    /* display: none; */
-    width: 99%;
-    text-align: center;
-    font-size: 95%;
-  }
-  #deleteUser {
-    display: none;
-    width: 99%;
-    text-align: center;
-    font-size: 95%;
-  }
-  #updateUser {
-    display: none;
-    width: 99%;
-    text-align: center;
-    font-size: 95%;
-  }
-  
-/*
-=== Leads Navigation & View Styles ===
-*/
+/* =============================== */
+/*     Leads View & Navigation     */
+/* =============================== */  
 #navLead {
   display: none;
   width: 99%;
@@ -248,9 +257,9 @@ a:active {
   font-size: 100%;
 }
 
-/*
-=== Practise Navigation & View Styles ===
-*/
+/* ================================== */
+/*     Practice View & Navigation     */
+/* ================================== */
 #navPractise {
   display: none;
   width: 99%;
@@ -265,9 +274,10 @@ a:active {
   width: 99%;
   text-align: center;
 }
-/*
-=== Adviser Navigation & View Styles ===
-*/
+
+/* ================================= */
+/*     Adviser View & Navigation     */
+/* ================================= */
 #navAdviser {
   display: none;
   width: 99%;
@@ -277,13 +287,62 @@ a:active {
   width: 99%;
   text-align: center;
 }
+
+/* ============================= */
+/*       Postal Code Table       */
+/* ============================= */
+table.tableSection {
+  display: table;
+  width: 100%;
+}
+table.tableSection thead, table.tableSection tbody {
+  float: left;
+  width: 100%;
+}
+table.tableSection tbody {
+  overflow: auto;
+  /* Giving height to make the tbody scroll */
+  /* Giving height dynamically is recommended */
+  height: 75px;
+}
+table.tableSection tr {
+  width: 100%;
+  display: table;
+  /* Keeping the texts of both thead and tbody in same alignment */
+  text-align: left;
+}
+table.tableSection td {
+  width: 10px;
+}
+
+/* ============================= */
+/*     List Table formatting     */
+/* ============================= */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th,td {
+  text-align: left;
+  padding: 3px;
+}
+
+/*
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+*/
+
 /*
 ============================================
 === Modal Box Styles (source: w3schools) ===
 ============================================
 */
 
-/* The Modal (background) */
+/* === The Modal (background) === */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -298,7 +357,7 @@ a:active {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* Modal Content */
+/* === Modal Content === */
 .modal-content {
     position: relative;
     background-color: #fefefe;
@@ -313,7 +372,7 @@ a:active {
     animation-duration: 0.4s
 }
 
-/* Add Animation */
+/* === Add Animation === */
 @-webkit-keyframes animatetop {
     from {top:-300px; opacity:0}
     to {top:0; opacity:1}
@@ -324,7 +383,7 @@ a:active {
     to {top:0; opacity:1}
 }
 
-/* The Close Button */
+/* === The Close Button === */
 .close {
     color: white;
     float: right;
@@ -351,7 +410,7 @@ a:active {
 .modal-footer {
     padding: 2px 16px;
     background-color: #5cb85c;
-    font-size: 70%;
+    font-size: 80%;
     color: white;
 }
 

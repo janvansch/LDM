@@ -4,75 +4,84 @@ Practice Description attributes
 <fieldset>
   <legend>Practice Information:</legend>
   <label>
-    Practice Code: <input id="p0" type="text" name="pracCode" size="10"/>
+    Practice Code: <input type="text" name="pracCode" size="10" required/>
   </label>
   <label>
-    Practice Name: <input id="p1" type="text" name="pracName" size="45"/>
+    Practice Name: <input type="text" name="pracName" size="45" required/>
   </label>
   <label>
-    Practice Phone: <input id="p2" type="text" name="pracPhone" size="15"/>
+    Practice Phone: <input type="text" name="pracPhone" size="15" required/>
   </label>
   <br/>
   <label>
-    Practice Email: <input id="p3" type="text" name="pracEmail" size="60"/>
+    Practice Email: <input type="email" name="pracEmail" size="60" required/>
   </label>
 </fieldset>  
 <br/>
 <fieldset>
   <legend>Principle:</legend>
   <label>
-    Firstname: <input type="text" name="userdata" size="15"/>
+    First Name: <input type="text" name="prinFirstName" size="15"/>
   </label>
   <label>
-    Surname: <input type="text" name="userdata" size="20"/>
+    Surname: <input type="text" name="prinSurname" size="20"/>
   </label>
   <label>
-    Phone: <input type="text" name="userdata" size="15"/>
+    Phone: <input type="text" name="prinPhone" size="15"/>
   </label>
   <label>
-    Cell: <input type="text" name="userdata" size="15"/>
+    Cell: <input type="text" name="prinCell" size="15"/>
   </label>
   <br/>
   <label>
-    Email: <input type="text" name="userdata" size="60"/>
+    Email: <input type="email" name="prinEmail" size="60"/>
   </label>    
 </fieldset>
 <br/>
 <fieldset>
   <legend>Back Office:</legend>
   <label>
-    Firstname: <input type="text" name="userdata" size="15"/>
+    Firstname: <input type="text" name="offFirstName" size="15"/>
   </label>
   <label>
-    Surname: <input type="text" name="userdata" size="20"/>
+    Surname: <input type="text" name="offSurname" size="20"/>
   </label>
   <label>
-    Phone: <input type="text" name="userdata" size="15"/>
+    Phone: <input type="text" name="offPhone" size="15" required/>
   </label>
   <label>
-    Cell: <input type="text" name="userdata" size="15"/>
+    Cell: <input type="text" name="offCell" size="15" required/>
   </label>
   <br/>
   <label>
-    Email: <input type="text" name="userdata" size="60"/>
+    Email: <input type="email" name="offEmail" size="60" required/>
   </label>    
 </fieldset>
 <fieldset>
   <legend>Area:</legend>
   <label>
-    From Code: <input type="text" name="userdata" size="15"/>
+    Postal Code: <input id="pCode" type="text" name="postalCode" size="15"/>
   </label>
-  <label>
-    To Code: <input type="text" name="userdata" size="15"/>
-  </label>
+  <button type="button" onclick="addPostCode()">
+    Add
+  </button>
+  
+  <hr/>
+  <div id="posPCode">
+    <table id="tablePCode" class="tableSection">
+      <tr> </tr>
+    </table>
+  </div>
+  <hr/>
 </fieldset>
 
 <div id="addPracticeButtons" style="display:none">
+  <!-- <input id="formAddPractice addPractice" type="submit" value="Add Practice"/> -->
   <input id="formAddPractice" type="button" value="Add Practice" onclick="submitPractice('add')"/>
 </div>
 <div id="updatePracticeButtons" style="display:none">
-  <input id="formAddPractice" type="button" value="Update Practice" onclick="submitPractice('update')"/>
-  <input id="formAddPractice" type="button" value="Delete Practice" onclick="deletePractice()"/>
+  <input id="formAddPractice updatePractice" type="button" value="Update Practice" onclick="submitPractice('update')"/>
+  <input id="formAddPractice removePractice" type="button" value="Delete Practice" onclick="deletePractice()"/>
 </div>
 
 

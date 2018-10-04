@@ -2,8 +2,8 @@ const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
 
-const {mongoose} = require('../db/mongoose');
-const {Lead} = require('../models/lead');
+//const {mongoose} = require('../db/mongoose');
+//const {Lead} = require('../models/lead');
 const {User} = require('../models/user');
 const {authenticate} = require('../middleware/authenticate');
 

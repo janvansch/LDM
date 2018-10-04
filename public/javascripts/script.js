@@ -714,8 +714,8 @@ function submitUser(action) {
       listUsers();
     }
     else {
-      var prompt = "Lead submit error";
-      document.getElementById("leadErr").innerHTML = prompt;
+      var prompt = "User submit error";
+      document.getElementById("uErrMsg").innerHTML = prompt;
     }
   });
 }
@@ -769,8 +769,7 @@ function listPractices() {
       addRowHandlers(layoutId);
     }
     else {
-      var prompt = "User request error";
-      document.getElementById("practiceErr").innerHTML = prompt;
+      document.getElementById("practiceErr").innerHTML = "User request error";
     }
   });
 }
@@ -793,6 +792,241 @@ function addPractice() {
 function displayPractice(practice) {
 
 }
+
+// --------------------------------------------
+//  Check if new code is a duplicate post code
+// --------------------------------------------
+function dupPostCode(code){
+  var table = document.getElementById("tablePCode");
+  if (table.rows[0].cells.length === 0) {
+    return false;
+  }
+  var rowCount = table.rows.length;
+  for (var row = 0; row < rowCount; row++) {
+    var cellCount = table.rows[row].cells.length
+    for (var cell = 0; cell < cellCount; cell++) {
+      if (code === table.rows[row].cells[cell].innerHTML) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// ----------------------------------------
+//  Create list of postal codes in a table
+// ----------------------------------------
+function addPostCode() {
+  //
+  // Get input
+  //
+  const newPCode = document.getElementById("pCode").value;
+  console.log("---> New Postal Code: ", newPCode);
+  if (newPCode === "") {
+    alert("Please enter a postal code before clicking the Add Button!");
+  }
+  else if (dupPostCode(newPCode)){
+    alert("The postal code entered is already in the list?");
+  }
+  else {
+    //
+    // Clear input
+    //
+    document.getElementById("pCode").value = "";
+    //
+    // Insert into list table and display
+    //
+    var table = document.getElementById("tablePCode");
+    var rowCount = table.rows.length;
+    //if (typeof rowCount === 'undefined') {
+    if (rowCount === 0) {
+      //
+      // Create first row
+      //
+      var tableRow = body.insertRow(-1);
+      var rowCount = 1;
+      //
+      // Create first cell
+      //
+      var tableCell = tableRow.insertCell(-1);
+      var rowLen = 1;
+      //
+      // Insert cell content
+      //
+      tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
+    }
+    else {
+      var rowLen = table.rows[rowCount - 1].cells.length
+      if ( rowLen === 20) {
+        //
+        // Add a new row
+        //
+        var tableRow = table.insertRow(-1);
+        rowCount++;
+        //
+        // Create first cell in new row
+        //
+        var tableCell = tableRow.insertCell(-1);
+        var rowLen = 1;
+        //
+        // Insert cell content
+        //
+        tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
+      }
+      else {
+        tableRow = table.rows[rowCount - 1];
+        //
+        // Insert a cell
+        //
+        var tableCell = tableRow.insertCell(-1);
+        tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
+        tableCell.onmouseover = function(){ ChangeColor(this, true); };
+        tableCell.onmouseout = function(){ ChangeColor(this, false); };
+        // for (var i = 1; i < rowCount; i++) {
+        //   // ignore header, row 0
+        //   rows[i].onclick = rowFunc;
+        //   rows[i].onmouseover = function(){ ChangeColor(this, true); };
+        //   rows[i].onmouseout = function(){ ChangeColor(this, false); };
+        // }
+      }
+    }
+  }
+}
+// --------------------------------
+//  Submit practice data to server
+// --------------------------------
+// document.getElementById("addPractice").addEventListener("click", function(event){
+//   event.preventDefault()
+//   var action = 'add';
+function submitPractice(action) {
+  console.log("---> Practice Action: ", action);
+  //
+  //  Extract new/update practice data from DOM
+  //
+  var formAddPractice = document.getElementById("formAddPractice");
+  //
+  // Do data validations
+  if (formAddPractice.checkValidity() === false) {
+    alert("Practice information not valid!");
+  }
+  //
+  // Check that at least one postal code was entered, if not alert user
+  //
+  var table = document.getElementById("tablePCode");
+  var rowCount = table.rows.length;
+  var cellCount = table.rows[rowCount - 1].cells.length;
+  if (cellCount < 1){
+    alert("Please add at least one postal code!");
+  }
+  //
+  // If postal code entered and input attributes are valid 
+  // then continue else display errors
+  //
+  if (cellCount > 0 && formAddPractice.checkValidity() === true) {
+    var formElement = "";
+    var inputType = "";
+    //
+    // Extract text data from add practice form
+    //
+    formElement = "input";
+    inputType = "text";
+    var text = extractFormData(formAddPractice, formElement, inputType);
+    //
+    // Extract email data from add practice form
+    //
+    formElement = "input";
+    inputType = "email";
+    var email = extractFormData(formAddPractice, formElement, inputType);
+    //
+    // Extract practice operational area data
+    //
+    var areaCodes = [];
+    for (var i=0; i < rowCount; i++) {
+      for (var j=0; j < cellCount; j++) {
+        //
+        // If there is no data for a cell create it as a dash 
+        //
+        areaCodes.push(table.rows[i].cells[j].innerHTML);
+      }
+    }
+    console.log(">>> Area Code: ", areaCodes);
+    //
+    // Extract User
+    //
+    var user = document.getElementById("user").innerHTML
+    var who = user.replace("User: ", "");
+    //
+    //  create User data object
+    //
+    var practiceData = {
+      pracCode : text.pracCode,
+      pracName : text.pracName,
+      pracPhone : text.pracPhone,
+      pracEmail : email.pracEmail,
+      principle : {
+        firstName : text.prinFirstName,
+        surname : text.prinSurname,
+        phone : text.prinPhone,
+        cell : text.prinCell,
+        email : email.prinEmail
+      },
+      backOffice : {
+        contact : {
+          firstName : text.offFirstName,
+          surname : text.offSurname,
+          //phone : text.conPhone,
+          //cell : text.conCell,
+          //email : email.conEmail
+        },
+        phone : text.offPhone,
+        cell : text.offCell,
+        email : email.offEmail
+      },
+      area : areaCodes,
+      who : who
+    };
+    var dataString = JSON.stringify(practiceData);
+    console.log(">>> Practice Data: ", dataString);
+    //
+    //  Create AJAX Request
+    //
+    var method = "POST";
+    if (action === "update") {
+      var route = "/practices/update";
+    }
+    else {
+      var route = "/practices/add";
+    }
+    var contentType = "application/json";
+    //
+    //  Send User POST Request
+    //
+    xhrRequest(method, route, contentType, dataString, (err, result) => {
+      if (!err) {
+        var resBody = result.responseText;
+        //
+        // Clear create user form
+        //
+        document.getElementById("formAddPractice").reset();
+        //
+        // Close form and modal
+        //
+        document.getElementById("addPractice").style.display = 'block';
+        modal.style.display = "none";
+        //
+        // Update list
+        //
+        listPractices();
+      }
+      else {
+        document.getElementById("pErrMsg").innerHTML = "Practice submit error";
+      }
+    });
+  }
+  else {
+    formAddPractice.reportValidity();
+  }
+};
 
 // ===========================================================================
 //  Leads Capture
@@ -1385,12 +1619,12 @@ function readLayout(definitionId) {
         '{ "fname" : "pracEmail" , "label" : "Email" },' +
         '{ "fname" : "pracLeadCount" , "label" : "Lead Count" },' +
         '{ "fname" : "prinFirstName" , "label" : "Principle First Name" },' +
-        '{ "fname" : "prinSurname" , "label" : "Principle Surname" }' +
+        '{ "fname" : "prinSurname" , "label" : "Principle Surname" },' +
         // '{ "fname" : "principle.phone" , "label" : "Principle Phone" },' +
         // '{ "fname" : "principle.cell" , "label" : "Principle Cell" },' +
         // '{ "fname" : "principle.email" , "label" : "Principle Email" },' +
-        // '{ "fname" : "backOffice.contact.firstName" , "label" : "Contact First Name" },' +
-        // '{ "fname" : "backOffice.contact.surname" , "label" : "Contact Surname" },' +
+        '{ "fname" : "backOffice.contact.firstName" , "label" : "Contact First Name" },' +
+        '{ "fname" : "backOffice.contact.surname" , "label" : "Contact Surname" }' +
         // '{ "fname" : "backOffice.contact.phone" , "label" : "Contact Phone" },' +
         // '{ "fname" : "backOffice.contact.cell" , "label" : "Contact Cell" },' +
         // '{ "fname" : "backOffice.contact.email" , "label" : "Contact Email" }' +
@@ -1517,7 +1751,8 @@ function ChangeColor(tableRow, highLight) {
         tableRow.style.backgroundColor = '#F7B733';
     }
     else {
-        tableRow.style.backgroundColor = 'white';
+        tableRow.style.backgroundColor = 'rgb(244, 244, 248';
+        // tableRow.style.backgroundColor = 'white';
     }
 }
 // -------------------------------

@@ -9,21 +9,20 @@ const {Practice} = require('../models/practice');
 //	Add Practice
 // ----------------------------------------
 router.post('/add', async (req, res) => {
-  console.log(">>> Router - Add User request received: ", req.url, req.body);
+  console.log(">>> Router - Add Practice request received: ", req.url, req.body);
   try {
     const body = _.pick(req.body, [
       'pracCode',
       'pracName',
       'pracPhone',
       'pracEmail',
-      'pracLeadCount',
+      //'pracLeadCount',
       'principle',
 	    'backOffice',
 	    'area',
-      'email',
-	    'createdWhen',
-	    'createdBy'
+      'who'
     ]);
+    body['pracLeadCount'] = 0;
     console.log(">>> body _.picked: ", body);
     const practice = new Practice(body);
     await practice.save();
@@ -35,9 +34,9 @@ router.post('/add', async (req, res) => {
 });
 
 // ----------------------------------------
-//  Get user detail
+//  Get practice detail
 // ----------------------------------------
-router.post('/user', async (req, res) => {
+router.post('/practice', async (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
   try {
     const practice = await User.find(
@@ -57,7 +56,7 @@ router.post('/user', async (req, res) => {
 });
 
 // ----------------------------------------
-//  Update user detail
+//  Update practice detail
 // ----------------------------------------
 router.post('/update', async (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
