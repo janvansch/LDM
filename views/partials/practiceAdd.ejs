@@ -59,13 +59,24 @@ Practice Description attributes
 </fieldset>
 <fieldset>
   <legend>Area:</legend>
-  <label>
-    Postal Code: <input id="pCode" type="text" name="postalCode" size="15"/>
+  <label id="addPostCode" style="display:block">
+    Enter Postal Code to add: 
+    <input id="pCode" type="text" name="postalCode" size="15"/>
+    <button type="button" onclick="addPostCode()">
+      Add
+    </button>
   </label>
-  <button type="button" onclick="addPostCode()">
-    Add
-  </button>
-  
+  <label id="editPostCode" style="display:none">
+    Edit selected Postal Code: 
+    <input id="selectedPCode" type="text" name="postalCode" size="15"/>
+    <button type="button" onclick="updatePostCodeList('update')">
+      Update
+    </button>
+    <button type="button" onclick="updatePostCodeList('remove')">
+      Delete
+    </button>
+  </label>
+
   <hr/>
   <div id="posPCode">
     <table id="tablePCode" class="tableSection">

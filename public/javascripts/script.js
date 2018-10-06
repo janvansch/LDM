@@ -813,9 +813,9 @@ function dupPostCode(code){
   return false;
 }
 
-// ----------------------------------------
-//  Create list of postal codes in a table
-// ----------------------------------------
+// ------------------------------------------
+//  Create a list of postal codes in a table
+// ------------------------------------------
 function addPostCode() {
   //
   // Get input
@@ -836,7 +836,7 @@ function addPostCode() {
     //
     // Insert into list table and display
     //
-    var table = document.getElementById("tablePCode");
+    const table = document.getElementById("tablePCode");
     var rowCount = table.rows.length;
     //if (typeof rowCount === 'undefined') {
     if (rowCount === 0) {
@@ -844,16 +844,12 @@ function addPostCode() {
       // Create first row
       //
       var tableRow = body.insertRow(-1);
-      var rowCount = 1;
+      rowCount = 1;
       //
       // Create first cell
       //
       var tableCell = tableRow.insertCell(-1);
       var rowLen = 1;
-      //
-      // Insert cell content
-      //
-      tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
     }
     else {
       var rowLen = table.rows[rowCount - 1].cells.length
@@ -868,30 +864,83 @@ function addPostCode() {
         //
         var tableCell = tableRow.insertCell(-1);
         var rowLen = 1;
-        //
-        // Insert cell content
-        //
-        tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
       }
       else {
         tableRow = table.rows[rowCount - 1];
         //
-        // Insert a cell
+        // Create a cell
         //
         var tableCell = tableRow.insertCell(-1);
-        tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
-        tableCell.onmouseover = function(){ ChangeColor(this, true); };
-        tableCell.onmouseout = function(){ ChangeColor(this, false); };
-        // for (var i = 1; i < rowCount; i++) {
-        //   // ignore header, row 0
-        //   rows[i].onclick = rowFunc;
-        //   rows[i].onmouseover = function(){ ChangeColor(this, true); };
-        //   rows[i].onmouseout = function(){ ChangeColor(this, false); };
-        // }
       }
+      //
+      // Insert cell content
+      //
+      tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
+      tableCell.onclick = function(){displayPostCode(this.innerHTML);};
+      tableCell.onmouseover = function(){ ChangeColor(this, true); };
+      tableCell.onmouseout = function(){ ChangeColor(this, false); };
     }
   }
 }
+
+// ---------------------------------------------------------------
+//  Display selected postal code for maintenance - edit or delete 
+// ---------------------------------------------------------------
+function displayPostCode(pCode) {
+  console.log("---> Post Code selected: ", pCode);
+  //
+  // Display selected postal code view
+  //
+  document.getElementById("selectedPCode").value = pCode;
+  document.getElementById("addPostCode").style.display = 'none';
+  document.getElementById("editPostCode").style.display = 'block';
+  //
+  // Determine row and column index of selected cell
+  //
+  //const table = document.querySelector('#tablePCode');
+  const rows = document.querySelectorAll('#tablePCode tr');
+  const rowsArray = Array.from(rows);
+  const rowIndex = rowsArray.findIndex(row => row.contains(event.target));
+  const columns = Array.from(rowsArray[rowIndex].querySelectorAll('td'));
+  const columnIndex = columns.findIndex(column => column == event.target);
+  console.log("---> Selected cell Row and Column Index: ", rowIndex, columnIndex)
+  //
+  // Store reference for next event
+  //
+  localStorage.setItem("rowIndex", rowIndex);
+  localStorage.setItem("columnIndex", columnIndex);
+}
+
+// -----------------------------
+//  Update postal code list with maintenance
+// -----------------------------
+function updatePostCodeList(action) {
+  const table = document.querySelector('#tablePCode');
+  const rowIndex = localStorage.getItem("rowIndex");
+  const columnIndex = localStorage.getItem("columnIndex");
+  console.log("---> Update cell Row and Column Index: ", rowIndex, columnIndex)
+  if (action === "update") {
+    table.rows[rowIndex].cells[columnIndex].innerHTML = document.getElementById("selectedPCode").value
+  }
+  else if (action === "remove") {
+    //var row = document.getElementById("myRow");
+    var row = table.rows[rowIndex];
+    row.deleteCell(columnIndex);
+  }
+  else {
+    console.log("---> ERROR: @ cell: ", rowIndex, columnIndex)
+  }
+  //
+  // Clear input
+  //
+  document.getElementById("selectedPCode").value = "";
+  //
+  // Display add postal code view
+  //
+  document.getElementById("addPostCode").style.display = 'block';
+  document.getElementById("editPostCode").style.display = 'none';
+}
+
 // --------------------------------
 //  Submit practice data to server
 // --------------------------------
