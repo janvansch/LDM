@@ -1,10 +1,12 @@
 /* =========================== */
 /*     General UI elements     */
 /* =========================== */
+
 body {
   width: 1200px;
   padding: 10px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  
   /*
   ----------------------------------------------
    Background image from www.subtlepatterns.com 
@@ -17,6 +19,7 @@ body {
 a {
   color: #00B7FF;
 }
+
 a:link,
 a:visited {
   /* color: #cf6317; */
@@ -55,8 +58,10 @@ input:invalid {
   border-bottom: 1px solid color crimson;
 }
 
-#uErrMsg, #pErrMsg {
+#errMsg {
   color:  crimson;
+  font-size: 100%;
+  font-weight: 900;
 }
 
 /* ============================== */
@@ -97,6 +102,28 @@ footer {
   font-size: 90%;
   text-align: center;
   padding: 5px;
+}
+
+/* ============================= */
+/*   flex container formatting   */
+/* ============================= */
+.flex-container {
+  /* display: -webkit-flex; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 50px;
+}
+  
+.flex-item {
+  flex-grow: 0;
+  margin: auto;
+}
+
+.flex-item input {
+  margin-top: 3px;
+  margin-bottom: 5px;
+  padding: 1px;
 }
 
 /* ============================ */

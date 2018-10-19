@@ -75,7 +75,7 @@ var UserSchema = new mongoose.Schema({
       required: true
     }
   }]
-});
+}, {timestamps: true});
 
 // UserSchema.methods.toJSON = function () {
 //   var user = this;

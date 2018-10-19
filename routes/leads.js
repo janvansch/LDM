@@ -12,6 +12,7 @@ const {sendSMS} = require('../utils/SMS');
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+
 // ----------------------------------------
 //  Get all leads
 // ----------------------------------------
@@ -61,17 +62,20 @@ router.get('/list', (req, res) => {
     res.status(400).send(e);
   });
 });
+
 //----------------------------------------
 //	Add Lead
 //----------------------------------------
 router.post('/add', async (req, res) => {
   try {
-    var leadData = req.body.lead;
+    //var leadData = req.body.lead;
     // LeadData is an object because Express.js 4
     // converts the request string automatically
-    console.log("===> add Lead path found: ", leadData);
-    var body = leadBody(leadData);
-    body.createdAt = new Date().getTime();
+    // console.log("===> add Lead path found: ", leadData);
+    //var body = leadBody(leadData);
+    var body = req.body;
+    console.log("===> Lead data: ", body);
+    //body.createdAt = new Date().getTime();
     console.log("===> Lead body: ", body);
     const lead = new Lead(body);
     await lead.save();
@@ -85,6 +89,7 @@ router.post('/add', async (req, res) => {
     res.status(400).send(errData);
   }
 });
+
 //----------------------------------------
 //	Allocate Lead to Adviser
 //----------------------------------------

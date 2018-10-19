@@ -39,12 +39,16 @@ router.post('/add', async (req, res) => {
 router.post('/practice', async (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
   try {
-    const practice = await User.find(
-      { code: req.body.practiceCode 
+    const practice = await Practice.find(
+      { 
+        pracCode: req.body.pracCode 
       },
       {
-        password : 0,
-        tokens : 0
+        _id : 0,
+        pracLeadCount : 0,
+        who : 0,
+        createdAt : 0,
+        updatedAt : 0
       }
     );
     console.log(">>> Res - Practice data: ", practice);
@@ -62,35 +66,48 @@ router.post('/update', async (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
   try {
     const body = _.pick(req.body, [
-      'practice',
+      'pracCode',
+      'pracName',
+      'pracPhone',
+      'pracEmail',
       'principle',
       'backOffice',
       'area',
-      'userId'
+      'who'
       
     ]);
-    console.log(">>> Practice data: ", body);
-    await practice.findOneAndUpdate(
-      { code: body.practiceCode 
+    console.log(">>> Practice body: ", body);
+    console.log(">>> Practice Area: ", body.area);
+    await Practice.findOneAndUpdate(
+      { pracCode: body.pracCode 
       },
       {
-        'firstName' : body.firstName,
-        'surname' : body.surname,
-        'phone' : body.phone,
-        'cell' : body.cell,
-        'email' : body.email,
-        'roleCode' : body.roleCode,
-        'services' : body.services
+        'pracCode' : body.pracCode,
+        'pracName' : body.pracName,
+        'pracPhone' : body.pracPhone,
+        'pracEmail' : body.pracEmail,
+        'principle.firstName' : body.principle.firstName,
+        'principle.surname' : body.principle.surname,
+        'principle.phone' : body.principle.phone,
+        'principle.cell' : body.principle.cell,
+        'principle.email' : body.principle.email,
+        'backOffice.contact.firstName' : body.backOffice.contact.firstName,
+        'backOffice.contact.surname' : body.backOffice.contact.surname,
+        'backOffice.phone' : body.backOffice.phone,
+        'backOffice.cell' : body.backOffice.cell,
+        'backOffice.email' : body.backOffice.email,
+        'area' : body.area,
+        'who' : body.who
       },
       {
         upsert: false,
         new: true
       }
     )
-    console.log(">>> Res: ", practice);
-    res.status(200).send(practice);
+    res.status(200).send("Ok");
   }
   catch (e) {
+    console.log(">>> Practice update error: ", e);
     res.status(400).send(e);
   }
 });
@@ -106,13 +123,13 @@ router.get('/list', async (req, res) => {
       {
         _id : 0,
         //principle : 0,
-        backOffice : 0,
+        //backOffice : 0,
         area : 0,
         createdWhen : 0,
         createdBy : 0
       }
     );
-    console.log(">>> Data Returned: ", practices);
+    //console.log(">>> Data Returned: ", practices);
     const listData = [];
     for (var i = 0, j = practices.length; i < j; i++) {
       listData.push(
@@ -123,11 +140,13 @@ router.get('/list', async (req, res) => {
           pracEmail : practices[i].pracEmail,
           pracLeadCount : practices[i].pracLeadCount,
           prinFirstName : practices[i].principle.firstName,
-          prinSurname : practices[i].principle.surname
+          prinSurname : practices[i].principle.surname,
+          offFirstName : practices[i].backOffice.contact.firstName,
+          offSurname : practices[i].backOffice.contact.surname
         }
       );
     }
-    console.log(">>> Data list: ", listData);
+    //console.log(">>> Data list: ", listData);
     res.status(200).send(listData);
   }
   catch (e) {

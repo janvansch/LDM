@@ -45,9 +45,9 @@
 </div>
 
 <!--
-==================================
-=== User Maintenance Functions ===
-==================================
+=========================
+=== Maintenance Pages ===
+=========================
 -->
 <!-- The Modal (source w3schools) -->
 <div id="modalBox" class="modal">
@@ -58,43 +58,22 @@
       <h2 id="modal-header-text">XXXXXX</h2>
     </div>
     <div class="modal-body">
+      <!-- Display User Form View -->
       <div id="addUser" style="display:none">
         <form id="formAddUser">
           <% include ./userAdd %>
         </form>
       </div>
-      
-    </div>
-    <div class="modal-footer">
-      * = mandatory
-      <span id="uErrMsg"> </span>
-    </div>
-  </div>
-</div>
-<!--
-======================================
-=== Practise Maintenance Functions ===
-======================================
--->
-<!-- The Practice Modal (source w3schools) -->
-<div id="modalPrac" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2 id="modal-header-prac">XXXXXX</h2>
-    </div>
-    <div class="modal-body">
+      <!-- Display Practice Form View -->
       <div id="addPractice" style="display:none">
         <form id="formAddPractice">
           <% include ./practiceAdd %>
         </form>
       </div>
-      
     </div>
     <div class="modal-footer">
       * = mandatory
-      <p id="pErrMsg"> </p>
+      <p id="errMsg"> </p>
     </div>
   </div>
 </div>

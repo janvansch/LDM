@@ -17,7 +17,7 @@ window.onload = function() {
 //  Global modal controls (source: w3schools)
 // ===========================================
 var modal = document.getElementById('modalBox');
-var modalPrac = document.getElementById('modalPrac');
+//var modalPrac = document.getElementById('modalPrac');
 // Get the button that opens the modal
 // var btn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
@@ -30,13 +30,30 @@ var span = document.getElementsByClassName("close")[0];
 //  When the user clicks on <span> (x), close the modal
 // -----------------------------------------------------
 span.onclick = function() {
+  //
+  // Clear Add User Form
+  //
   resetform("formAddUser");
+  document.getElementById("addUser").style.display = 'none';
   document.getElementById('selectAbility').style.display = 'none';
   document.getElementById('dispPersServ').style.display = 'none';
   document.getElementById('dispCommServ').style.display = 'none';
   document.getElementById('dispSasrServ').style.display = 'none';
   document.getElementById('dispAgriServ').style.display = 'none';
   document.getElementById('dispSpecServ').style.display = 'none';
+  //
+  // Clear Add Practice Form
+  //
+  resetform("formAddPractice");
+  document.getElementById("addPractice").style.display = 'none';
+  //
+  // clear postal code table
+  //
+  var table = document.getElementById("tablePCode");
+  table.innerHTML = "<tr> </tr>";
+  //
+  // Close modal display
+  //
   modal.style.display = "none";
 }
 // --------------------------------------------------------------
@@ -44,19 +61,34 @@ span.onclick = function() {
 // --------------------------------------------------------------
 window.onclick = function(event) {
   if (event.target == modal) {
+    //
+    // Clear Add User Form
+    //
     resetform("formAddUser");
+    document.getElementById("addUser").style.display = 'none';
     document.getElementById('selectAbility').style.display = 'none';
     document.getElementById('dispPersServ').style.display = 'none';
     document.getElementById('dispCommServ').style.display = 'none';
     document.getElementById('dispSasrServ').style.display = 'none';
     document.getElementById('dispAgriServ').style.display = 'none';
     document.getElementById('dispSpecServ').style.display = 'none';
+    //
+    // Clear Add Practice Form
+    //  
+    resetform("formAddPractice");
+    document.getElementById("addPractice").style.display = 'none';
+    //
+    // clear postal code table
+    //
+    var table = document.getElementById("tablePCode");
+    table.innerHTML = "<tr> </tr>";
+    //
+    // Close modal display
+    //
     modal.style.display = "none";
   }
 }
-function resetform(form) {
-  document.getElementById(form).reset();
-}
+
 // =============================
 //  Login and startup functions
 // =============================
@@ -250,19 +282,6 @@ function addUser() {
   document.getElementById("modal-header-text").innerHTML = "Add User";
   document.getElementById("addUserButtons").style.display = "block";
   document.getElementById("updateUserButtons").style.display = "none";
-  
-}
-// ---------------------
-//  Delete User
-// ---------------------
-function deleteUser() {
-
-}
-// ---------------------
-//  Update User
-// ---------------------
-function updateUser() {
-
 }
 
 // ------------------
@@ -706,7 +725,7 @@ function submitUser(action) {
       //
       // Close form and modal
       //
-      document.getElementById("addUser").style.display = 'block';
+      document.getElementById("addUser").style.display = 'none';
       modal.style.display = "none";
       //
       // Update list
@@ -715,7 +734,7 @@ function submitUser(action) {
     }
     else {
       var prompt = "User submit error";
-      document.getElementById("uErrMsg").innerHTML = prompt;
+      document.getElementById("errMsg").innerHTML = prompt;
     }
   });
 }
@@ -780,17 +799,85 @@ function listPractices() {
 function addPractice() {
   // open model window
   // var modal = document.getElementById('modalBox');
-  modalPrac.style.display = "block";
+  //modalPrac.style.display = "block";
+  modal.style.display = "block";
   //document.getElementById("viewAdminUser").style.display = 'block';
   // open add user form
   document.getElementById("addPractice").style.display = 'block';
-  document.getElementById("modal-header-prac").innerHTML = "Add Practice";
+  document.getElementById("modal-header-text").innerHTML = "Add Practice";
   document.getElementById("addPracticeButtons").style.display = "block";
   document.getElementById("updatePracticeButtons").style.display = "none";
 }
 
+// -------------------------
+//  Display Practice Detail
+// -------------------------
 function displayPractice(practice) {
+  //
+  // open model window
+  //
+  // var modal = document.getElementById('modalBox');
+  //modalPrac.style.display = "block";
+  modal.style.display = "block";
+  //
+  // Display user form
+  //
+  document.getElementById("addPractice").style.display = 'block';
+  document.getElementById("modal-header-text").innerHTML = "Update Practice or Delete";
+  document.getElementById("addPracticeButtons").style.display = "none";
+  document.getElementById("updatePracticeButtons").style.display = "block";
+  //
+  // Get user id (email)
+  //
+  var pracCode = practice.cells[0].innerHTML;
+  console.log(">>> Practice Code: ", pracCode);
+  //
+  // Create User Data request
+  //
+  var key = {
+    pracCode : pracCode
+  };
+  //var dataString = JSON.stringify(leadData);
+  var request = JSON.stringify(key);
+  var method = "POST";
+  var route = "/practices/practice";
+  var contentType = "application/json";
+  //
+  //  Request Practice Data from Server
+  //
+  console.log(">>> Request: ", request);
+  xhrRequest(method, route, contentType, request, (err, res) => {
+    if (!err) {
+      var practice = JSON.parse(res.responseText);
+      console.log(">>> Practice Detail: ", practice);
+      //
+      // Fill form with selected practice data
+      //
+      console.log("---> Practice Code from server: ", practice[0].pracCode);
+      document.getElementById("pracCode").value = practice[0].pracCode;
+      document.getElementById("pracName").value = practice[0].pracName;
+      document.getElementById("pracPhone").value = practice[0].pracPhone;
+      document.getElementById("pracEmail").value = practice[0].pracEmail;
 
+      document.getElementById("prinFirstName").value = practice[0].principle.firstName;
+      document.getElementById("prinSurname").value = practice[0].principle.surname;
+      document.getElementById("prinPhone").value = practice[0].principle.phone;
+      document.getElementById("prinCell").value = practice[0].principle.cell;
+      document.getElementById("prinEmail").value = practice[0].principle.email;
+
+      document.getElementById("offFirstName").value = practice[0].backOffice.contact.firstName;
+      document.getElementById("offSurname").value = practice[0].backOffice.contact.surname;
+      document.getElementById("offPhone").value = practice[0].backOffice.phone;
+      document.getElementById("offCell").value = practice[0].backOffice.cell;
+      document.getElementById("offEmail").value = practice[0].backOffice.email;
+
+      for (var i = 0; i < practice[0].area.length; i++) {
+        insertPostCode(practice[0].area[i])
+      }
+      var pCode = document.getElementById("pracCode").value;
+      console.log("===> Practice Code from DOM: ", pCode);
+    }
+  });
 }
 
 // --------------------------------------------
@@ -813,9 +900,9 @@ function dupPostCode(code){
   return false;
 }
 
-// ------------------------------------------
-//  Create a list of postal codes in a table
-// ------------------------------------------
+// -------------------------------
+//  Process add postal code event
+// -------------------------------
 function addPostCode() {
   //
   // Get input
@@ -834,7 +921,7 @@ function addPostCode() {
     //
     document.getElementById("pCode").value = "";
     //
-    // Insert into list table and display
+    // Insert postal code into table
     //
     const table = document.getElementById("tablePCode");
     var rowCount = table.rows.length;
@@ -876,10 +963,66 @@ function addPostCode() {
       // Insert cell content
       //
       tableCell.innerHTML = (isString(newPCode) ? (newPCode.trim()) : (newPCode));
+      //
+      // Add mouse select functions
+      // 
       tableCell.onclick = function(){displayPostCode(this.innerHTML);};
       tableCell.onmouseover = function(){ ChangeColor(this, true); };
       tableCell.onmouseout = function(){ ChangeColor(this, false); };
     }
+  }
+}
+
+// ----------------------------
+//  Update postal code display
+// ----------------------------
+function insertPostCode(code) {
+  const table = document.getElementById("tablePCode");
+  var rowCount = table.rows.length;
+  //if (typeof rowCount === 'undefined') {
+  if (rowCount === 0) {
+    //
+    // Create first row
+    //
+    var tableRow = body.insertRow(-1);
+    rowCount = 1;
+    //
+    // Create first cell
+    //
+    var tableCell = tableRow.insertCell(-1);
+    var rowLen = 1;
+  }
+  else {
+    var rowLen = table.rows[rowCount - 1].cells.length
+    if ( rowLen === 20) {
+      //
+      // Add a new row
+      //
+      var tableRow = table.insertRow(-1);
+      rowCount++;
+      //
+      // Create first cell in new row
+      //
+      var tableCell = tableRow.insertCell(-1);
+      var rowLen = 1;
+    }
+    else {
+      tableRow = table.rows[rowCount - 1];
+      //
+      // Create a cell
+      //
+      var tableCell = tableRow.insertCell(-1);
+    }
+    //
+    // Insert cell content
+    //
+    tableCell.innerHTML = (isString(code) ? (code.trim()) : (code));
+    //
+    // Add mouse select functions
+    // 
+    tableCell.onclick = function(){displayPostCode(this.innerHTML);};
+    tableCell.onmouseover = function(){ ChangeColor(this, true); };
+    tableCell.onmouseout = function(){ ChangeColor(this, false); };
   }
 }
 
@@ -911,9 +1054,9 @@ function displayPostCode(pCode) {
   localStorage.setItem("columnIndex", columnIndex);
 }
 
-// -----------------------------
+// ------------------------------------------
 //  Update postal code list with maintenance
-// -----------------------------
+// ------------------------------------------
 function updatePostCodeList(action) {
   const table = document.querySelector('#tablePCode');
   const rowIndex = localStorage.getItem("rowIndex");
@@ -944,9 +1087,6 @@ function updatePostCodeList(action) {
 // --------------------------------
 //  Submit practice data to server
 // --------------------------------
-// document.getElementById("addPractice").addEventListener("click", function(event){
-//   event.preventDefault()
-//   var action = 'add';
 function submitPractice(action) {
   console.log("---> Practice Action: ", action);
   //
@@ -955,6 +1095,7 @@ function submitPractice(action) {
   var formAddPractice = document.getElementById("formAddPractice");
   //
   // Do data validations
+  //
   if (formAddPractice.checkValidity() === false) {
     alert("Practice information not valid!");
   }
@@ -987,25 +1128,22 @@ function submitPractice(action) {
     inputType = "email";
     var email = extractFormData(formAddPractice, formElement, inputType);
     //
-    // Extract practice operational area data
+    // Extract area data
     //
     var areaCodes = [];
     for (var i=0; i < rowCount; i++) {
       for (var j=0; j < cellCount; j++) {
-        //
-        // If there is no data for a cell create it as a dash 
-        //
         areaCodes.push(table.rows[i].cells[j].innerHTML);
       }
     }
-    console.log(">>> Area Code: ", areaCodes);
+    console.log(">>> Area Codes extracted: ", areaCodes);
     //
-    // Extract User
+    // Extract login user information
     //
     var user = document.getElementById("user").innerHTML
     var who = user.replace("User: ", "");
     //
-    //  create User data object
+    //  Create practice data object
     //
     var practiceData = {
       pracCode : text.pracCode,
@@ -1035,7 +1173,7 @@ function submitPractice(action) {
       who : who
     };
     var dataString = JSON.stringify(practiceData);
-    console.log(">>> Practice Data: ", dataString);
+    console.log(">>> Practice Data to send: ", dataString);
     //
     //  Create AJAX Request
     //
@@ -1048,34 +1186,38 @@ function submitPractice(action) {
     }
     var contentType = "application/json";
     //
-    //  Send User POST Request
+    //  Send Practice POST Request
     //
     xhrRequest(method, route, contentType, dataString, (err, result) => {
       if (!err) {
-        var resBody = result.responseText;
         //
-        // Clear create user form
+        // Clear create practice form
         //
         document.getElementById("formAddPractice").reset();
         //
+        // clear postal code table
+        //
+        var table = document.getElementById("tablePCode");
+        table.innerHTML = "<tr> </tr>";
+        //
         // Close form and modal
         //
-        document.getElementById("addPractice").style.display = 'block';
+        document.getElementById("addPractice").style.display = 'none';
         modal.style.display = "none";
         //
-        // Update list
+        // Update practice list
         //
         listPractices();
       }
       else {
-        document.getElementById("pErrMsg").innerHTML = "Practice submit error";
+        document.getElementById("errMsg").innerHTML = "Practice submit error";
       }
     });
   }
   else {
     formAddPractice.reportValidity();
   }
-};
+}
 
 // ===========================================================================
 //  Leads Capture
@@ -1252,18 +1394,60 @@ function submitLead() {
   //  create Lead data object
   //
   var leadData = {
-    lead: [
-      contactLanguage,
-      contactInfo,
-      contactEmail,
-      contactDays,
-      contactTime,
-      contactTimeBA,
-      contactComment,
-      contactPostalCode,
-      coverInfo,
-      coverComment
-    ]
+
+    // lead: [
+    //   contactLanguage,
+    //   contactInfo,
+    //   contactEmail,
+    //   contactDays,
+    //   contactTime,
+    //   contactTimeBA,
+    //   contactComment,
+    //   contactPostalCode,
+    //   coverInfo,
+    //   coverComment
+    // ]
+
+    langPref: contactLanguage.langPref,
+    title: "",
+    firstName: contactInfo.firstname,
+    surname: contactInfo.surname,
+    initials: contactInfo.initials,
+    contactNum: contactInfo.contactNum,
+    altNumber: contactInfo.altNumber,
+    cellNumber: contactInfo.cellNumber,
+    eMail: contactEmail.eMail,
+    agentApproval: "Yes",
+    currentInsurer: "curr ins",
+    previousInsurer: "prev ins",
+    lineOfBusiness: "line of Buss.",
+    contactLocation: {
+      postal: contactPostalCode.postalCode,
+      suburb: contactInfo.suburb,
+      streetNum: contactInfo.streetNum,
+      streetName: contactInfo.streetName,
+      buildingName: contactInfo.buildingName,
+      floor: contactInfo.floor,
+      room: contactInfo.room
+    },
+    postBox: {
+      postalCode: contactPostalCode.boxPostalCode,
+      boxNumber: contactInfo.box
+    },
+    contactPref: {
+      contactDay: contactDays.contactDay,
+      time: contactTime.time,
+      timeBA: contactTimeBA.timeBA
+    },
+    service: coverInfo.service,
+    comments: {
+      comment1: contactComment.comment1,
+      comment2: coverComment.comment2,
+      comment3: "",
+      comment4: ""
+    },
+    status: "Open"
+
   };
   var dataString = JSON.stringify(leadData);
   var method = "POST";
@@ -1672,8 +1856,8 @@ function readLayout(definitionId) {
         // '{ "fname" : "principle.phone" , "label" : "Principle Phone" },' +
         // '{ "fname" : "principle.cell" , "label" : "Principle Cell" },' +
         // '{ "fname" : "principle.email" , "label" : "Principle Email" },' +
-        '{ "fname" : "backOffice.contact.firstName" , "label" : "Contact First Name" },' +
-        '{ "fname" : "backOffice.contact.surname" , "label" : "Contact Surname" }' +
+        '{ "fname" : "offFirstName" , "label" : "Contact First Name" },' +
+        '{ "fname" : "offSurname" , "label" : "Contact Surname" }' +
         // '{ "fname" : "backOffice.contact.phone" , "label" : "Contact Phone" },' +
         // '{ "fname" : "backOffice.contact.cell" , "label" : "Contact Cell" },' +
         // '{ "fname" : "backOffice.contact.email" , "label" : "Contact Email" }' +
@@ -1752,13 +1936,17 @@ function xhrRequest(method, route, contentType, request, callback) {
         if (xhr.status == 200) {
           // status 200 - success
           var err = false;
+          //console.log(">>> Success result: ", xhr);
           callback(err, xhr);
         }
         else {
           // Request failed
           var err = true;
-          console.log(`*** XHR request failure - status = ${xhr.status} ***`);
-          console.log(">>> Error result: ", xhr.responseText);
+          console.log(`*** XHR request failure ***`);
+          console.log(`   >>> status = ${xhr.status}`);
+          console.log(`   >>> status msg = ${xhr.statusText}`);
+          console.log(`   >>> from = ${xhr.responseURL}`);
+          //console.log(">>> Error result: ", xhr);
           callback(err, '');
         }
       }
@@ -1773,6 +1961,13 @@ function xhrRequest(method, route, contentType, request, callback) {
 // =====================
 //  Utilities - General 
 // =====================
+
+// ------------
+//  Clear form
+// ------------
+function resetform(form) {
+  document.getElementById(form).reset();
+}
 
 // -----------------------
 //  disable & enable form

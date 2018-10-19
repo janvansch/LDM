@@ -51,7 +51,7 @@ var PracticeSchema = new mongoose.Schema({
     },
     email: {
       type: String,
-      //required: true,
+      required: false,
       trim: true,
       minlength: 1,
       validate: {
@@ -97,7 +97,7 @@ var PracticeSchema = new mongoose.Schema({
   who: {
     type: String,
     required: false
-  },
+  }
 }, {timestamps: true});
 
 // PracticeSchema.methods.toJSON = function () {

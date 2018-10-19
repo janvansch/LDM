@@ -49,7 +49,7 @@ var LeadSchema = new mongoose.Schema({
   },
   currentInsurer: {
     type: String,
-    default: null,
+    default: null
   },
   previousInsurer: {
     type: String,
@@ -64,7 +64,7 @@ var LeadSchema = new mongoose.Schema({
   contactLocation: {
     postal: {
       type: String,
-      required: true,
+      required: true
     },
     suburb: {
       type: String,
@@ -146,18 +146,22 @@ var LeadSchema = new mongoose.Schema({
       trim: true
     }
   },
+  allocatedPractice: {
+   type: String,
+    required: false  
+  },
+  assignedAdviser: {
+    type: String,
+    required: false  
+   },
   status: {
     type: Array,
-    required: true,
+    required: true
   },
-  createdAt: {
+  who: {
     type: String,
-    default: null
-  },
-  _creator: {
-    type: mongoose.Schema.Types.ObjectId,
     required: false
   }
-});
+}, {timestamps: true});
 var Lead = mongoose.model('Lead', LeadSchema);
 module.exports = {Lead};
