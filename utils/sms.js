@@ -11,13 +11,13 @@
 require('../config/config');
 //=============================================
 var sendSMS = (message) => {
-var clickatell = require("clickatell-platform");
+var clickatell = require('clickatell-platform');
 
 //clickatell.sendMessageRest("Hello testing message", ["27XXXXX-NUMBER"], "APIKEY-HERE");
 //var message = "'" + message + "'";
 var celNumb = process.env.SMS_API_NUM;
 var key = process.env.SMS_API_LDM;
-console.log(message, celNumb, key);
+console.log("---> SMS detail: ", message, celNumb, key);
 clickatell.sendMessageHttp(message, [celNumb], key);
 //return docBody;
 }

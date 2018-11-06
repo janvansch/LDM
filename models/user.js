@@ -147,7 +147,6 @@ UserSchema.statics.findByCredentials = function (email, password) {
     if (!user) {
       return Promise.reject();
     }
-
     return new Promise((resolve, reject) => {
       // Use bcrypt.compare to compare password and user.password
       bcrypt.compare(password, user.password, (err, res) => {
@@ -163,7 +162,6 @@ UserSchema.statics.findByCredentials = function (email, password) {
 
 UserSchema.pre('save', function (next) {
   var user = this;
-
   if (user.isModified('password')) {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(user.password, salt, (err, hash) => {

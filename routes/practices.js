@@ -112,9 +112,9 @@ router.post('/update', async (req, res) => {
   }
 });
 
-// ----------------------------------------
-//  Get list of practices
-// ----------------------------------------
+// -------------------------------------------
+//  Get list of all the practices (Admin use)
+// -------------------------------------------
 router.get('/list', async (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
   try {
@@ -122,13 +122,14 @@ router.get('/list', async (req, res) => {
       {},
       {
         _id : 0,
-        //principle : 0,
-        //backOffice : 0,
+        pracLeadCount : 0,
         area : 0,
-        createdWhen : 0,
-        createdBy : 0
+        who : 0,
+        createdAt : 0,
+        updatedAt : 0
       }
-    );
+    )
+    .sort({pracCode: 1})
     //console.log(">>> Data Returned: ", practices);
     const listData = [];
     for (var i = 0, j = practices.length; i < j; i++) {

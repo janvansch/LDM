@@ -1,6 +1,12 @@
 var mongoose = require('mongoose');
+var saveEvent = require('../middleware/emitter');
 
 var LeadSchema = new mongoose.Schema({
+  //reference: {
+  //  type: String,
+  //  required: true,
+  //  unique: true,
+  //},
   langPref: {
     type: String,
     required: true,
@@ -120,10 +126,21 @@ var LeadSchema = new mongoose.Schema({
       trim: true
     }
   },
-  service: {
-    type: Array,
-    required: true
-  },
+  // service: {
+  //   type: Array,
+  //   required: true
+  // },
+  // replace service above with this
+  services: [{
+    line: {
+      type: String,
+      required: false
+    },
+    types: {
+      type: Array,
+      required: false
+    }
+  }],
   comments: {
     comment1: {
       type: String,
@@ -162,6 +179,13 @@ var LeadSchema = new mongoose.Schema({
     type: String,
     required: false
   }
-}, {timestamps: true});
+},
+{timestamps: true});
+
+LeadSchema.post('save', function () {
+  var lead = this;
+  saveEvent.emit('newLead', lead);
+});
+
 var Lead = mongoose.model('Lead', LeadSchema);
 module.exports = {Lead};

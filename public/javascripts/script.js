@@ -90,7 +90,7 @@ window.onclick = function(event) {
 }
 
 // =============================
-//  Login and startup functions
+//  Login View
 // =============================
 
 // ----------------------------
@@ -181,13 +181,12 @@ function openRoleView(user) {
   else if (userRole==="B") {
     toggleView("viewPractice");
     toggleView("navPractice");
-    // Display the leads of the practise
-    // displayLeads(userPracCode);
   }
   else if (userRole==="C") {
     toggleView("viewAdviser");
     toggleView("navAdviser");
-    // showLeads(userID, userPracCode );
+    //showLeads(userID, userPracCode );
+    listAdvLeads();
   }
   else if (userRole==="D"){
     toggleView("viewLead");
@@ -202,7 +201,7 @@ function openRoleView(user) {
 }
 
 //============================================================================
-// Administration - System Users
+// Admin View - System Users
 //============================================================================
 
 // ----------------------------------------------------
@@ -269,9 +268,9 @@ function isAdviser() {
     document.getElementById('selectAbility').style.display = 'none';
   }
 }
-// --------------------------
-//  Open add user modal form
-// --------------------------
+// -----------------------------
+//  Display add user modal form
+// -----------------------------
 function addUser() {
   // open model window
   // var modal = document.getElementById('modalBox');
@@ -284,9 +283,9 @@ function addUser() {
   document.getElementById("updateUserButtons").style.display = "none";
 }
 
-// ------------------
-//  Edit user record
-// ------------------
+// --------------------------------
+//  Display user detail modal form
+// --------------------------------
 function displayUser(user) {
   //
   // open model window
@@ -362,7 +361,8 @@ function displayUser(user) {
         console.log(">>> ERROR: Invalid Role: ", role);
       }
       //
-      // If user is an adviser Extract and set selection boxes to indicat adviser services
+      // If user is an adviser set selection boxes
+      // to indicate adviser services
       //
       if (role === "C") {
         var services = user[0].services;
@@ -373,7 +373,7 @@ function displayUser(user) {
         for (var i = 0, j = services.length; i < j; i++) {
           if (services[i].line === "PL") {
             //
-            // Set product line selector tickbox to selected
+            // Set insurance line selector tickbox to selected
             //
             document.getElementById("pServType").checked = true;
             //
@@ -690,7 +690,7 @@ function submitUser(action) {
   var dataString = JSON.stringify(userData);
   console.log(">>> User Data: ", dataString);
   //
-  //  Create AJAX Request
+  //  Create AJAX Request - update or add User
   //
   var method = "POST";
   if (action === "update") {
@@ -740,7 +740,7 @@ function submitUser(action) {
 }
 
 //============================================================================
-// Administration - Practices
+// Admin View - Practices
 //============================================================================
 
 // -----------------------------------
@@ -1175,7 +1175,7 @@ function submitPractice(action) {
     var dataString = JSON.stringify(practiceData);
     console.log(">>> Practice Data to send: ", dataString);
     //
-    //  Create AJAX Request
+    //  Create AJAX Request - update or add Practice
     //
     var method = "POST";
     if (action === "update") {
@@ -1220,33 +1220,32 @@ function submitPractice(action) {
 }
 
 // ===========================================================================
-//  Leads Capture
+//  Leads View
 // ===========================================================================
 
 // ----------------------------------------------------------------------
 //  Lead Display Switches for Contact Form and Service Required Selector
 // ----------------------------------------------------------------------
 function leadOk() {
-  if (document.getElementById('trfSTAYes').checked) {
+  if (document.getElementById('trfYes').checked) {
     // switch Yes on
-    document.getElementById('contactForm').style.display = 'block';
-    document.getElementById('insSelector').style.display = 'block';
+    document.getElementById('yesForm').style.display = 'block';
+    document.getElementById('approval-msg').style.display = 'none';
     // switch No off
     document.getElementById('noForm').style.display = 'none';
   }
-  else if (document.getElementById('trfSTANo').checked) {
+  else if (document.getElementById('trfNo').checked) {
     // switch No on
     document.getElementById('noForm').style.display = 'block';
     // switch Yes off
-    document.getElementById('contactForm').style.display = 'none';
-    document.getElementById('insSelector').style.display = 'none';
+    document.getElementById('yesForm').style.display = 'none';
     // switch other off as well
-    document.getElementById('ifPersonal').style.display = 'none';
-    document.getElementById('ifCommercial').style.display = 'none';
-    document.getElementById('ifSasria').style.display = 'none';
-    document.getElementById('ifAgriculture').style.display = 'none';
-    document.getElementById('ifSpecialist').style.display = 'none';
-    document.getElementById('ServiceComment').style.display = 'none';
+    // document.getElementById('ifPersonal').style.display = 'none';
+    // document.getElementById('ifCommercial').style.display = 'none';
+    // document.getElementById('ifSasria').style.display = 'none';
+    // document.getElementById('ifAgriculture').style.display = 'none';
+    // document.getElementById('ifSpecialist').style.display = 'none';
+    // document.getElementById('ServiceComment').style.display = 'none';
   // need to clear previous selections as well
   //  document.getElementById("myForm").reset();
   //  document.getElementById('ifPersonal').reset();
@@ -1260,7 +1259,7 @@ function leadOk() {
 //  Display Switches for Lead Cover Form
 // --------------------------------------
 function line() {
-  if (document.getElementById('personal').checked) {
+  if (document.getElementById('pInsLine').checked) {
     // switch on
     document.getElementById('ifPersonal').style.display = 'block';
     console.log("*** Personal Insurance Selected ***");
@@ -1270,7 +1269,7 @@ function line() {
     document.getElementById('ifAgriculture').style.display = 'none';
     document.getElementById('ifSpecialist').style.display = 'none';
   }
-  else if(document.getElementById('commercial').checked) {
+  else if(document.getElementById('cInsLine').checked) {
     document.getElementById('ifCommercial').style.display = 'block';
     console.log("*** Commercial Insurance Selected ***");
     document.getElementById('ifPersonal').style.display = 'none';
@@ -1278,7 +1277,7 @@ function line() {
     document.getElementById('ifAgriculture').style.display = 'none';
     document.getElementById('ifSpecialist').style.display = 'none';
   }
-  else if(document.getElementById('sasria').checked) {
+  else if(document.getElementById('sInsLine').checked) {
     document.getElementById('ifSasria').style.display = 'block';
     console.log("*** SASRIA Insurance Selected ***");
     document.getElementById('ifPersonal').style.display = 'none';
@@ -1286,7 +1285,7 @@ function line() {
     document.getElementById('ifAgriculture').style.display = 'none';
     document.getElementById('ifSpecialist').style.display = 'none';
   }
-  else if(document.getElementById('agriculture').checked) {
+  else if(document.getElementById('aInsLine').checked) {
     document.getElementById('ifAgriculture').style.display = 'block';
     console.log("*** Agriculture Insurance Selected ***");
     document.getElementById('ifPersonal').style.display = 'none';
@@ -1294,7 +1293,7 @@ function line() {
     document.getElementById('ifSasria').style.display = 'none';
     document.getElementById('ifSpecialist').style.display = 'none';
   }
-  else if(document.getElementById('specialist').checked) {
+  else if(document.getElementById('xInsLine').checked) {
     document.getElementById('ifSpecialist').style.display = 'block';
     console.log("*** Specialist Insurance Selected ***");
     document.getElementById('ifPersonal').style.display = 'none';
@@ -1304,6 +1303,206 @@ function line() {
   }
   document.getElementById('ServiceComment').style.display = 'block';
 }
+
+// ----------------------------------
+//  Display lead detail in modal box
+// ----------------------------------
+function displayLead(lead) {
+  console.log("---> This lead: ", lead);
+  //
+  // open model window
+  //
+  // var modal = document.getElementById('modalBox');
+  modal.style.display = "block";
+  //
+  // Display user form
+  //
+  document.getElementById("displayLead").style.display = 'block';
+  document.getElementById("modal-header-text").innerHTML = "Selected Lead's Detail - Update/Delete";
+  document.getElementById("updateLeadButtons").style.display = "block";
+  //
+  // Extract lead key
+  //
+  var leadID = lead._id;// ??????????????????????
+
+  var request = JSON.stringify(leadID);
+  var method = "POST";
+  var route = "/users/user";
+  var contentType = "application/json";
+  //
+  //  Request User Data from Server
+  //
+  console.log(">>> Request: ", request);
+  xhrRequest(method, route, contentType, request, (err, res) => {
+    if (!err) {
+      var lead = JSON.parse(res.responseText);
+      console.log(">>> Lead Detail: ", lead);
+      //
+      // Fill form with lead data
+      //
+      //
+      // Set language option
+      //
+      if (lead[0].langPref === "English") {
+        document.getElementById("eng").checked = true;
+      }
+      else {
+        document.getElementById("afr").checked = true;
+      }
+      document.getElementById("conFirstName").value = user[0].firstName;
+      document.getElementById("conSurname").value = lead[0].surname;
+      //document.getElementById("u2").value = lead[0].initials;
+      document.getElementById("conTelNum").value = lead[0].contactNum;
+      document.getElementById("conAltNum").value = leadr[0].altNumber;
+      document.getElementById("conCellNum").value = leadr[0].cellNumber;
+      document.getElementById("conEMail").value = leadr[0].eMail;
+      //document.getElementById("u5").value = lead[0].currentInsurer;
+      //document.getElementById("u6").value = lead[0].previousInsurer;
+      //document.getElementById("u6").value = lead[0].lineOfBusiness;
+      document.getElementById("conPostCode").value = lead[0].contactLocation.postal;
+      document.getElementById("conSuburb").value = lead[0].contactLocation.suburb;
+      document.getElementById("conStreetNum").value = lead[0].contactLocation.streetNum;
+      document.getElementById("conStreetName").value = lead[0].contactLocation.streetName;
+      document.getElementById("conBuildName").value = lead[0].contactLocation.buildingName;
+      document.getElementById("conBuildFloor").value = lead[0].contactLocation.floor;
+      document.getElementById("conBuildRoom").value = lead[0].contactLocation.room;
+      document.getElementById("conBoxPostcode").value = lead[0].postBox.postalCode;
+      document.getElementById("conBoxNum").value = lead[0].postBox.boxNumber;
+      
+      //this must work as 374
+      //
+      // Set contact days selected
+      //
+      for (var x = 0, z = lead[0].contactPref.contactDay.length; x < z; x++) {
+        console.log(">>> Contact day: ", x, contactPref.contactDay[x]);
+        if (services[i].types[x] === "monday") {
+          document.getElementById("monday").checked = true;
+        }
+        if (services[i].types[x] === "tuesday") {
+          document.getElementById("tuesday").checked = true;
+        }
+        if (services[i].types[x] === "wednesday") {
+          document.getElementById("wednesday").checked = true;
+        }
+        if (services[i].types[x] === "thursday") {
+          document.getElementById("thursday").checked = true;
+        }
+        if (services[i].types[x] === "friday") {
+          document.getElementById("friday").checked = true;
+        }
+        if (services[i].types[x] === "saturday") {
+          document.getElementById("saturday").checked = true;
+        }
+        
+      }
+
+
+
+      //document.getElementById("monday").value = lead[0].contactPref.contactDay;
+      // to
+      //document.getElementById("saturday").value = lead[0].contactPref.contactDay;
+      
+      document.getElementById("time").value = lead[0].contactPref.time;
+      // Set before or after time indicator
+      if (lead[0].contactPref.timeBA === "before") {
+        document.getElementById("before").checked = true;
+      }
+      if (lead[0].contactPref.timeBA === "after") {
+        document.getElementById("after").checked = true;
+      }
+      //
+      // Extract cover required
+      //            
+      var services = user[0].services;
+      //
+      // Create cover required display text  
+      //
+      document.getElementById('selectAbility').style.display = 'block';
+      for (var i = 0, j = services.length; i < j; i++) {
+
+        if (services[i].line === "PL") {
+          //
+          // Build personal lines service request text
+          //
+          pServ = "Personal:";
+          for (var x = 0, z = services[i].types.length; x < z; x++) {
+            console.log(">>> Services Detail: ", x, services[i].types[x]);
+            pServ = pServ + " " + services[i].types[x];
+          }
+          document.getElementById('pl').style.display = 'block';
+        }
+
+        if (services[i].line === "CL") {
+          //
+          // Build commercial lines service request text
+          //
+          pServ = "Commercial:";
+          for (var x = 0, z = services[i].types.length; x < z; x++) {
+            console.log(">>> Services Detail: ", x, services[i].types[x]);
+            pServ = pServ + " " + services[i].types[x];
+          }
+          document.getElementById('cl').style.display = 'block';
+        }
+
+        if (services[i].line === "SL") {
+          //
+          // Build commercial lines service request text
+          //
+          pServ = "Commercial:";
+          for (var x = 0, z = services[i].types.length; x < z; x++) {
+            console.log(">>> Services Detail: ", x, services[i].types[x]);
+            pServ = pServ + " " + services[i].types[x];
+          }
+          document.getElementById('sl').style.display = 'block';
+        }
+
+        if (services[i].line === "AL") {
+          //
+          // Build commercial lines service request text
+          //
+          pServ = "Commercial:";
+          for (var x = 0, z = services[i].types.length; x < z; x++) {
+            console.log(">>> Services Detail: ", x, services[i].types[x]);
+            pServ = pServ + " " + services[i].types[x];
+          }
+          document.getElementById('al').style.display = 'block';
+        }
+
+        if (services[i].line === "XL") {
+          //
+          // Build commercial lines service request text
+          //
+          pServ = "Commercial:";
+          for (var x = 0, z = services[i].types.length; x < z; x++) {
+            console.log(">>> Services Detail: ", x, services[i].types[x]);
+            pServ = pServ + " " + services[i].types[x];
+          }
+          document.getElementById('xl').style.display = 'block';
+        }
+        document.getElementById("u6").value = lead[0].comments.Comment1;
+        document.getElementById("u6").value = lead[0].comments.Comment2;
+        document.getElementById("u6").value = lead[0].comments.Comment3;
+        document.getElementById("u6").value = lead[0].comments.Comment4;
+      }
+    }
+    else {
+      var prompt = "User detail request error";
+      document.getElementById("userErr").innerHTML = prompt;
+    }
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
 // --------------------------
 //  Send lead data to server
 // --------------------------
@@ -1312,7 +1511,8 @@ function submitLead() {
   //
   //  Extract Contact Data
   //
-  var contactData = document.getElementById("contactForm");
+  var leadData = document.getElementById("yesForm");
+  console.log("---> Lead Data: ", leadData);
   var radioName = "";
   var formElement = "";
   var inputType = "";
@@ -1320,76 +1520,136 @@ function submitLead() {
   // extract language preference
   //
   radioName = "langPref";
-  var contactLanguage = getRadioCheckedValue(contactData, radioName);
+  var contactLanguage = getRadioCheckedValue(leadData, radioName);
+  console.log("---> Language: ", contactLanguage);
   //
   // extract text data from contact form
   //
   formElement = "input";
   inputType = "text";
-  var contactInfo = extractFormData(contactData, formElement, inputType);
+  var contactInfo = extractFormData(leadData, formElement, inputType);
+  console.log("---> Text Input: ", contactInfo);
   //
   // extract email data from contact form
   //
   formElement = "input";
   inputType = "email";
-  var contactEmail = extractFormData(contactData, formElement, inputType);
+  var contactEmail = extractFormData(leadData, formElement, inputType);
+  console.log("---> email: ", contactEmail);
   //
   // extract selected day checkbox values
   //
   var checkboxName = "contactDay";
-  var contactDays = getCheckedValues(contactData, checkboxName);
+  var contactDays = getCheckedValues(leadData, checkboxName);
   if (Object.keys(contactDays).length === 0 && contactDays.constructor === Object) {
     var name = "contactDay";
     var value = [];
     value.push("any");
     contactDays[name] = value;
   }
+  console.log("---> Contact Days: ", contactDays);
   //
   // extract contact time
   //
   formElement = "input";
   inputType = "time";
-  var contactTime = extractFormData(contactData, formElement, inputType);
+  var contactTime = extractFormData(leadData, formElement, inputType);
+  console.log("---> Contact Time: ", contactTime);
   //
   // extract before or after
   //
   radioName = "timeBA";
-  var contactTimeBA = getRadioCheckedValue(contactData, radioName);
+  var contactTimeBA = getRadioCheckedValue(leadData, radioName);
   if (Object.keys(contactTimeBA).length === 0 && contactTimeBA.constructor === Object) {
     var name = "timeBA";
     var value = [];
     value.push("n/a");
     contactTimeBA[name] = value;
   }
+  console.log("---> Before/After Time: ", contactTimeBA);
   //
   // extract comment data from contact form
   //
   var formElement = "textarea";
-  var contactComment = extractFormData(contactData, formElement);
+  var contactComment = extractFormData(leadData, formElement);
+  console.log("---> Contact Comment: ", contactComment);
   // extract postal codes
   formElement = "input";
   inputType = "number";
-  var contactPostalCode = extractFormData(contactData, formElement, inputType);
+  var contactPostalCode = extractFormData(leadData, formElement, inputType);
+  console.log("---> Postal Codes: ", contactPostalCode);
+  
+  
+  // //
+  // //  Extract Cover Data - This code must be updated for new model structure
+  // //
+  // var coverData = document.getElementById("coverForm");
+  // var checkboxName = "service";
+  // var coverInfo = getCheckedValues(coverData, checkboxName);
+  // if (Object.keys(coverInfo).length === 0 && coverInfo.constructor === Object) {
+  // //var array = coverInfo.perService;
+  // //if (array.length === 0 && array.constructor === Array) {
+  //   //
+  //   // ************ ERROR ***********
+  //   //  A sevice must be selected
+  //   //
+  //   var name = "service";
+  //   var value = [];
+  //   value.push("none selected");
+  //   coverInfo[name] = value;
+  // }
+
   //
-  //  Extract Cover Data
+  // Extract lead service line data
   //
-  var coverData = document.getElementById("coverForm");
-  var checkboxName = "service";
-  var coverInfo = getCheckedValues(coverData, checkboxName);
-  if (Object.keys(coverInfo).length === 0 && coverInfo.constructor === Object) {
-  //var array = coverInfo.perService;
-  //if (array.length === 0 && array.constructor === Array) {
-    //
-    // ************ ERROR ***********
-    //  A sevice must be selected
-    //
-    var name = "service";
+  var checkboxName = "insLine";
+  var insLine = getCheckedValues(leadData, checkboxName);
+  console.log("---> Insurance Line(s): ", insLine);
+  if (Object.keys(insLine).length === 0 && insLine.constructor === Object) {
+    var name = "line";
     var value = [];
     value.push("none selected");
-    coverInfo[name] = value;
+    insLine[name] = value;
   }
+  else {
+    //
+    // Extract lead services for each of the insurance lines selected
+    //
+    console.log("---> Insurance Line(s): ", insLine.insLine);
+    var lines = insLine.insLine;
+    console.log("---> Lines Array: ", lines);
+    var leadServices = [];
+    lines.forEach((element) => {
+      var checkboxName = element;
+      console.log("---> The Element: ", element);
+      var selection = getCheckedValues(leadData, checkboxName);
+      console.log("---> The Types selected: ", selection);
+      if (Object.keys(selection).length === 0 && selection.constructor === Object) {
+        var value = [];
+        value.push("none selected");
+        selection[checkboxName] = value;
+      }
+      var lineTypes = {
+        line : element,
+        types : selection[element]
+      };
+      console.log("---> Insurance Line Cover Types: ", lineTypes);
+      
+      leadServices.push(lineTypes);
+      console.log("---> Lead Services: ", leadServices);
+    })
+  }
+  
+
+
+
+
+  //
+  // Extract cover comment
+  //
   formElement = "textarea";
-  var coverComment = extractFormData(coverData, formElement);
+  var coverComment = extractFormData(leadData, formElement);
+  console.log("---> Cover Comment: ", coverComment);
   //
   //  create Lead data object
   //
@@ -1439,7 +1699,8 @@ function submitLead() {
       time: contactTime.time,
       timeBA: contactTimeBA.timeBA
     },
-    service: coverInfo.service,
+    //service: coverInfo.service,
+    services: leadServices,
     comments: {
       comment1: contactComment.comment1,
       comment2: coverComment.comment2,
@@ -1470,7 +1731,7 @@ function submitLead() {
 }
 
 // ===========================================================================
-//  Practise 
+//  Practice View
 // ===========================================================================
 //
 // ------------------------
@@ -1488,9 +1749,9 @@ function listLeads() {
   //
   // Create Leads Data request
   //
-  var request = "XXXX";
+  var request = "P001";
   var method = "GET";
-  var route = "/leads/list";
+  var route = "/leads/list/" + request;
   var contentType = "application/json";
   //
   //  Request lead data from server
@@ -1519,9 +1780,9 @@ function listLeads() {
     }
   });
 }
-// ------------------
-//  Display Advisers
-// ------------------
+// ---------------------------
+//  Display practice advisers
+// ---------------------------
 function listAdvisers() {
   //
   // Switch leads Display on
@@ -1532,11 +1793,18 @@ function listAdvisers() {
   //
   document.getElementById('panelLeadAlloc').style.display = 'none';
   //
-  // Create Leads Data request
+  // Create adviser data request
   //
-  var request = "XXXX";
+
+  // var practice = {
+  //   practiceCode : 'P001'
+  // };
+  // var request = JSON.stringify(practice);
+  //var method = "POST";
+
+  var request = "P001";
   var method = "GET";
-  var route = "/leads/advisers";
+  var route = "/users/advisers/" + request;
   var contentType = "application/json";
   //
   //  Request lead data from server
@@ -1548,7 +1816,7 @@ function listAdvisers() {
       //
       // load report layout definition
       //
-      var layoutId = '1';
+      var layoutId = '3';
       var prompt = 'Adviser data for: ' + request;
       //
       // Display Adviser List
@@ -1590,6 +1858,57 @@ function allocateAdviser() {
     }
     else {
       var prompt = "Lead submit error";
+      document.getElementById("leadErr").innerHTML = prompt;
+    }
+  });
+}
+
+// ===========================================================================
+//  Adviser View
+// ===========================================================================
+//
+// ------------------------
+//  Display adviser leads
+// ------------------------
+function listAdvLeads() {
+  //
+  // Switch leads Display on
+  //
+  document.getElementById('panelAdvLeads').style.display = 'block';
+  // //
+  // // Switch Practise Maintenance Display off
+  // //
+  // document.getElementById('panelAdvMaint').style.display = 'none';
+  //
+  // Create Leads Data request
+  //
+  var request = "XXXX";
+  var method = "GET";
+  var route = "/leads/list";
+  var contentType = "application/json";
+  //
+  //  Request lead data from server
+  //
+  xhrRequest(method, route, contentType, request, (err, res) => {
+    if (!err) {
+      var data = JSON.parse(res.responseText);
+      console.log(">>> lead Docs: ", data);
+      //
+      // load report layout definition
+      //
+      var layoutId = '1';
+      var prompt = 'Lead data for: ' + request;
+      //
+      // Display Leads List
+      //
+      displayData(data, prompt, layoutId);
+      //
+      // Add row select handlers to enable editing of rows
+      //
+      addRowHandlers(layoutId);
+    }
+    else {
+      var prompt = "Lead request error";
       document.getElementById("leadErr").innerHTML = prompt;
     }
   });
@@ -1795,6 +2114,9 @@ function addRowHandlers(id) {
   if (id === "0"){
     var rowFunc = function(){ displayUser(this); };
   }
+  if (id === "1"){
+    var rowFunc = function(){ displayLead(this); };
+  }
   if (id === "2"){
     var rowFunc = function(){ displayPractice(this); };
   }
@@ -1867,19 +2189,13 @@ function readLayout(definitionId) {
     case '3':
       console.log("List Layout: 3 (Advisers)");
       var layoutDef = '{ "definition" : [' +
-        '{ "fname" : "status" , "label" : "Status" },' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
-        '{ "fname" : "langPref" , "label" : "Language" },' +
-        '{ "fname" : "contactNum" , "label" : "Contact #" },' +
-        '{ "fname" : "altNumber" , "label" : "Alternate #" },' +
-        '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
-        '{ "fname" : "eMail" , "label" : "eMail" },' +
-        '{ "fname" : "postal" , "label" : "Postal" },' +
-        '{ "fname" : "suburb" , "label" : "Suburb" },' +
-        '{ "fname" : "service" , "label" : "Service Required" },' +
-        '{ "fname" : "comment1" , "label" : "Comment" },' +
-        '{ "fname" : "comment2" , "label" : "Service Comment" }' +
+        '{ "fname" : "phone" , "label" : "Phone" },' +
+        '{ "fname" : "cell" , "label" : "Cell" },' +
+        '{ "fname" : "email" , "label" : "email" },' +
+        '{ "fname" : "roleCode" , "label" : "Role" },' +
+        '{ "fname" : "practiceCode" , "label" : "Practice Code" }' +
         ']}'
       ;
     break;

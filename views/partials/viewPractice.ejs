@@ -1,44 +1,54 @@
 <h2>Practise View</h2>
 <!--
-==============================
-=== Leads Allocation Panel ===
-==============================
+========================================
+=== List Leads Allocated to Practice ===
+========================================
 -->
 <div id=panelLeadAlloc style="display:none">
-  <!--
-   List leads assigned to practise
-  -->
+  
   <h3 id="title1">Lead List</h3>
+
   <hr/>
+
   <div id="tPos1">
     Place holder for the display of the list of Leads
     <!-- Place holder for the display of the list of Leads -->
   </div>
+
   <hr/>
-  <input type="button" value="Allocate Adviser" onclick="javascript:allocateAdviser();"/>
+
+  <input type="button" value="Assign Adviser" onclick="javascript:allocateAdviser();"/>
   <input type="button" value="Reject Lead" onclick="javascript:rejectLead();"/>
   <input type="button" value="Reassign Lead" onclick="javascript:reassignLead();"/>
+
 </div>
 <!--
-====================================
-=== Adviser Administration Panel ===
-====================================
+========================================
+=== List Advisers Linked to Practice ===
+========================================
 -->
 <div id=panelAdvMaint style="display:none">
-  <!--
-   List leads assigned to practise
-  -->
+  
   <h3 id="title3">Adviser List</h3>
+
   <hr/>
+
   <div id="tPos3">
     Place holder for the display of the list of advisers
     <!-- Place holder for the display of the list of advisers -->
   </div>
+
   <hr/>
+
   <input type="button" value="Add Adviser" onclick="javascript:addAdviser();"/>
   <input type="button" value="Update Adviser" onclick="javascript:updateAdviser();"/>
   <input type="button" value="Remove Adviser" onclick="javascript:removeAdviser();"/>
+
 </div>
+
+
+
+
 <!--
 === Allocate Lead to Adviser ===
 -->
@@ -52,22 +62,14 @@
   </fieldset>
   <br/>
 </div>
-<!--
-=== End of Allocate lead to Adviser ===
--->
+
 <!-- Update Lead Status -->
 <!-- Reject Lead Appointment -->
 
 <div id="advAdmin" style="display:none">
   <h2>Adviser Administration</h2>
 </div>
+
 <!-- Add Adviser -->
 <!-- Delete Adviser -->
 <!-- Update Adviser info and/or skill -->
-
-
-
-
-<!--
-=== End of Practise View ===
--->

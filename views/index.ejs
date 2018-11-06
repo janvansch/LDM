@@ -34,6 +34,55 @@
 	</nav>
 
 	<section>
+    <!--
+    ===========================================
+    === Modal Display for Maintenance Pages ===
+    ===========================================
+    -->
+
+    <!-- The Modal (source w3schools) -->
+    <div id="modalBox" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2 id="modal-header-text">XXXXXX</h2>
+        </div>
+
+        <div class="modal-body">
+          
+          <!-- Display User Detail View -->
+          <div id="addUser" style="display:none">
+            <form id="formAddUser">
+              <% include ./partials/modalUser %>
+            </form>
+          </div>
+          
+          <!-- Display Practice Detail View -->
+          <div id="addPractice" style="display:none">
+            <form id="formAddPractice">
+              <% include ./partials/modalPractice %>
+            </form>
+          </div>
+          
+          <!-- Display Lead Detail View -->
+          <div id="displayLead" style="display:none">
+            <form id="formLead">
+              <% include ./partials/modalLead %>
+            </form>            
+          </div>
+        
+        </div>
+
+        <div class="modal-footer">
+          * = mandatory
+          <p id="errMsg"> </p>
+        </div>
+
+      </div>
+    </div>
+
 		<!--
     ==========================
     === Login View Display ===
@@ -42,6 +91,7 @@
     <div id="viewLogin" style="display:none">
       <% include ./partials/viewLogin %>
     </div>
+
     <!--
     =============================
     === User Maintenence View ===
@@ -59,6 +109,7 @@
     <div id="viewLead" style="display:none">
       <% include ./partials/viewLead %>
     </div>
+
     <!--
     =====================
     === Practise View ===
@@ -67,6 +118,7 @@
     <div id="viewPractice" style="display:none">
       <% include ./partials/viewPractice %>
     </div>
+
     <!--
     ====================
     === Adviser View ===

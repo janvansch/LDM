@@ -2,7 +2,7 @@ const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
 
-//const {mongoose} = require('../db/mongoose');
+const {mongoose} = require('../db/mongoose');
 //const {Lead} = require('../models/lead');
 const {User} = require('../models/user');
 const {authenticate} = require('../middleware/authenticate');
@@ -90,6 +90,7 @@ router.post('/update', (req, res) => {
       'cell' : body.cell,
       'email' : body.email,
       'roleCode' : body.roleCode,
+      'practiceCode' : body.practiceCode,
       'services' : body.services
     },
     {
@@ -126,7 +127,8 @@ router.get('/list', async (req, res) => {
         password : 0,
         tokens : 0
       }
-    );
+    )
+    .sort({surname: 1});
     res.send(users);
   }
   catch (e) {
@@ -151,6 +153,39 @@ router.get('/list', async (req, res) => {
 //       res.status(400).send(e);
 //     });
 // });
+
+// ----------------------------------------
+//  Get all adviser of practice
+//  - Advisers = users with roleCode = C
+//  - The practice is determined from the 
+//    signed in user's practiceCode.   
+// ----------------------------------------
+router.get('/advisers/:practice', async (req, res) => {
+  const practice = req.params.practice;
+  // const practice = req.query.practice
+  console.log("---> GET parameter and url: ", practice, req.url);
+  try {
+    const users = await User.find(
+      {
+        roleCode: "C",
+        practiceCode: practice
+      },
+      {
+        services : 0,
+        password : 0,
+        tokens : 0
+      }
+    )
+    .sort({surname: 1});
+    res.send(users);
+  }
+  catch (e) {
+    console.log("===> ERROR: ", e);
+    var errData = JSON.stringify(e);
+    console.log("===> ERROR Data: ", errData);
+    res.status(400).send(errData);
+  }
+});
 
 //----------------------------------------
 //	Suspend User
