@@ -1,10 +1,10 @@
-<h2>Practise View</h2>
+<h2 id="title">Practice View</h2>
 <!--
 ========================================
 === List Leads Allocated to Practice ===
 ========================================
 -->
-<div id=panelLeadAlloc style="display:none">
+<div id="panelLeadList" style="display:none">
   
   <h3 id="title1">Lead List</h3>
 
@@ -16,18 +16,18 @@
   </div>
 
   <hr/>
-
+  <!--
   <input type="button" value="Assign Adviser" onclick="javascript:allocateAdviser();"/>
   <input type="button" value="Reject Lead" onclick="javascript:rejectLead();"/>
   <input type="button" value="Reassign Lead" onclick="javascript:reassignLead();"/>
-
+  -->
 </div>
 <!--
 ========================================
 === List Advisers Linked to Practice ===
 ========================================
 -->
-<div id=panelAdvMaint style="display:none">
+<div id="panelAdvList" style="display:none">
   
   <h3 id="title3">Adviser List</h3>
 
@@ -39,11 +39,11 @@
   </div>
 
   <hr/>
-
+ 
   <input type="button" value="Add Adviser" onclick="javascript:addAdviser();"/>
   <input type="button" value="Update Adviser" onclick="javascript:updateAdviser();"/>
   <input type="button" value="Remove Adviser" onclick="javascript:removeAdviser();"/>
-
+ 
 </div>
 
 
@@ -55,8 +55,7 @@
 
 <div id="allocate" style="display:none">
   <fieldset>
-    <legend>Practise View</legend>
-
+    <legend>Practice View</legend>
     <br/>
     <input type="button" value="Allocate" onclick="allocLead()"/>
   </fieldset>

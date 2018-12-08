@@ -6,19 +6,19 @@
 <strong>Cover Required:</strong>
 <hr/>
 <ul>
-  <li id="pl" style="display:none">Personal: none</li>
+  <li id="pl" style="display:block">Personal: none</li>
   <li id="cl" style="display:none">Commercial: none</li>
   <li id="sl" style="display:none">Sasria: none</li>
   <li id="al" style="display:none">Agriculture: none</li>
   <li id="xl" style="display:none">Specialist: none</li>
 </ul> 
+<label for="serviceComment">
+  Service Comment:
+  <textarea id="serviceComment" name="comment2"></textarea>
+</label>
 <hr/>
 
-
-<div id="addUserButtons" style="display:none">
-  <input id="formAddUser" type="button" value="Add User" onclick="submitUser('add')"/>
-</div>
-<div id="updateUserButtons" style="display:none">
-  <input id="formAddUser" type="button" value="Update User" onclick="submitUser('update')"/>
-  <input id="formAddUser" type="button" value="Delete User" onclick="deleteUser()"/>
+<div id="updateUserButtons">
+  <input id="leadModal" type="button" value="Assign/Re-assign Lead" onclick="assignLead()"/>
+  <input id="leadModal" type="button" value="Reject Lead" onclick="rejectLead()"/>
 </div>

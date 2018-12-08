@@ -34,14 +34,17 @@ var LeadSchema = new mongoose.Schema({
   },
   contactNum: {
     type: String,
+    trim: true,
     required: true
   },
   altNumber: {
     type: String,
+    trim: true,
     required: false
   },
   cellNumber: {
     type: String,
+    trim: true,
     required: false
   },
   eMail: {
@@ -57,7 +60,8 @@ var LeadSchema = new mongoose.Schema({
     type: String,
     default: null
   },
-  previousInsurer: {
+  previousInsured: {
+    // returning customer
     type: String,
     default: null,
     trim: true
@@ -126,11 +130,6 @@ var LeadSchema = new mongoose.Schema({
       trim: true
     }
   },
-  // service: {
-  //   type: Array,
-  //   required: true
-  // },
-  // replace service above with this
   services: [{
     line: {
       type: String,
@@ -157,24 +156,58 @@ var LeadSchema = new mongoose.Schema({
       default: null,
       trim: true
     },
-    comment4: {
-      type: String,
-      default: null,
-      trim: true
-    }
+    comment4: [{
+      date: {
+        type: Date,
+        default: Date.now
+      },
+      body: {
+        type: String,
+        default: null,
+        trim: true
+      }
+    }]
   },
   allocatedPractice: {
-   type: String,
-    required: false  
+    type: String,
+    default: null  
   },
   assignedAdviser: {
     type: String,
-    required: false  
-   },
-  status: {
-    type: Array,
-    required: true
+    default: null  
   },
+  statusHistory: [{
+    status: {
+      // open, allocated, assigned, closed
+      // open, allocated, assigned, contacted, docs, quote, issue, closed
+      type: String,
+      default: "open"
+    },
+    statusDate: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  // stateHistory: [{
+  //   state: {
+  //     // pending, contacted, docs, quote, issue
+  //     type: String,
+  //     default: "pending" 
+  //   },
+  //   stateDate: {
+  //     type: Date,
+  //     default: Date.now
+  //   }
+  // }],
+  outcome: {
+    // lost, rejected, accepted
+    type: String,
+    default: null
+  },
+  policyNumber: {
+    type: String,
+    default: null  
+   },
   who: {
     type: String,
     required: false

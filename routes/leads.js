@@ -73,9 +73,9 @@ router.post('/allocatePractice', async (req, res) => {
   }
 });
 
-// -------------------------------------------
-//  Get all the leads allocated to a practice
-// -------------------------------------------
+// -------------------------------------------------------------
+//  Get data for the list of leads allocated to a practice view
+// -------------------------------------------------------------
 // app.get('/leads', authenticate, (req, res) => {
 router.get('/list/:practice', async (req, res) => {
   const practice = req.params.practice;
@@ -95,9 +95,13 @@ router.get('/list/:practice', async (req, res) => {
     console.log(">>> Data Returned: ", leads);
     const listData = [];
     for (var i = 0, j = leads.length; i < j; i++) {
+      var lines = "";
+      for (var x = 0, y = leads[i].services.length; x < y; x++) {
+        lines = lines + leads[i].services[x].line + " ";
+      }
       listData.push(
         {
-          status : leads[i].status,
+          status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
           firstName : leads[i].firstName,
           surname : leads[i].surname,
           langPref : leads[i].langPref,
@@ -107,7 +111,7 @@ router.get('/list/:practice', async (req, res) => {
           //eMail : leads[i].eMail,
           postal : leads[i].contactLocation.postal,
           suburb : leads[i].contactLocation.suburb,
-          service : leads[i].service,
+          service : lines,
           comment1 : leads[i].comments.comment1,
           comment2 : leads[i].comments.comment2
         }
@@ -120,61 +124,6 @@ router.get('/list/:practice', async (req, res) => {
     res.status(400).send(e);
   }
 });
-
-// // -------------------------------------------
-// //  Get all the leads allocated to a practice
-// // -------------------------------------------
-// // app.get('/leads', authenticate, (req, res) => {
-// router.get('/list', (req, res) => {
-//   Lead.find(
-//     {
-//       //_creator: req.user._id
-//       allocatedPractice: "P001"
-//     },
-//     {
-//       "status" : 1,
-//       "firstName" : 1,
-//       "surname" : 1,
-//       "langPref" : 1,
-//       "contactNum" : 1,
-//       "altNumber" : 1,
-//       "cellNumber" : 1,
-//       "eMail" : 1,
-//       "contactLocation.postal" : 1,
-//       "contactLocation.suburb" : 1,
-//       "service" : 1,
-//       "comments.comment1" : 1,
-//       "comments.comment2" : 1
-//     }
-//   ).then((leads) => {
-//     console.log(">>> Data Returned: ", leads);
-//     const listData = [];
-//     for (var i = 0, j = leads.length; i < j; i++) {
-//       listData.push(
-//         {
-//           status : leads[i].status,
-//           firstName : leads[i].firstName,
-//           surname : leads[i].surname,
-//           langPref : leads[i].langPref,
-//           //contactNum : leads[i].contactNum,
-//           //altNumber : leads[i].altNumber,
-//           //cellNumber : leads[i].cellNumber,
-//           //eMail : leads[i].eMail,
-//           postal : leads[i].contactLocation.postal,
-//           suburb : leads[i].contactLocation.suburb,
-//           service : leads[i].service,
-//           comment1 : leads[i].comments.comment1,
-//           comment2 : leads[i].comments.comment2
-//         }
-//       );
-//     }
-//     console.log(">>> Data list: ", listData);
-//     res.send(listData);
-//   }, (e) => {
-//     res.status(400).send(e);
-//   });
-// });
-  
 
 // -------------------------------------
 //	Update lead with adviser assignment

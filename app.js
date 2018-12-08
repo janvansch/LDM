@@ -1,5 +1,8 @@
 'use strict';
-
+/*
+"Start by doing what's necessary, then do what is possible;
+and suddenly you are doing the impossible." - Francis of Assasi
+*/
 const createError = require('http-errors');
 const express = require('express');
 const favicon = require('serve-favicon');
@@ -42,7 +45,10 @@ app.use(logger('dev'));
 //  var log = `${now}: ${req.method} ${req.url}`;
 //
 //  console.log(log);
-//  fs.appendFile('server.log', log + '\n');
+//  fs.appendFile('server.log', log + '\n', function (err) {
+//    if (err) throw err;
+//    console.log('Updated!');
+//  });
 //  next();
 //});
 

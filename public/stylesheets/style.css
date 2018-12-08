@@ -211,19 +211,19 @@ input {
   width: 95%;
   text-align: center;
 }
-#addPractise {
+#addPractice {
   /* display: none; */
   width: 99%;
   text-align: center;
   font-size: 95%;
 }
-#removePractise {
+#removePractice {
   display: none;
   width: 99%;
   text-align: center;
   font-size: 95%;
 }
-#updatePractise {
+#updatePractice {
   display: none;
   width: 99%;
   text-align: center;
@@ -288,16 +288,20 @@ input {
 /* ================================== */
 /*     Practice View & Navigation     */
 /* ================================== */
-#navPractise {
+#title {
+  text-align: center;
+}
+#navPractice {
   display: none;
   width: 99%;
+  list-style-type: none;
 }
-#viewPractise {
+#panelLeadList {
   display: none;
   width: 99%;
   text-align: center;
 }
-#viewAdminAdviser {
+#panelAdvList {
   display: none;
   width: 99%;
   text-align: center;
