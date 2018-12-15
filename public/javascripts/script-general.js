@@ -175,27 +175,31 @@ function login() {
 // ---------------------------
 function openRoleView(user) {
   var userId = user._id;
+  var userEmail = user.email;
   var userRole = user.roleCode;
   var userPracCode = user.practiceCode;
-  console.log(`>>> User Id: ${userId}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
+  console.log(`>>> User Id: ${userId}, User eMail: ${userEmail}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
   if (userRole==="A") {
     toggleView("viewAdmin");
     toggleView("navAdmin");
+    navSetup("A");
   }
   else if (userRole==="B") {
     toggleView("viewPractice");
     toggleView("navPractice");
-    navSetup("B");
+    navSetup("B", userEmail, userPracCode);
   }
   else if (userRole==="C") {
     toggleView("viewAdviser");
     toggleView("navAdviser");
     //showLeads(userID, userPracCode );
-    listAdvLeads();
+    //listAdvLeads();
+    navSetup("C", userEmail, userEmail);
   }
   else if (userRole==="D"){
     toggleView("viewLead");
     toggleView("navLead");
+    //navSetup("D", userId, userId);
   }
   else {
     console.log(`>>> Error - No role defined!
@@ -207,27 +211,52 @@ function openRoleView(user) {
 // -----------------------------
 //  Setup navigation for view 
 // -----------------------------
-function navSetup(id) {
+function navSetup(menuType, user, data) {
   //
   // Setup required menu
   //
-  if (id === "A"){
-    var menuName = "admin";
+  if (menuType === "A"){
+    //
+    // Definition for Admin View navigation menu
+    //
+    var menuName = ".navOptAdmin";
+    var opt0Func = function(){ profile(user); };
+    var opt1Func = function(){ listPractices(); };
+    var opt2Func = function(){ listUsers(); };
+    var optFunc = [opt0Func, opt1Func, opt2Func];
   }
-  if (id === "B"){
-    var menuName = ".navPractice";
-    var opt0Func = function(){ Profile(); };
-    var opt1Func = function(){ listLeads(); };
-    var opt2Func = function(){ listAdvisers(); };
+  
+  if (menuType === "B"){
+    //
+    // Definition for Practice View navigation menu
+    //    
+    var menuName = ".navOptPrac";
+    var opt0Func = function(){ profile(user); };
+    var opt1Func = function(){ listLeads(data); };
+    var opt2Func = function(){ listAdvisers(data); };
     var optFunc = [opt0Func, opt1Func, opt2Func];
   }
 
-  if (id === "C"){
-    var menuName = "adviser";
+  if (menuType === "C"){
+    //
+    // Definition for Adviser View navigation menu
+    //
+    var menuName = ".navOptAdviser";
+    var opt0Func = function(){ profile(user); };
+    var opt1Func = function(){ listAdvLeads(data); };
+    var opt2Func = function(){ listAdvClients(data); };
+    var optFunc = [opt0Func, opt1Func, opt2Func];    
   }
 
-  if (id === "D"){
-    var menuName = "lead";
+  if (menuType === "D"){
+    //
+    // Definition for Lead View navigation menu
+    //
+    var menuName = ".navOptLead";
+    var opt0Func = function(){ profile(user); };
+    var opt1Func = function(){ addLeads(); };
+    var opt2Func = function(){ listLeads(); };
+    var optFunc = [opt0Func, opt1Func, opt2Func]; 
   }
 
   //

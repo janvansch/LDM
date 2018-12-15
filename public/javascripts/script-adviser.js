@@ -6,21 +6,21 @@
 // ------------------------
 //  Display adviser leads
 // ------------------------
-function listAdvLeads() {
+function listAdvLeads(user) {
     //
-    // Switch leads Display on
+    // Switch Adviser Leads display on
     //
     document.getElementById('panelAdvLeads').style.display = 'block';
-    // //
-    // // Switch Practise Maintenance Display off
-    // //
-    // document.getElementById('panelAdvMaint').style.display = 'none';
+    //
+    // Switch Adviser Clients display off
+    //
+    //document.getElementById('panelAdvClients').style.display = 'none';
     //
     // Create Leads Data request
     //
-    var request = "XXXX";
+    var request = user;
     var method = "GET";
-    var route = "/leads/list";
+    var route = "/leads/list/" + request;
     var contentType = "application/json";
     //
     //  Request lead data from server
@@ -33,7 +33,7 @@ function listAdvLeads() {
         // load report layout definition
         //
         var layoutId = '1';
-        var prompt = 'Lead data for: ' + request;
+        var prompt = 'Lead for Adviser: ' + request;
         //
         // Display Leads List
         //

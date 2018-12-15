@@ -3,6 +3,12 @@
 "Start by doing what's necessary, then do what is possible;
 and suddenly you are doing the impossible." - Francis of Assasi
 */
+// ========================================
+// = Lead Distribution & Management v0.02 =
+// =      By J.M.A. van Schalkwyk         =
+// =         Copyright © 2018             =
+// ========================================
+
 const createError = require('http-errors');
 const express = require('express');
 const favicon = require('serve-favicon');

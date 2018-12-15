@@ -73,14 +73,64 @@ router.post('/allocatePractice', async (req, res) => {
   }
 });
 
-// -------------------------------------------------------------
-//  Get data for the list of leads allocated to a practice view
-// -------------------------------------------------------------
-// app.get('/leads', authenticate, (req, res) => {
+// -----------------------------------
+//  Get leads allocated to a practice
+// -----------------------------------
 router.get('/list/:practice', async (req, res) => {
   const practice = req.params.practice;
   console.log("---> GET parameter and url: ", practice, req.url);
   const query = {allocatedPractice: practice};
+  //const query = {};
+  try {
+    const leads = await Lead.find(
+      query,
+      {
+        _id : 0,
+        who : 0,
+        createdAt : 0,
+        updatedAt : 0
+      }
+    ).sort({leadNumber: 1});
+    console.log(">>> Data Returned: ", leads);
+    const listData = [];
+    for (var i = 0, j = leads.length; i < j; i++) {
+      var lines = "";
+      for (var x = 0, y = leads[i].services.length; x < y; x++) {
+        lines = lines + leads[i].services[x].line + " ";
+      }
+      listData.push(
+        {
+          status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
+          firstName : leads[i].firstName,
+          surname : leads[i].surname,
+          langPref : leads[i].langPref,
+          //contactNum : leads[i].contactNum,
+          //altNumber : leads[i].altNumber,
+          //cellNumber : leads[i].cellNumber,
+          //eMail : leads[i].eMail,
+          postal : leads[i].contactLocation.postal,
+          suburb : leads[i].contactLocation.suburb,
+          service : lines,
+          comment1 : leads[i].comments.comment1,
+          comment2 : leads[i].comments.comment2
+        }
+      );
+    }
+    console.log(">>> Data list: ", listData);
+    res.send(listData);
+  }
+  catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+// ----------------------------------
+//  Get leads assigned to an adviser
+// ----------------------------------
+router.get('/list/:adviser', async (req, res) => {
+  const adviser = req.params.practice;
+  console.log("---> GET parameter and url: ", adviser, req.url);
+  const query = {assignedAdviser: adviser};
   //const query = {};
   try {
     const leads = await Lead.find(

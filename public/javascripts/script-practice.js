@@ -6,19 +6,20 @@
 // ------------------------
 //  Display practise leads
 // ------------------------
-function listLeads() {
+function listLeads(userPracCode) {
     //
-    // Switch leads Display on
+    // Switch Leads display on
     //
     document.getElementById('panelLeadList').style.display = 'block';
     //
-    // Switch Practise Maintenance Display off
+    // Switch Adviser display off
     //
     document.getElementById('panelAdvList').style.display = 'none';
     //
     // Create Leads Data request
     //
-    var request = "P001";
+    //var request = "P001";
+    var request = userPracCode;
     var method = "GET";
     var route = "/leads/list/" + request;
     var contentType = "application/json";
@@ -52,7 +53,7 @@ function listLeads() {
   // ---------------------------
   //  Display practice advisers
   // ---------------------------
-  function listAdvisers() {
+  function listAdvisers(userPracCode) {
     //
     // Switch leads Display on
     //
@@ -71,7 +72,8 @@ function listLeads() {
     // var request = JSON.stringify(practice);
     //var method = "POST";
   
-    var request = "P001";
+    //var request = "P001";
+    var request = userPracCode;
     var method = "GET";
     var route = "/users/advisers/" + request;
     var contentType = "application/json";
@@ -103,9 +105,9 @@ function listLeads() {
     });
   }
   // --------------------------
-  //  Allocate Adviser to Lead
+  //  Assign Adviser to Lead
   // --------------------------
-  function allocateAdviser() {
+  function assignAdviser() {
     console.log("===> Allocate Adviser Started");
     //
     // Format Request

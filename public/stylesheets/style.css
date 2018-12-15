@@ -78,7 +78,7 @@ header {
 }
 
 nav {
-  width: 8%;
+  width: 9%;
   line-height: 30px;
   background-color: #ffeeff;
   height: 300px;
@@ -88,7 +88,7 @@ nav {
 }
 
 section {
-  width: 90%;
+  width: 89%;
   /* height: 300px; */
   font-size: 100%;
   background-color: rgb(244, 244, 248);
@@ -105,9 +105,9 @@ footer {
   padding: 5px;
 }
 
-/* ============================= */
-/*   flex container formatting   */
-/* ============================= */
+/* =============================== */
+/*    flex container formatting    */
+/* =============================== */
 .flex-container {
   /* display: -webkit-flex; */
   display: flex;
@@ -127,9 +127,31 @@ footer {
   padding: 1px;
 }
 
-/* ============================ */
-/*     General Form elements    */
-/* ============================ */
+/* =============================== */
+/*    General Nav Menu elements    */
+/* =============================== */
+.nav-menu {
+  margin-left: 2px;
+  padding-left: 0px;
+  text-align: left;
+}
+
+.nav-menu-list {
+  margin-left: 1px;
+  padding-left: 0px;
+  text-align: left;
+  list-style-type: none;
+}
+
+.nav-menu-item {
+  margin-left: 2px;
+  padding-left: 0px;
+  text-align: left;
+}
+
+/* =========================== */
+/*    General Form elements    */
+/* =========================== */
 fieldset {
   display: block;
   font-size: 100%;
@@ -288,7 +310,7 @@ input {
 /* ================================== */
 /*     Practice View & Navigation     */
 /* ================================== */
-#title {
+#viewPracHead {
   text-align: center;
 }
 #navPractice {
