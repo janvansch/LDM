@@ -306,6 +306,9 @@ input {
   text-align: left;
   font-size: 100%;
 }
+#formLead {
+  text-align: center;
+}
 
 /* ================================== */
 /*     Practice View & Navigation     */

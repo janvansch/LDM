@@ -1,22 +1,10 @@
 "use strict";
 
-// ==========================
-//  Initiate views
-// ==========================
-window.onload = function() {
-    document.getElementById('ifPersonal').style.display = 'none';
-    document.getElementById('ifCommercial').style.display = 'none';
-    document.getElementById('ifSasria').style.display = 'none';
-    document.getElementById('ifAgriculture').style.display = 'none';
-    document.getElementById('ifSpecialist').style.display = 'none';
-    document.getElementById('ServiceComment').style.display = 'none';
-    toggleView("viewLogin");
-    toggleView("navLogin");
-}
 
-// ===========================================
+
+// ==============================================================================
 //  Global modal controls (source: w3schools)
-// ===========================================
+// ==============================================================================
 var modal = document.getElementById('modalBox');
 //var modalPrac = document.getElementById('modalPrac');
 
@@ -91,10 +79,87 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+// ==============================================================================
+//  Initiate views
+// ==============================================================================
+// ----------------
+//  Initiate views
+// ----------------
+window.onload = function() {
+  document.getElementById('ifPersonal').style.display = 'none';
+  document.getElementById('ifCommercial').style.display = 'none';
+  document.getElementById('ifSasria').style.display = 'none';
+  document.getElementById('ifAgriculture').style.display = 'none';
+  document.getElementById('ifSpecialist').style.display = 'none';
+  document.getElementById('ServiceComment').style.display = 'none';
+  toggleView("viewLogin");
+  toggleView("navLogin");
+}
 
-// =============================
-//  Login & Open Role View
-// =============================
+// ---------------------
+//  View display toggle
+// ---------------------
+function toggleView(viewID){
+  var state = '';
+  var view = document.getElementById(viewID);
+  if(view.style.display == "block") {
+      view.style.display = "none";
+      state = "OFF";
+  }
+  else {
+      view.style.display = "block";
+      state = "ON";
+  }
+  console.log(`---> ${viewID} is ${state}`);
+}
+
+
+// ==============================================================================
+//  Login 
+// ==============================================================================
+
+// -----------------------------------------------
+//  Validate Login and Open View Required by Role
+// -----------------------------------------------
+
+function login() {
+  //
+  //  Extract login credentials from login view
+  //
+  const loginData = document.getElementsByName("logindata");
+  //
+  // Validate credentials if provided
+  //
+  if (loginData[0].value !== '' && loginData[1].value !== '') {
+    //
+    // Validate login credentials
+    //
+    validate(loginData, (validUser) => {
+      var user = validUser.body;
+      var auth = validUser.x-auth;
+      //
+      // Close login View
+      //
+      toggleView("viewLogin");
+      toggleView("navLogin");
+      //
+      // Display user id in system header
+      //
+      document.getElementById("user").innerHTML = "User: " + user.email;
+      //
+      // Display Role View
+      //
+      openRoleView(user);
+    });
+  }
+  else {
+    //
+    // No login credentials provided
+    //
+    const prompt = "No login information ... please enter";
+    document.getElementById("prompt").innerHTML = prompt;
+  }
+}
 
 // ----------------------------
 //  Validate login credentials
@@ -118,66 +183,30 @@ function validate(login, callback) {
       //
       // Login credentials valid
       //
-      var resHeader = result.getResponseHeader("x-auth");
-      var resBody = result.responseText;
-      var resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
-      var resObj = JSON.parse(resStr);
+      const resHeader = result.getResponseHeader("x-auth");
+      const resBody = result.responseText;
+      const resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
+      const resObj = JSON.parse(resStr);
       callback(resObj);
     }
     else {
       //
       // Login credentials invalid
       //
-      var prompt = "Login invalid ... re-enter information";
+      const prompt = "Login invalid ... re-enter information";
       document.getElementById("prompt").innerHTML = prompt;
     }
   });
 }
-// ----------------------------------------
-//  Validate login and open user role view
-// ----------------------------------------
-function login() {
-  //
-  //  Extract login credentials from login view
-  //
-  var loginData = document.getElementsByName("logindata");
-  if (loginData[0].value !== '' && loginData[1].value !== '') {
-    validate(loginData, (validUser) => {
-      console.log("User  body data", validUser.body);
-      var user = validUser.body;
-      var auth = validUser.x-auth;
-      //
-      // Close login View
-      //
-      toggleView("viewLogin");
-      toggleView("navLogin");
-      //
-      // Display user id in system header
-      //
-      //var user = "User: " + validUser.body.email;
-      document.getElementById("user").innerHTML = "User: " + user.email;
-      //
-      // Display Role View
-      //
-      openRoleView(user);
-    });
-  }
-  else {
-    //
-    // No login credentials provided
-    //
-    var prompt = "No login information ... please enter";
-    document.getElementById("prompt").innerHTML = prompt;
-  }
-}
-// ---------------------------
-//  Open view for user's role
-// ---------------------------
+
+// ----------------
+//  Open role view
+// ----------------
 function openRoleView(user) {
-  var userId = user._id;
-  var userEmail = user.email;
-  var userRole = user.roleCode;
-  var userPracCode = user.practiceCode;
+  const userId = user._id;
+  const userEmail = user.email;
+  const userRole = user.roleCode;
+  const userPracCode = user.practiceCode;
   console.log(`>>> User Id: ${userId}, User eMail: ${userEmail}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
   if (userRole==="A") {
     toggleView("viewAdmin");
@@ -208,64 +237,60 @@ function openRoleView(user) {
       Practice Code: ${userPracCode}`);
   }
 }
-// -----------------------------
-//  Setup navigation for view 
-// -----------------------------
+// -------------------------------
+//  Setup view navigation options 
+// -------------------------------
 function navSetup(menuType, user, data) {
   //
-  // Setup required menu
+  // Functions for view navigation options
   //
-  if (menuType === "A"){
+  if (menuType === "A") {
     //
-    // Definition for Admin View navigation menu
+    // Functions for Admin view options
     //
-    var menuName = ".navOptAdmin";
-    var opt0Func = function(){ profile(user); };
-    var opt1Func = function(){ listPractices(); };
-    var opt2Func = function(){ listUsers(); };
-    var optFunc = [opt0Func, opt1Func, opt2Func];
-  }
-  
-  if (menuType === "B"){
+    var menuName = ".navOptAdmin"; // user outside the block
+    const opt0Func = function(){ profile(user); }; // has block scope
+    const opt1Func = function(){ listPractices(); }; // has block scope
+    const opt2Func = function(){ listUsers(); }; // has block scope
+    var optFunc = [opt0Func, opt1Func, opt2Func]; // user outside the block
+  }  
+  if (menuType === "B") {
     //
-    // Definition for Practice View navigation menu
+    // Functions for Practice view options
     //    
     var menuName = ".navOptPrac";
-    var opt0Func = function(){ profile(user); };
-    var opt1Func = function(){ listLeads(data); };
-    var opt2Func = function(){ listAdvisers(data); };
+    const opt0Func = function(){ profile(user); };
+    const opt1Func = function(){ listLeads(data); };
+    const opt2Func = function(){ listAdvisers(data); };
     var optFunc = [opt0Func, opt1Func, opt2Func];
   }
-
-  if (menuType === "C"){
+  if (menuType === "C") {
     //
-    // Definition for Adviser View navigation menu
+    // Functions for Adviser view options
     //
     var menuName = ".navOptAdviser";
-    var opt0Func = function(){ profile(user); };
-    var opt1Func = function(){ listAdvLeads(data); };
-    var opt2Func = function(){ listAdvClients(data); };
+    const opt0Func = function(){ profile(user); };
+    const opt1Func = function(){ listAdvLeads(data); };
+    const opt2Func = function(){ listAdvClients(data); };
     var optFunc = [opt0Func, opt1Func, opt2Func];    
   }
-
-  if (menuType === "D"){
+  if (menuType === "D") {
     //
-    // Definition for Lead View navigation menu
+    // Functions for Lead view options
     //
     var menuName = ".navOptLead";
-    var opt0Func = function(){ profile(user); };
-    var opt1Func = function(){ addLeads(); };
-    var opt2Func = function(){ listLeads(); };
+    const opt0Func = function(){ profile(user); };
+    const opt1Func = function(){ addLeads(); };
+    const opt2Func = function(){ listLeads(); };
     var optFunc = [opt0Func, opt1Func, opt2Func]; 
   }
-
   //
-  // Retrieve menu options from DOM
+  // Select view navigation options from DOM
   //
-  var menuOptions=document.querySelectorAll(menuName);
+  const menuOptions=document.querySelectorAll(menuName);
   console.log("Menu Options: ", menuOptions);
   //
-  // Attach menu option functions to menu options
+  // Link required functions to navigation options
   //
   for(var i=0;i<menuOptions.length;i++) { 
     console.log("---> Option Func: ", optFunc[i]);
@@ -277,21 +302,58 @@ function navSetup(menuType, user, data) {
   console.log("---> Menu Options", menuOptions);
 }
 
+// // ====================================
+// //  Filter table rows by column values
+// // ====================================
+// function pracLeadFilter(tableId, filterId) {
+//   //
+//   //  Read filter definition
+//   //
+//   var filter = filterDef(filterId);
+//   console.log("---> Filter definition: ", filter);
+//   //
+//   // Read filter parameter values entered
+//   //
+//   var filterObj = {};
+//   var cols = [];
+//   var x = 0;
+//   var colFilter = [], criteria = [];
+//   var colCount = filter.definition.length;
+//   console.log("---> Filter Column Count: ", colCount);
+//   for (var i=0; i < colCount; i++) {
+//     console.log("---> Filter ID: ", filter.definition[i].valueId);
+//     colFilter[i] = document.getElementById(filter.definition[i].valueId).value;
+//     if (colFilter[i].length > 0) {
+//       cols[x] = filter.definition[i].tableCol;
+//       criteria[x] = colFilter[i];
+//       console.log("---> Filter values 0:", cols[x], criteria[x]);
+//       x++;
+//     }
+//   }
+//   filterObj = {
+//     cols : cols,
+//     criteria : criteria
+//   }
+//   console.log("---> Filter Obj: ", filterObj);
+//   //
+//   // Apply filter to table rows
+//   //
+//   filterTable(tableId, filterObj);
+// }
+
 //
 // ==================================================================================
-//  Utilities - Data List Display 
+//  Utilities - Table Display Functions 
 // ==================================================================================
 //
 // ----------------------------------
 //  Create table and display content
 // ----------------------------------
 function displayData(content, title, layoutId) {
-  console.log("---> List content: ", content);
   //
   //  Read layout definition
   //
   var layout = readLayout(layoutId);
-  console.log("---> Layout definition: ", layout);
   //
   //  Extract table content
   //
@@ -355,7 +417,6 @@ function displayData(content, title, layoutId) {
       //
       // Insert content into table cell
       //
-      //console.log("Table Cell: ", i, j, listContent[i][j]);
       tableCell.innerHTML = (isString(tableContent[i][j]) ? (tableContent[i][j].trim()) : (tableContent[i][j]));
     } // end of column loop
   } // end of row loop
@@ -369,7 +430,7 @@ function displayData(content, title, layoutId) {
   //
   // Update list section heading
   //
-  if (title !== null){
+  if (title !== null) {
     var elementId = "title" + layoutId;
     document.getElementById(elementId).innerHTML = title;
   }
@@ -391,13 +452,19 @@ function addRowHandlers(id) {
   // Add row function as required for dtype of list
   //
   if (id === "0"){
-    var rowFunc = function(){ displayUser(this); };
+    // user list
+    var rowFunc = function(){ displayUser(this.cells[4].innerHTML); };
+    // cells[4] = user email
   }
   if (id === "1"){
-    var rowFunc = function(){ displayLead(this); };
+    // lead list
+    var rowFunc = function(){ displayLead(this.cells[0].innerHTML); };
+    // cells[0] = lead reference
   }
   if (id === "2"){
-    var rowFunc = function(){ displayPractice(this); };
+    // practice list
+    var rowFunc = function(){ displayPractice(this.cells[0].innerHTML); };
+    // cells[0] = practice code
   }
   for (var i = 1; i < rowCount; i++) {
       // ignore header, row 0
@@ -407,9 +474,9 @@ function addRowHandlers(id) {
   }
   console.log("<<< Row Handlers Added >>>");
 }
-// -------------------------
-//  List layout definitions
-// -------------------------
+// --------------------------
+//  Table layout definitions
+// --------------------------
 function readLayout(definitionId) {
   switch (definitionId) {
     case '0':
@@ -428,6 +495,28 @@ function readLayout(definitionId) {
     case '1':
       console.log("List Layout: 1 (Leads)");
       var layoutDef = '{ "definition" : [' +
+        '{ "fname" : "reference" , "label" : "Ref No." },' +
+        '{ "fname" : "status" , "label" : "Status" },' +
+        //'{ "fname" : "firstName" , "label" : "First Name" },' +
+        //'{ "fname" : "surname" , "label" : "Surname" },' +
+        '{ "fname" : "langPref" , "label" : "Language" },' +
+        //'{ "fname" : "contactNum" , "label" : "Contact #" },' +
+        //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        //'{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        //'{ "fname" : "eMail" , "label" : "eMail" },' +
+        '{ "fname" : "postal" , "label" : "Postal" },' +
+        '{ "fname" : "suburb" , "label" : "Suburb" },' +
+        '{ "fname" : "service" , "label" : "Service Required" },' +
+        '{ "fname" : "comment1" , "label" : "Comment" },' +
+        '{ "fname" : "comment2" , "label" : "Service Comment" },' +
+        '{ "fname" : "assignedAdviser" , "label" : "Adviser" }' +
+        ']}'
+      ;
+    break;
+    case '11':
+      console.log("List Layout: 1 (Leads)");
+      var layoutDef = '{ "definition" : [' +
+        '{ "fname" : "reference" , "label" : "Ref No." },' +
         '{ "fname" : "status" , "label" : "Status" },' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
@@ -484,24 +573,29 @@ function readLayout(definitionId) {
   // console.log("JSON Definition: ", layout);
   return layout;
 }
-
-// ==================================
-//  Utilities - Views display toggle
-// ==================================
-
-function toggleView(viewID){
-  var state = '';
-  var view = document.getElementById(viewID);
-  if(view.style.display == "block") {
-      view.style.display = "none";
-      state = "OFF";
+// --------------------------
+//  Table Filter definitions
+// --------------------------
+function filterDef(filterId) {
+  switch (filterId) {
+    case '1':
+      console.log("Filter Definition: 1 (Practice Lead List)");
+      var filterDef = '{ "definition" : [' +
+        '{ "tableCol" : 0 , "valueId" : "prac-lead-ref-filter" },' +
+        '{ "tableCol" : 1 , "valueId" : "prac-lead-status-filter" },' +
+        '{ "tableCol" : 8 , "valueId" : "prac-lead-adviser-filter" }' +
+        ']}'
+      ;
+    break;
+    case '2':
+      console.log("Filter Definition: 2 (Admin Practices List)");
+    break; 
   }
-  else {
-      view.style.display = "block";
-      state = "ON";
-  }
-  console.log(`---> ${viewID} is ${state}`);
+  var filter = JSON.parse(filterDef); // convert JSON text into JS object
+  console.log("JSON Definition: ", filter);
+  return filter;
 }
+
 
 
 

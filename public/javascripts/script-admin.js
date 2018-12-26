@@ -85,7 +85,7 @@ function listUsers() {
   // --------------------------------
   //  Display user detail modal form
   // --------------------------------
-  function displayUser(user) {
+  function displayUser(userId) {
     //
     // open model window
     //
@@ -98,19 +98,13 @@ function listUsers() {
     document.getElementById("modal-header-text").innerHTML = "Selected User's Detail - Update/Delete";
     document.getElementById("addUserButtons").style.display = "none";
     document.getElementById("updateUserButtons").style.display = "block";
-    //
-    // Get user id (email)
-    //
-    var userId = user.cells[4].innerHTML;
+    
     console.log(">>> User Email: ", userId);
+
     //
     // Create User Data request
     //
-    var userKey = {
-      userId : userId
-    };
-    //var dataString = JSON.stringify(leadData);
-    var request = JSON.stringify(userKey);
+    var request = JSON.stringify({userId : userId});
     var method = "POST";
     var route = "/users/user";
     var contentType = "application/json";
@@ -611,7 +605,7 @@ function listUsers() {
   // -------------------------
   //  Display Practice Detail
   // -------------------------
-  function displayPractice(practice) {
+  function displayPractice(practiceCode) {
     //
     // open model window
     //
@@ -625,19 +619,13 @@ function listUsers() {
     document.getElementById("modal-header-text").innerHTML = "Update Practice or Delete";
     document.getElementById("addPracticeButtons").style.display = "none";
     document.getElementById("updatePracticeButtons").style.display = "block";
-    //
-    // Get user id (email)
-    //
-    var pracCode = practice.cells[0].innerHTML;
-    console.log(">>> Practice Code: ", pracCode);
+    
+    console.log(">>> Practice Code: ", practiceCode);
+
     //
     // Create User Data request
     //
-    var key = {
-      pracCode : pracCode
-    };
-    //var dataString = JSON.stringify(leadData);
-    var request = JSON.stringify(key);
+    var request = JSON.stringify({pracCode : practiceCode});
     var method = "POST";
     var route = "/practices/practice";
     var contentType = "application/json";

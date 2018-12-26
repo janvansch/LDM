@@ -1,29 +1,91 @@
 "use strict";
 
-// // ====================================
-// //  Utilities - Process Menu Selection
-// // ====================================
-// var menuArr=document.getElementsByClass("navPracli");
-// 	for(var i=0;i<menuArr.length;i++) { 
-// 		menuArr[i].onclick = function(){
-// 			for(var j=0;j<menuArr.length;j++) { 
-// 				menuArr[j].className="";
-// 				var x = j + 1;
-// 				var optX = "opt" + x;
-// 				menuArr[j].option=optX;
-// 			}
-// 			for(var n=0;n<menuArr.length;n++) {
-// 				var x = n + 1;
-// 				var optX = "opt" + x;
-// 				document.getElementById(optX).style.display = 'none';
-// 			}
-// 			this.className="active";
-// 			var option=this.option;
-// 			document.getElementById(option).style.display = 'block';
-// 		}
-		
-//   }
+// ================================================
+//  Utilities - Filter table rows by column values
+// ================================================
+function filterTable(tableId, filterId) {
+  //
+  //  Read filter definition
+  //
+  var filter = filterDef(filterId);
+  console.log("---> Filter definition: ", filter);
+  //
+  // Read filter parameter values from DOM
+  //
+  var filterObj = {};
+  var cols = [];
+  var x = 0;
+  var colFilter = [], criteria = [];
+  var colCount = filter.definition.length;
+  console.log("---> Filter Column Count: ", colCount);
+  for (var i=0; i < colCount; i++) {
+    console.log("---> Filter ID: ", filter.definition[i].valueId);
+    colFilter[i] = document.getElementById(filter.definition[i].valueId).value;
+    if (colFilter[i].length > 0) {
+      cols[x] = filter.definition[i].tableCol;
+      criteria[x] = colFilter[i];
+      console.log("---> Filter values 0:", cols[x], criteria[x]);
+      x++;
+    }
+  }
+  //
+  // Apply filter to table rows
+  //
+  const table = document.getElementById(tableId);
+  var tr = table.getElementsByTagName("tr");
+  var td = [], i, j, txtValue;
+  for (i = 1; i < tr.length; i++) {
+    tr[i].style.display = "";
+    if (cols.length > 0) {  
+      for (j = 0; j < cols.length; j++) {
+        td = tr[i].getElementsByTagName("td")[cols[j]];
+        console.log(">>> Cell: ", td);
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          console.log(`>>> Cell content: ${txtValue} Filter criteria: ${criteria[j]}`);
+          if (txtValue.toUpperCase().indexOf(criteria[j].toUpperCase()) === -1) {  
+            tr[i].style.display = "none";
+          }
+        }
+      }       
+    }
+  }
+}
 
+// // ====================================
+// //  Filter table rows by column values
+// // ====================================
+// function filterTable(tableId, filterObj) {
+//   //
+//   // filterObj is an object defined as follows:
+//   //  {
+//   //    cols : [array of column numbers], 
+//   //    criteria : [array of search values for each column]
+//   //  }
+//   const filterColumns = filterObj.cols;
+//   console.log(">>> Filter Columns: ", filterColumns);
+//   const filterCriteria = filterObj.criteria;
+//   console.log(">>> Filter Criteria: ", filterCriteria);
+//   const table = document.getElementById(tableId);
+//   var tr = table.getElementsByTagName("tr");
+//   var td = [], i, j, txtValue;
+//   for (i = 1; i < tr.length; i++) {
+//     tr[i].style.display = "";
+//     if (filterColumns.length > 0) {  
+//       for (j = 0; j < filterColumns.length; j++) {
+//         td = tr[i].getElementsByTagName("td")[filterColumns[j]];
+//         console.log(">>> Cell: ", td);
+//         if (td) {
+//           txtValue = td.textContent || td.innerText;
+//           console.log(`>>> Cell content: ${txtValue} Filter criteria: ${filterCriteria[j]}`);
+//           if (txtValue.toUpperCase().indexOf(filterCriteria[j].toUpperCase()) === -1) {  
+//             tr[i].style.display = "none";
+//           }
+//         }
+//       }       
+//     }
+//   }
+// }
 
 // ===============================
 //  Utilities - Form Data Extract

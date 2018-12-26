@@ -10,6 +10,20 @@
 
   <hr/>
 
+  <div id="prac-lead-filter">
+    <b>Filter:</b>
+    Ref No.
+    <input type="text" id="prac-lead-ref-filter" placeholder="Lead Ref No." title="Lead Ref No.">
+    
+    Status
+    <input type="text" id="prac-lead-status-filter" placeholder="Lead Status" title="Lead Status">
+    
+    Adviser
+    <input type="text" id="prac-lead-adviser-filter" placeholder="Adviser" title="Assigned Adviser">
+    
+    <input id="apply-prac-filter" type="button" value="Apply Filter" onclick="filterTable('tPos1', '1')"/>
+  </div>
+
   <div id="tPos1">
     Place holder for the display of the list of Leads
     <!-- Place holder for the display of the list of Leads -->
@@ -32,6 +46,10 @@
   <h3 id="title3">Adviser List</h3>
 
   <hr/>
+
+  <div id="advSearch">
+    Search:
+  </div>
 
   <div id="tPos3">
     Place holder for the display of the list of advisers

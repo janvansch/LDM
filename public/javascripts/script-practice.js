@@ -3,6 +3,62 @@
 //  Practice View
 // ===========================================================================
 //
+    
+// -----------------------------------
+//  Display leads for attribute value
+// -----------------------------------
+function displayLeadsSet(attribute, value) {
+  //
+  // Switch Leads display on
+  //
+  document.getElementById('panelLeadList').style.display = 'block';
+  //
+  // Switch Adviser display off
+  //
+  document.getElementById('panelAdvList').style.display = 'none';
+  //
+  //  create request object
+  //
+  var reqObj = {
+    attribute : attribute,
+    value : value
+  };
+  console.log(">>> Request: ", dataString);
+  //
+  // Create Leads Data request
+  //
+  var request = JSON.stringify(reqObj);
+  var method = "POST";
+  var route = "/leads/leadSet/";
+  var contentType = "application/json";
+  //
+  //  Request lead data from server
+  //
+  xhrRequest(method, route, contentType, request, (err, res) => {
+    if (!err) {
+      var data = JSON.parse(res.responseText);
+      console.log(">>> lead Docs: ", data);
+      //
+      // load report layout definition
+      //
+      var layoutId = '1';
+      var prompt = 'Leads for practice: ' + request;
+      //
+      // Display Leads List
+      //
+      displayData(data, prompt, layoutId);
+      //
+      // Add row select handlers to enable row selection
+      //
+      addRowHandlers(layoutId);
+    }
+    else {
+      var prompt = "Lead request error";
+      document.getElementById("leadErr").innerHTML = prompt;
+    }
+  });
+}  
+
 // ------------------------
 //  Display practise leads
 // ------------------------

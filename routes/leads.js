@@ -39,6 +39,52 @@ router.post('/add', async (req, res) => {
   }
 });
 
+// ----------------------------------------
+//  Get lead detail
+// ----------------------------------------
+/*
+router.post('/lead', (req, res) => {
+  console.log(">>> Request body and url: ", req.body, req.url);
+  User.find(
+    { reference : req.body.reference 
+    },
+    {
+      _id : 0,
+      //  who : 0,
+      //  createdAt : 0,
+      //  updatedAt : 0
+    }
+    ).then((lead) => {
+      console.log(">>> Res - Lead data: ", user);
+      res.send(lead);
+    }, (e) => {
+      res.status(400).send(e);
+    });
+});
+*/
+
+// converted to async as below
+
+router.post('/lead', async (req, res) => {
+  try {
+    const body = _.pick(req.body, ['reference']);
+    const lead = await Lead.find(
+      { 
+        reference : body.reference 
+      },
+      {
+        _id : 0
+      },
+    )
+    res.status(200).send(lead);
+  }
+  catch (e) {
+    console.log("===> ERROR: ", e.errors);
+    var errData = JSON.stringify(e);
+    res.status(400).send(errData);
+  }
+});
+
 // --------------------------------------
 //	Update lead with practice allocation
 // --------------------------------------
@@ -100,6 +146,7 @@ router.get('/list/:practice', async (req, res) => {
       }
       listData.push(
         {
+          reference : leads[i].reference,
           status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
           firstName : leads[i].firstName,
           surname : leads[i].surname,
@@ -112,7 +159,8 @@ router.get('/list/:practice', async (req, res) => {
           suburb : leads[i].contactLocation.suburb,
           service : lines,
           comment1 : leads[i].comments.comment1,
-          comment2 : leads[i].comments.comment2
+          comment2 : leads[i].comments.comment2,
+          assignedAdviser : leads[i].assignedAdviser
         }
       );
     }
@@ -151,6 +199,7 @@ router.get('/list/:adviser', async (req, res) => {
       }
       listData.push(
         {
+          reference : leads[i].reference,
           status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
           firstName : leads[i].firstName,
           surname : leads[i].surname,

@@ -87,8 +87,8 @@ function leadOk() {
   // ----------------------------------
   //  Display lead detail in modal box
   // ----------------------------------
-  function displayLead(lead) {
-    console.log("---> This lead: ", lead);
+  function displayLead(leadRef) {
+    console.log("---> This lead: ", leadRef);
     //
     // open model window
     //
@@ -100,17 +100,16 @@ function leadOk() {
     document.getElementById("displayLead").style.display = 'block';
     document.getElementById("modal-header-text").innerHTML = "Selected Lead's Detail - Update/Delete";
     document.getElementById("updateLeadButtons").style.display = "block";
+    
     //
-    // Extract lead key
+    // Define lead data request
     //
-    var leadID = lead._id;// ??????????????????????
-  
-    var request = JSON.stringify(leadID);
+    var request = JSON.stringify({reference : leadRef});
     var method = "POST";
-    var route = "/users/user";
+    var route = "/leads/lead";
     var contentType = "application/json";
     //
-    //  Request User Data from Server
+    //  Request lead data from server
     //
     console.log(">>> Request: ", request);
     xhrRequest(method, route, contentType, request, (err, res) => {
@@ -129,13 +128,13 @@ function leadOk() {
         else {
           document.getElementById("afr").checked = true;
         }
-        document.getElementById("conFirstName").value = user[0].firstName;
+        document.getElementById("conFirstName").value = lead[0].firstName;
         document.getElementById("conSurname").value = lead[0].surname;
         //document.getElementById("u2").value = lead[0].initials;
         document.getElementById("conTelNum").value = lead[0].contactNum;
-        document.getElementById("conAltNum").value = leadr[0].altNumber;
-        document.getElementById("conCellNum").value = leadr[0].cellNumber;
-        document.getElementById("conEMail").value = leadr[0].eMail;
+        document.getElementById("conAltNum").value = lead[0].altNumber;
+        document.getElementById("conCellNum").value = lead[0].cellNumber;
+        document.getElementById("conEMail").value = lead[0].eMail;
         //document.getElementById("u5").value = lead[0].currentInsurer;
         //document.getElementById("u6").value = lead[0].previousInsurer;
         //document.getElementById("u6").value = lead[0].lineOfBusiness;
@@ -146,29 +145,29 @@ function leadOk() {
         document.getElementById("conBuildName").value = lead[0].contactLocation.buildingName;
         document.getElementById("conBuildFloor").value = lead[0].contactLocation.floor;
         document.getElementById("conBuildRoom").value = lead[0].contactLocation.room;
-        document.getElementById("conBoxPostcode").value = lead[0].postBox.postalCode;
+        document.getElementById("conBoxPostCode").value = lead[0].postBox.postalCode;
         document.getElementById("conBoxNum").value = lead[0].postBox.boxNumber;
         //
         // Set contact days selected
         //
         for (var x = 0, z = lead[0].contactPref.contactDay.length; x < z; x++) {
-          console.log(">>> Contact day: ", x, contactPref.contactDay[x]);
-          if (services[i].types[x] === "monday") {
+          console.log(">>> Contact day: ", x, lead[0].contactPref.contactDay[x]);
+          if (lead[0].contactPref.contactDay[x] === "Monday") {
             document.getElementById("monday").checked = true;
           }
-          if (services[i].types[x] === "tuesday") {
+          if (lead[0].contactPref.contactDay[x] === "Tuesday") {
             document.getElementById("tuesday").checked = true;
           }
-          if (services[i].types[x] === "wednesday") {
+          if (lead[0].contactPref.contactDay[x] === "Wednesday") {
             document.getElementById("wednesday").checked = true;
           }
-          if (services[i].types[x] === "thursday") {
+          if (lead[0].contactPref.contactDay[x] === "Thursday") {
             document.getElementById("thursday").checked = true;
           }
-          if (services[i].types[x] === "friday") {
+          if (lead[0].contactPref.contactDay[x] === "Friday") {
             document.getElementById("friday").checked = true;
           }
-          if (services[i].types[x] === "saturday") {
+          if (lead[0].contactPref.contactDay[x] === "Saturday") {
             document.getElementById("saturday").checked = true;
           }
         }
@@ -183,7 +182,8 @@ function leadOk() {
         //
         // Extract cover required
         //            
-        var services = user[0].services;
+        var services = lead[0].services;
+        var pServ;
         //
         // Create cover required display text  
         //
@@ -199,6 +199,8 @@ function leadOk() {
               console.log(">>> Services Detail: ", x, services[i].types[x]);
               pServ = pServ + " " + services[i].types[x];
             }
+            console.log(">>> Services List: ", pServ);
+            document.getElementById("pl").innerHTML = pServ;
             document.getElementById('pl').style.display = 'block';
           }
   
@@ -211,6 +213,8 @@ function leadOk() {
               console.log(">>> Services Detail: ", x, services[i].types[x]);
               pServ = pServ + " " + services[i].types[x];
             }
+            console.log(">>> Services List: ", pServ);
+            document.getElementById("cl").innerHTML = pServ;
             document.getElementById('cl').style.display = 'block';
           }
   
@@ -218,11 +222,13 @@ function leadOk() {
             //
             // Build commercial lines service request text
             //
-            pServ = "Commercial:";
+            pServ = "Sasria:";
             for (var x = 0, z = services[i].types.length; x < z; x++) {
               console.log(">>> Services Detail: ", x, services[i].types[x]);
               pServ = pServ + " " + services[i].types[x];
             }
+            console.log(">>> Services List: ", pServ);
+            document.getElementById("sl").innerHTML = pServ;
             document.getElementById('sl').style.display = 'block';
           }
   
@@ -230,11 +236,13 @@ function leadOk() {
             //
             // Build commercial lines service request text
             //
-            pServ = "Commercial:";
+            pServ = "Agriculture:";
             for (var x = 0, z = services[i].types.length; x < z; x++) {
-              console.log(">>> Services Detail: ", x, services[i].types[x]);
-              pServ = pServ + " " + services[i].types[x];
+              console.log(">>> Services Item: ", x, services[i].types[x]);
+              pServ = pServ + " " + services[i].types[x];              
             }
+            console.log(">>> Services List: ", pServ);
+            document.getElementById("al").innerHTML = pServ;
             document.getElementById('al').style.display = 'block';
           }
   
@@ -242,17 +250,19 @@ function leadOk() {
             //
             // Build commercial lines service request text
             //
-            pServ = "Commercial:";
+            pServ = "Specialist:";
             for (var x = 0, z = services[i].types.length; x < z; x++) {
               console.log(">>> Services Detail: ", x, services[i].types[x]);
-              pServ = pServ + " " + services[i].types[x];
+              pServ = pServ + " " + services[i].types[x];              
             }
+            console.log(">>> Services List: ", pServ);
+            document.getElementById("xl").innerHTML = pServ;
             document.getElementById('xl').style.display = 'block';
           }
-          document.getElementById("u6").value = lead[0].comments.Comment1;
-          document.getElementById("u6").value = lead[0].comments.Comment2;
-          document.getElementById("u6").value = lead[0].comments.Comment3;
-          document.getElementById("u6").value = lead[0].comments.Comment4;
+          document.getElementById("contactComment").value = lead[0].comments.comment1;
+          document.getElementById("serviceComment").value = lead[0].comments.comment2;
+          document.getElementById("u6").value = lead[0].comments.comment3;
+          document.getElementById("u6").value = lead[0].comments.comment4;
         }
       }
       else {

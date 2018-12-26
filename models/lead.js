@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var saveEvent = require('../middleware/emitter');
 
 var LeadSchema = new mongoose.Schema({
-  //reference: {
-  //  type: String,
-  //  required: true,
+  reference: {
+    type: String,
+  //  required: false,
   //  unique: true,
-  //},
+  },
   langPref: {
     type: String,
     required: true,
@@ -214,6 +214,42 @@ var LeadSchema = new mongoose.Schema({
   }
 },
 {timestamps: true});
+
+// function generateReference() {
+//   var date = new Date();
+//   var yr = date.getFullYear();
+//   var mh = date.getMonth() + 1;
+//   var sd = date.getSeconds();
+//   var md = date.getMilliseconds();
+//   var rdm = Math.floor(Math.random() * (100 - 0 + 1) ) + 0;
+//   var pmh = mh.toString().padStart(2, '0');
+//   var psd = sd.toString().padStart(2, '0');
+//   var pmd = md.toString().padStart(3, '0');
+//   var pr = rdm.toString().padStart(3, '0');
+//   return yr.toString() + pmh.toString() + "-" + psd + pmd + pr;
+// }
+
+LeadSchema.pre('save', function (next) {
+  if (!this.reference) {
+    // this.reference = generateReference();
+    var date = new Date();
+    //var yr = date.getFullYear();
+    //var mh = date.getMonth() + 1;
+    var sd = date.getSeconds();
+    var md = date.getMilliseconds();
+    var rdm = Math.floor(Math.random() * (100 - 0 + 1) ) + 0;
+    //var pmh = mh.toString().padStart(2, '0');
+    var psd = sd.toString().padStart(2, '0');
+    var pmd = md.toString().padStart(3, '0');
+    var pr = rdm.toString().padStart(3, '0');
+    //this.reference = yr.toString() + pmh.toString() + "-" + psd + pmd + pr;
+    this.reference = psd + "-" + pmd + "-" + pr;
+    next();
+  } 
+  else {
+    next();
+  }
+});
 
 LeadSchema.post('save', function () {
   var lead = this;

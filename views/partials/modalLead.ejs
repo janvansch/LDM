@@ -1,24 +1,35 @@
 <fieldset>
-  <legend>Contact Information</legend>
+  <legend>Contact Information:</legend>
   <% include ./contact %>
 </fieldset>
 <br/>
-<strong>Cover Required:</strong>
-<hr/>
-<ul>
-  <li id="pl" style="display:block">Personal: none</li>
-  <li id="cl" style="display:none">Commercial: none</li>
-  <li id="sl" style="display:none">Sasria: none</li>
-  <li id="al" style="display:none">Agriculture: none</li>
-  <li id="xl" style="display:none">Specialist: none</li>
-</ul> 
+<fieldset>
+  <legend>Cover Required:</legend>
+  <ul>
+    <li id="pl" style="display:block">Personal: none</li>
+    <li id="cl" style="display:none">Commercial: none</li>
+    <li id="sl" style="display:none">Sasria: none</li>
+    <li id="al" style="display:none">Agriculture: none</li>
+    <li id="xl" style="display:none">Specialist: none</li>
+  </ul>
+</fieldset>
+<br/>
 <label for="serviceComment">
   Service Comment:
   <textarea id="serviceComment" name="comment2"></textarea>
 </label>
 <hr/>
 
-<div id="updateUserButtons">
+<div id="updateLeadButtons">
+  <input id="leadModal" type="button" value="Update" onclick="updateLead()"/>
+</div>
+
+<div id="practiceLeadButtons">
   <input id="leadModal" type="button" value="Assign/Re-assign Lead" onclick="assignLead()"/>
-  <input id="leadModal" type="button" value="Reject Lead" onclick="rejectLead()"/>
+  <input id="leadModal" type="button" value="Reject Lead" onclick="rejectLead('P')"/>
+</div>
+
+<div id="adviserLeadButtons">
+  <input id="leadModal" type="button" value="Assign/Re-assign Lead" onclick="updateLead()"/>
+  <input id="leadModal" type="button" value="Reject Lead" onclick="rejectLead('A')"/>
 </div>
