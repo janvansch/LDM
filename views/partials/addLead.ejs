@@ -1,0 +1,91 @@
+<h3>Capture Lead Information</h3>
+<p id="approval-msg" class="intense">
+  You cannot register a lead without the customer's concent!
+  <br/>
+  Do you confirm that the customer understands and agrees
+  to follow-up contact from an accredited Tied Adviser?
+  <label for="trfYes">
+    <input id="trfYes" type="radio" name="trfYN" onclick="javascript:leadOk();"/>
+    Yes
+  </label>
+  <label for="trfNo">
+    <input id="trfNo" type="radio" name="trfYN" onclick="javascript:leadOk();"/>
+    No
+  </label>
+</p>
+
+<!-- Client has not approved -->
+<div id="noForm" style="display:none">
+  <p class="warning">
+    You must have the customer's approval to register a lead!
+  </p>
+</div>
+
+<!-- Client has approved -->
+<div id="yesForm" style="display:none">
+  <form id="addLeadForm">
+    <fieldset>
+      <legend>Client</legend>
+      <% include ./client %>
+    </fieldset>
+    <!-- Get contact information -->
+    <fieldset>
+      <legend>Contact Information</legend>
+      <% include ./contact %>
+    </fieldset>
+    <!-- Get insurance line -->
+    <span class="intense">Service Required*</span>
+    <fieldset>
+      <legend>Select insurance line</legend>
+      <% include ./insuranceLines %>
+    </fieldset>
+    <!-- Personnal Line Insurance Type Selection -->
+    <div id="ifPersonal" style="display:none">
+      <fieldset>
+        <legend>Select type of personal insurance cover</legend>
+        <% include ./typePersonal %>
+      </fieldset>
+    </div>
+    <!-- Commercial Line Insurance Type Selection -->
+    <div id="ifCommercial" style="display:none">
+      <fieldset>
+        <legend>Select type of commercial insurance cover</legend>
+        <% include ./typeCommercial %>
+      </fieldset>
+    </div>
+    <!-- SASRIA Line Insurance Type Selection -->
+    <div id="ifSasria" style="display:none">
+      <fieldset>
+        <legend>Select type of cover</legend>
+        <% include ./typeSasria %>
+      </fieldset>
+    </div>
+    <!-- Agriculture Line Insurance Type Selection -->
+    <div id="ifAgriculture" style="display:none">
+      <fieldset>
+        <legend>Select type of agricultural insurance cover</legend>
+        <% include ./typeAgri %>
+      </fieldset>
+    </div>
+    <!-- Specialist Line Insurance Type Selection -->
+    <div id="ifSpecialist" style="display:none">
+      <fieldset>
+        <legend>Type of Specialist Insurance Cover</legend>
+        <% include ./typeSpecialist %>
+      </fieldset>
+    </div>
+    <div id="ServiceComment" style="display:none">
+      <br/>
+      <label for="serviceComment">
+        Service Comment:
+        <textarea id="serviceComment" name="comment2">
+        </textarea>
+      </label>
+    </div>
+  </form>
+  <br/>
+  <button onclick="submitLead()">Submit Lead</button>
+  <button onclick="resetForm()">Cancel</button>
+</div>
+<!-- Place holder for error message -->
+<div id="leadErr"></div>

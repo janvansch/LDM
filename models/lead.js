@@ -4,12 +4,35 @@ var saveEvent = require('../middleware/emitter');
 var LeadSchema = new mongoose.Schema({
   reference: {
     type: String,
-  //  required: false,
-  //  unique: true,
+    required: false,
+    unique: true,
   },
   langPref: {
     type: String,
     required: true,
+    trim: true
+  },
+  entity: {
+    entType: {
+      type: String,
+      //required: true,
+      trim: true
+    },
+    entRefNum: {
+      type: String,
+      //required: false,
+      trim: true
+    },
+  },
+  entityName: {
+    type: String,
+    required: false,
+    default: null,
+    trim: true
+  },
+  lineOfBusiness: {
+    type: String,
+    default: null,
     trim: true
   },
   title: {
@@ -25,11 +48,6 @@ var LeadSchema = new mongoose.Schema({
   surname: {
     type: String,
     required: true,
-    trim: true
-  },
-  initials: {
-    type: String,
-    required: false,
     trim: true
   },
   contactNum: {
@@ -54,7 +72,7 @@ var LeadSchema = new mongoose.Schema({
   },
   agentApproval: {
     type: String,
-    required: false
+    required: true
   },
   currentInsurer: {
     type: String,
@@ -62,11 +80,6 @@ var LeadSchema = new mongoose.Schema({
   },
   previousInsured: {
     // returning customer
-    type: String,
-    default: null,
-    trim: true
-  },
-  lineOfBusiness: {
     type: String,
     default: null,
     trim: true
@@ -214,20 +227,6 @@ var LeadSchema = new mongoose.Schema({
   }
 },
 {timestamps: true});
-
-// function generateReference() {
-//   var date = new Date();
-//   var yr = date.getFullYear();
-//   var mh = date.getMonth() + 1;
-//   var sd = date.getSeconds();
-//   var md = date.getMilliseconds();
-//   var rdm = Math.floor(Math.random() * (100 - 0 + 1) ) + 0;
-//   var pmh = mh.toString().padStart(2, '0');
-//   var psd = sd.toString().padStart(2, '0');
-//   var pmd = md.toString().padStart(3, '0');
-//   var pr = rdm.toString().padStart(3, '0');
-//   return yr.toString() + pmh.toString() + "-" + psd + pmd + pr;
-// }
 
 LeadSchema.pre('save', function (next) {
   if (!this.reference) {

@@ -1,87 +1,46 @@
-<h2>Capture Lead Information</h2>
-<p id="approval-msg" class="intense">
-  You cannot register a lead without the customer's concent!
-  <br/>
-  Do you confirm that the customer understands and agrees
-  to follow-up contact from an accredited Tied Adviser?
-  <label for="trfYes">
-    <input id="trfYes" type="radio" name="trfYes" onclick="javascript:leadOk();"/>
-    Yes
-  </label>
-  <label for="trfNo">
-    <input id="trfNo" type="radio" name="trfNo" onclick="javascript:leadOk();"/>
-    No
-  </label>
-</p>
-
-<!-- Client has not approved -->
-<div id="noForm" style="display:none">
-  <p class="warning">
-    You must have the customer's approval to register a lead!
-  </p>
+<!--
+<h2 id="viewLeadHead">Leads View</h2>
+-->
+<!--
+======================
+=== Add Lead Panel ===
+======================
+-->
+<div id=panelAddLead style="display:none">
+  <% include ./addLead %>
 </div>
 
-<!-- Client has approved -->
-<div id="yesForm" style="display:none">
-  <form>
-    <!-- Get contact information -->
-    <fieldset>
-      <legend>Contact Information</legend>
-      <% include ./contact %>
-    </fieldset>
-    <!-- Get insurance line -->
-    <span class="intense">Service Required*</span>
-    <fieldset>
-      <legend>Select insurance line</legend>
-      <% include ./insuranceLines %>
-    </fieldset>
-    <!-- Personnal Line Insurance Type Selection -->
-    <div id="ifPersonal" style="display:none">
-      <fieldset>
-        <legend>Select type of personal insurance cover</legend>
-        <% include ./typePersonal %>
-      </fieldset>
-    </div>
-    <!-- Commercial Line Insurance Type Selection -->
-    <div id="ifCommercial" style="display:none">
-      <fieldset>
-        <legend>Select type of commercial insurance cover</legend>
-        <% include ./typeCommercial %>
-      </fieldset>
-    </div>
-    <!-- SASRIA Line Insurance Type Selection -->
-    <div id="ifSasria" style="display:none">
-      <fieldset>
-        <legend>Select type of cover</legend>
-        <% include ./typeSasria %>
-      </fieldset>
-    </div>
-    <!-- Agriculture Line Insurance Type Selection -->
-    <div id="ifAgriculture" style="display:none">
-      <fieldset>
-        <legend>Select type of agricultural insurance cover</legend>
-        <% include ./typeAgri %>
-      </fieldset>
-    </div>
-    <!-- Specialist Line Insurance Type Selection -->
-    <div id="ifSpecialist" style="display:none">
-      <fieldset>
-        <legend>Type of Specialist Insurance Cover</legend>
-        <% include ./typeSpecialist %>
-      </fieldset>
-    </div>
-    <div id="ServiceComment" style="display:none">
-      <br/>
-      <label for="serviceComment">
-        Service Comment:
-        <textarea id="serviceComment" name="comment2">
-        </textarea>
-      </label>
-    </div>
-  </form>
+<!--
+========================
+=== View Leads Panel ===
+========================
+-->
+<div id=panelViewLead style="display:none">
+  <h3 id="title5">View Lead</h3>
+  <hr/>
+  <div id="lead-selector">
+    <b>Selection Criteria:</b>
+    <br/>
+    Lead Ref No.
+    <input type="text" id="view-lead-ref-no" placeholder="Lead Ref No." title="Lead Ref No.">
+    Contact Surname
+    <input type="text" id="view-lead-con-surname" placeholder="Contact Surname" title="Contact Surname">
+    Contact Name
+    <input type="text" id="view-lead-con-name" placeholder="Contact Name" title="Contact Name">
+    <br/>
+    Entity Name
+    <input type="text" id="view-lead-org-name" placeholder="Organisation Name" title="Organisation Name">
+    ID/Registration Number
+    <input type="text" id="view-lead-ref-id" placeholder="ID/Registration No." title="ID/Registration Nunmber">
+    <input id="find-lead-btn" type="button" value="Find" onclick="findLead()"/>
+  </div>
   <br/>
-  <button onclick="submitLead()">Submit Lead</button>
-  <button onclick="resetForm()">Cancel</button>
+  <b>Result:</b>
+  <br/>
+  <hr/>
+  <div id="tPos5">
+    Place holder for the display of Leads
+    <!-- Place holder to display a list of Leads -->
+  </div>
+  <hr/>
 </div>
-<!-- Place holder for error message -->
-<div id="leadErr"></div>

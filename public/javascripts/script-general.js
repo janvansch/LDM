@@ -1,7 +1,5 @@
 "use strict";
 
-
-
 // ==============================================================================
 //  Global modal controls (source: w3schools)
 // ==============================================================================
@@ -17,6 +15,7 @@ var span = document.getElementsByClassName("close")[0];
 //btn.onclick = function() {
 //    modal.style.display = "block";
 //}
+
 // -----------------------------------------------------
 //  When the user clicks on <span> (x), close the modal
 // -----------------------------------------------------
@@ -47,6 +46,7 @@ span.onclick = function() {
   //
   modal.style.display = "none";
 }
+
 // --------------------------------------------------------------
 //  When the user clicks anywhere outside of the modal, close it
 // --------------------------------------------------------------
@@ -79,6 +79,7 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
 // ==============================================================================
 //  Initiate views
 // ==============================================================================
@@ -112,7 +113,6 @@ function toggleView(viewID){
   }
   console.log(`---> ${viewID} is ${state}`);
 }
-
 
 // ==============================================================================
 //  Login 
@@ -228,7 +228,7 @@ function openRoleView(user) {
   else if (userRole==="D"){
     toggleView("viewLead");
     toggleView("navLead");
-    //navSetup("D", userId, userId);
+    navSetup("D", userId, userId);
   }
   else {
     console.log(`>>> Error - No role defined!
@@ -237,6 +237,7 @@ function openRoleView(user) {
       Practice Code: ${userPracCode}`);
   }
 }
+
 // -------------------------------
 //  Setup view navigation options 
 // -------------------------------
@@ -260,7 +261,7 @@ function navSetup(menuType, user, data) {
     //    
     var menuName = ".navOptPrac";
     const opt0Func = function(){ profile(user); };
-    const opt1Func = function(){ listLeads(data); };
+    const opt1Func = function(){ listPracLeads(data); };
     const opt2Func = function(){ listAdvisers(data); };
     var optFunc = [opt0Func, opt1Func, opt2Func];
   }
@@ -280,8 +281,8 @@ function navSetup(menuType, user, data) {
     //
     var menuName = ".navOptLead";
     const opt0Func = function(){ profile(user); };
-    const opt1Func = function(){ addLeads(); };
-    const opt2Func = function(){ listLeads(); };
+    const opt1Func = function(){ addLead(); };
+    const opt2Func = function(){ selectLead(); };
     var optFunc = [opt0Func, opt1Func, opt2Func]; 
   }
   //
@@ -341,11 +342,10 @@ function navSetup(menuType, user, data) {
 //   filterTable(tableId, filterObj);
 // }
 
-//
-// ==================================================================================
+// =============================================================================
 //  Utilities - Table Display Functions 
-// ==================================================================================
-//
+// =============================================================================
+
 // ----------------------------------
 //  Create table and display content
 // ----------------------------------
@@ -480,7 +480,7 @@ function addRowHandlers(id) {
 function readLayout(definitionId) {
   switch (definitionId) {
     case '0':
-      console.log("List Layout: 0 (Users)");
+      console.log("List Layout: 0 (Admin Users)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
@@ -493,7 +493,7 @@ function readLayout(definitionId) {
       ;
     break;
     case '1':
-      console.log("List Layout: 1 (Leads)");
+      console.log("List Layout: 1 (Practice Leads)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "reference" , "label" : "Ref No." },' +
         '{ "fname" : "status" , "label" : "Status" },' +
@@ -513,28 +513,8 @@ function readLayout(definitionId) {
         ']}'
       ;
     break;
-    case '11':
-      console.log("List Layout: 1 (Leads)");
-      var layoutDef = '{ "definition" : [' +
-        '{ "fname" : "reference" , "label" : "Ref No." },' +
-        '{ "fname" : "status" , "label" : "Status" },' +
-        '{ "fname" : "firstName" , "label" : "First Name" },' +
-        '{ "fname" : "surname" , "label" : "Surname" },' +
-        '{ "fname" : "langPref" , "label" : "Language" },' +
-        //'{ "fname" : "contactNum" , "label" : "Contact #" },' +
-        //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
-        //'{ "fname" : "cellNumber" , "label" : "Cell #" },' +
-        //'{ "fname" : "eMail" , "label" : "eMail" },' +
-        '{ "fname" : "postal" , "label" : "Postal" },' +
-        '{ "fname" : "suburb" , "label" : "Suburb" },' +
-        '{ "fname" : "service" , "label" : "Service Required" },' +
-        '{ "fname" : "comment1" , "label" : "Comment" },' +
-        '{ "fname" : "comment2" , "label" : "Service Comment" }' +
-        ']}'
-      ;
-    break;
     case '2':
-      console.log("List Layout: 2 (Practices)");
+      console.log("List Layout: 2 (Admin Practices)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "pracCode" , "label" : "Code" },' +
         '{ "fname" : "pracName" , "label" : "Name" },' +
@@ -555,7 +535,7 @@ function readLayout(definitionId) {
       ;
     break;
     case '3':
-      console.log("List Layout: 3 (Advisers)");
+      console.log("List Layout: 3 (Practice Advisers)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
@@ -567,19 +547,65 @@ function readLayout(definitionId) {
         ']}'
       ;
     break;
+    case '4':
+      console.log("List Layout: 4 (Adviser Leads)");
+      var layoutDef = '{ "definition" : [' +
+        '{ "fname" : "reference" , "label" : "Ref No." },' +
+        '{ "fname" : "status" , "label" : "Status" },' +
+        '{ "fname" : "firstName" , "label" : "First Name" },' +
+        '{ "fname" : "surname" , "label" : "Surname" },' +
+        '{ "fname" : "langPref" , "label" : "Language" },' +
+        //'{ "fname" : "contactNum" , "label" : "Contact #" },' +
+        //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        //'{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        //'{ "fname" : "eMail" , "label" : "eMail" },' +
+        '{ "fname" : "postal" , "label" : "Postal" },' +
+        '{ "fname" : "suburb" , "label" : "Suburb" },' +
+        '{ "fname" : "service" , "label" : "Service Required" },' +
+        '{ "fname" : "comment1" , "label" : "Comment" },' +
+        '{ "fname" : "comment2" , "label" : "Service Comment" }' +
+        //
+        // Change:
+        //    Remove comments. Create function to only display
+        //    last comment made by adviser on the lead.
+        //
+        ']}'
+      ;
+    break;
+    case '5':
+      console.log("List Layout: 5 (Leads)");
+      var layoutDef = '{ "definition" : [' +
+        '{ "fname" : "reference" , "label" : "Ref No." },' +
+        '{ "fname" : "status" , "label" : "Status" },' +
+        '{ "fname" : "firstName" , "label" : "First Name" },' +
+        '{ "fname" : "surname" , "label" : "Surname" },' +
+        '{ "fname" : "langPref" , "label" : "Language" },' +
+        '{ "fname" : "contactNum" , "label" : "Contact #" },' +
+        '{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        '{ "fname" : "eMail" , "label" : "eMail" },' +
+        '{ "fname" : "postal" , "label" : "Postal" },' +
+        '{ "fname" : "suburb" , "label" : "Suburb" },' +
+        '{ "fname" : "service" , "label" : "Service Required" }' +
+        //'{ "fname" : "comment1" , "label" : "Comment" },' +
+        //'{ "fname" : "comment2" , "label" : "Service Comment" }' +
+        ']}'
+      ;
+    break;
   }
   // console.log("Definition set: ", jText);
   var layout = JSON.parse(layoutDef); // convert JSON text into JS object
   // console.log("JSON Definition: ", layout);
   return layout;
 }
+
 // --------------------------
 //  Table Filter definitions
 // --------------------------
 function filterDef(filterId) {
   switch (filterId) {
     case '1':
-      console.log("Filter Definition: 1 (Practice Lead List)");
+      console.log("Filter Definition: 1 (Practice Leads Filter)");
       var filterDef = '{ "definition" : [' +
         '{ "tableCol" : 0 , "valueId" : "prac-lead-ref-filter" },' +
         '{ "tableCol" : 1 , "valueId" : "prac-lead-status-filter" },' +
@@ -588,15 +614,22 @@ function filterDef(filterId) {
       ;
     break;
     case '2':
-      console.log("Filter Definition: 2 (Admin Practices List)");
-    break; 
+      console.log("Filter Definition: 2 (Admin Practices Filter)");
+    break;
+    case '5':
+      console.log("Filter Definition: 5 (Leads View Filter)");
+      var filterDef = '{ "definition" : [' +
+        '{ "tableCol" : 0 , "valueId" : "leads-ref-filter" },' +
+        '{ "tableCol" : 1 , "valueId" : "leads-bussName-filter" },' +
+        '{ "tableCol" : 8 , "valueId" : "leads-contName-filter" }' +
+        '{ "tableCol" : 8 , "valueId" : "leads-contSurname-filter" }' +
+        '{ "tableCol" : 8 , "valueId" : "leads-contNumb-filter" }' +
+        '{ "tableCol" : 8 , "valueId" : "leads-refID-filter" }' +       
+        ']}'
+      ;
+      break; 
   }
   var filter = JSON.parse(filterDef); // convert JSON text into JS object
   console.log("JSON Definition: ", filter);
   return filter;
 }
-
-
-
-
-

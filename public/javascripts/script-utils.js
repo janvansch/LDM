@@ -26,6 +26,7 @@ function filterTable(tableId, filterId) {
       criteria[x] = colFilter[i];
       console.log("---> Filter values 0:", cols[x], criteria[x]);
       x++;
+			console.log("​filterTable -> x", x)
     }
   }
   //
@@ -52,45 +53,10 @@ function filterTable(tableId, filterId) {
   }
 }
 
-// // ====================================
-// //  Filter table rows by column values
-// // ====================================
-// function filterTable(tableId, filterObj) {
-//   //
-//   // filterObj is an object defined as follows:
-//   //  {
-//   //    cols : [array of column numbers], 
-//   //    criteria : [array of search values for each column]
-//   //  }
-//   const filterColumns = filterObj.cols;
-//   console.log(">>> Filter Columns: ", filterColumns);
-//   const filterCriteria = filterObj.criteria;
-//   console.log(">>> Filter Criteria: ", filterCriteria);
-//   const table = document.getElementById(tableId);
-//   var tr = table.getElementsByTagName("tr");
-//   var td = [], i, j, txtValue;
-//   for (i = 1; i < tr.length; i++) {
-//     tr[i].style.display = "";
-//     if (filterColumns.length > 0) {  
-//       for (j = 0; j < filterColumns.length; j++) {
-//         td = tr[i].getElementsByTagName("td")[filterColumns[j]];
-//         console.log(">>> Cell: ", td);
-//         if (td) {
-//           txtValue = td.textContent || td.innerText;
-//           console.log(`>>> Cell content: ${txtValue} Filter criteria: ${filterCriteria[j]}`);
-//           if (txtValue.toUpperCase().indexOf(filterCriteria[j].toUpperCase()) === -1) {  
-//             tr[i].style.display = "none";
-//           }
-//         }
-//       }       
-//     }
-//   }
-// }
-
 // ===============================
 //  Utilities - Form Data Extract
 // ===============================
-//
+
 // -------------------------------------------------------------
 //  Return values of specified element type from specified form
 // -------------------------------------------------------------
@@ -129,6 +95,7 @@ function extractFormData(form, formElement, inputType) {
       return myData;
     }
   }
+
   // ----------------------------------------------------------
   //  Return the values of the checked checkboxes in the group
   // ----------------------------------------------------------
@@ -147,6 +114,7 @@ function extractFormData(form, formElement, inputType) {
     }
     return checked;
   }
+
   // ------------------------------------------------
   //  Return the value of the selected radio buttons
   // ------------------------------------------------
@@ -165,6 +133,7 @@ function extractFormData(form, formElement, inputType) {
     }
     return rData;
   }
+
   // --------------------------
   //  Reset the specified form
   // --------------------------
@@ -185,13 +154,14 @@ function xhrRequest(method, route, contentType, request, callback) {
       console.log("<<< ERROR - the callback is not a function >>>");
     }
     else {
-      if (window.XMLHttpRequest) {
-        var xhr = new XMLHttpRequest();
-      }
-      else {
-        // code for IE6, IE5
-        var xhr = new ActiveXObject("Microsoft.XMLHTTP");
-      }
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+      // if (window.XMLHttpRequest) {
+      //   var xhr = new XMLHttpRequest();
+      // }
+      // else {
+      //   // code for IE6, IE5
+      //   var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+      // }
       xhr.onreadystatechange = function() {
         // Monitor request progress
         console.log("Ready state:", xhr.readyState);
@@ -216,9 +186,21 @@ function xhrRequest(method, route, contentType, request, callback) {
         }
       }
       //Request transact data from server
-      xhr.open(method, route);
+      method === "GET" ? xhr.open(method, route + request) : xhr.open(method, route);
+      // if (method === "GET") {
+      //   xhr.open(method, route + request);
+      // }
+      // else {
+      //   xhr.open(method, route);
+      // }
       xhr.setRequestHeader("Content-type", contentType);
-      xhr.send(request);
+      method === "GET" ? xhr.send() : xhr.send(request);
+      // if (method === "GET") {
+      //   xhr.send();
+      // }
+      // else {
+      //   xhr.send(request);
+      // }
     }
   }
 
@@ -250,6 +232,7 @@ function resetform(form) {
          document.forms[0].elements[i].disabled = false;
       }
   }
+
   // ---------------------------------
   //  Highlight a row/cell in a table
   // ---------------------------------
@@ -264,12 +247,14 @@ function resetform(form) {
           // tableRow.style.backgroundColor = 'white';
       }
   }
+
   // -------------------------------
   //  Test if data item is a string
   // -------------------------------
   function isString(o) {
       return typeof o == "string" || (typeof o == "object" && o.constructor === String);
   }
+  
   // -------------------------------
   //  Test if data item is a string
   // -------------------------------

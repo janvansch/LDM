@@ -79,8 +79,7 @@ router.post('/update', async (req, res) => {
     console.log(">>> Practice body: ", body);
     console.log(">>> Practice Area: ", body.area);
     await Practice.findOneAndUpdate(
-      { pracCode: body.pracCode 
-      },
+      { pracCode: body.pracCode },
       {
         'pracCode' : body.pracCode,
         'pracName' : body.pracName,
