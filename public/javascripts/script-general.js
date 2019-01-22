@@ -42,6 +42,15 @@ span.onclick = function() {
   var table = document.getElementById("tablePCode");
   table.innerHTML = "<tr> </tr>";
   //
+  // Clear lead View Form
+  //  
+  resetform("formLead");
+  document.getElementById('pl').style.display = 'none';
+  document.getElementById('cl').style.display = 'none';
+  document.getElementById('sl').style.display = 'none';
+  document.getElementById('al').style.display = 'none';
+  document.getElementById('xl').style.display = 'none';
+  //
   // Close modal display
   //
   modal.style.display = "none";
@@ -73,6 +82,16 @@ window.onclick = function(event) {
     //
     var table = document.getElementById("tablePCode");
     table.innerHTML = "<tr> </tr>";
+    //
+    // Clear lead View Form
+    //  
+    resetform("formLead");
+    document.getElementById('pl').style.display = 'none';
+    document.getElementById('cl').style.display = 'none';
+    document.getElementById('sl').style.display = 'none';
+    document.getElementById('al').style.display = 'none';
+    document.getElementById('xl').style.display = 'none';
+    
     //
     // Close modal display
     //
@@ -441,13 +460,13 @@ function displayData(content, title, layoutId) {
 // -----------------------------
 function addRowHandlers(id) {
   console.log("<<< Start adding Row Handlers >>>");
-  console.log("---> Table Id: ", id);
+  //console.log("---> Table Id: ", id);
   var elementId = "table" + id;
-  console.log("---> Element Id: ", elementId);
+  //console.log("---> Element Id: ", elementId);
   var rows = document.getElementById(elementId).rows;
   var rowCount = document.getElementById(elementId).rows.length;
-  console.log("---> Table Rows - number: ", rowCount);
-  console.log("---> Table Rows - detail: ", rows);
+  //console.log("---> Table Rows - number: ", rowCount);
+  //console.log("---> Table Rows - detail: ", rows);
   //
   // Add row function as required for dtype of list
   //
@@ -465,6 +484,11 @@ function addRowHandlers(id) {
     // practice list
     var rowFunc = function(){ displayPractice(this.cells[0].innerHTML); };
     // cells[0] = practice code
+  }
+  if (id === "5"){
+    // lead list
+    var rowFunc = function(){ displayLead(this.cells[0].innerHTML); };
+    // cells[0] = lead reference
   }
   for (var i = 1; i < rowCount; i++) {
       // ignore header, row 0
@@ -579,11 +603,13 @@ function readLayout(definitionId) {
         '{ "fname" : "status" , "label" : "Status" },' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
-        '{ "fname" : "langPref" , "label" : "Language" },' +
+        '{ "fname" : "entityRefNum" , "label" : "ID/Reg Num" },' +
+        '{ "fname" : "entityName" , "label" : "Org Name" },' +
+        //'{ "fname" : "langPref" , "label" : "Language" },' +
         '{ "fname" : "contactNum" , "label" : "Contact #" },' +
-        '{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
         '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
-        '{ "fname" : "eMail" , "label" : "eMail" },' +
+        //'{ "fname" : "eMail" , "label" : "eMail" },' +
         '{ "fname" : "postal" , "label" : "Postal" },' +
         '{ "fname" : "suburb" , "label" : "Suburb" },' +
         '{ "fname" : "service" , "label" : "Service Required" }' +

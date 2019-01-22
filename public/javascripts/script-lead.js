@@ -115,9 +115,9 @@ function line() {
   document.getElementById('ServiceComment').style.display = 'block';
 }
 
-// -------------------------
-//  Display subset of leads 
-// -------------------------
+// --------------------------------------------------------------
+//  Extract & Display a subset of leads based on search criteria 
+// --------------------------------------------------------------
 function findLead() {
   //
   // Extract selection criteria data
@@ -186,10 +186,10 @@ function displayLead(leadRef) {
   // var modal = document.getElementById('modalBox');
   modal.style.display = "block";
   //
-  // Display user form
+  // Display lead
   //
   document.getElementById("displayLead").style.display = 'block';
-  document.getElementById("modal-header-text").innerHTML = "Selected Lead's Detail - Update/Delete";
+  document.getElementById("modal-header-text").innerHTML = "Detail for lead: " + leadRef;
   document.getElementById("updateLeadButtons").style.display = "block";
   
   //
@@ -382,41 +382,111 @@ function displayLead(leadRef) {
   });
 }
 
-// --------------------------
-//  Send lead data to server
-// --------------------------
+// ------------------------------
+//  Send new lead data to server
+// ------------------------------
 function submitLead() {
-  console.log("*** Submit Lead Function ***");
+  console.log("*** Add Lead ***");
+  var leadData = leadData("ADD");
+  var dataString = JSON.stringify(leadData);
+  console.log("---> Data String: ", dataString);
+  var method = "POST";
+  var route = "/leads/add";
+  var contentType = "application/json";
   //
-  //  Extract Contact Data
+  //  Send Lead POST Request
   //
-  var leadData = document.getElementById("yesForm");
-  console.log("---> Lead Data: ", leadData);
+  xhrRequest(method, route, contentType, dataString, (err, result) => {
+    if (!err) {
+      var resBody = result.responseText;
+      document.getElementById("addLeadForm").reset();
+      //document.getElementById("coverForm").reset();
+    }
+    else {
+      var prompt = "Lead add submit error";
+      document.getElementById("leadErr").innerHTML = prompt;
+    }
+  });
+}
+
+// ---------------------------------
+//  Send lead update data to server
+// ---------------------------------
+function updateLead() {
+  console.log("*** Update Lead ***");
+  var leadData = getLeadData("UPDATE");
+  var dataString = JSON.stringify(leadData);
+  console.log("---> Update Data String: ", dataString);
+  var method = "POST";
+  var route = "/leads/update";
+  var contentType = "application/json";
+  //
+  //  Send Lead POST Request
+  //
+  xhrRequest(method, route, contentType, dataString, (err, result) => {
+    if (!err) {
+      //
+      // Clear form
+      document.getElementById("formLead").reset();
+      //
+      // Close form and modal
+      //
+      document.getElementById("formLead").style.display = 'none';
+      document.getElementById('pl').style.display = 'none';
+      document.getElementById('cl').style.display = 'none';
+      document.getElementById('sl').style.display = 'none';
+      document.getElementById('al').style.display = 'none';
+      document.getElementById('xl').style.display = 'none';
+      modal.style.display = "none";
+      //
+      // Update practice list
+      //
+      selectLead();
+    }
+    else {
+      var prompt = "Lead update submit error";
+      document.getElementById("leadErr").innerHTML = prompt;
+    }
+  });
+}
+
+// ----------------------------
+//  Extract lead data from DOM
+// ----------------------------
+function getLeadData(form){
+  //
+  //  Extract Lead Data from DOM
+  //
+  if (form === "ADD") {
+    console.log("*** Extract New Lead Data ***");
+    var leadData = document.getElementById("yesForm");
+  }
+  else {
+    console.log("*** Extract Lead Update Data ***");
+    var leadData = document.getElementById("formLead");
+  }
+  //console.log("---> Lead Data: ", leadData);
   var radioName = "";
   var formElement = "";
   var inputType = "";
-
   //
   // extract language preference
   //
   radioName = "langPref";
   var contactLanguage = getRadioCheckedValue(leadData, radioName);
   console.log("---> Language: ", contactLanguage);
-  
   //
   // extract entity type
   //
   radioName = "entity";
   var entType = getRadioCheckedValue(leadData, radioName);
   console.log("---> Entity Type: ", entType);
-
   //
   // extract previous insured status
   //
   radioName = "prevIns";
   var previousInsured = getRadioCheckedValue(leadData, radioName);
   console.log("---> Previously Insured: ", previousInsured);
-
   //
   // extract text data from contact form
   //
@@ -463,7 +533,7 @@ function submitLead() {
   }
   console.log("---> Before/After Time: ", contactTimeBA);
   //
-  // extract comment data from contact form
+  // extract contact comment
   //
   var formElement = "textarea";
   var contactComment = extractFormData(leadData, formElement);
@@ -569,23 +639,6 @@ function submitLead() {
     }
     //status: "Open"
   };
-  var dataString = JSON.stringify(leadData);
-  console.log("---> Data String: ", dataString);
-  var method = "POST";
-  var route = "/leads/add";
-  var contentType = "application/json";
-  //
-  //  Send Lead POST Request
-  //
-  xhrRequest(method, route, contentType, dataString, (err, result) => {
-    if (!err) {
-      var resBody = result.responseText;
-      document.getElementById("addLeadForm").reset();
-      //document.getElementById("coverForm").reset();
-    }
-    else {
-      var prompt = "Lead submit error";
-      document.getElementById("leadErr").innerHTML = prompt;
-    }
-  });
+  console.log("---> Data extracted: ", leadData);
+  return leadData;
 }

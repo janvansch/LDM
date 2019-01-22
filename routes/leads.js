@@ -87,43 +87,21 @@ router.post('/lead', async (req, res) => {
 // -----------------------------------
 //router.get('/search/:key', async (req, res) => {
 router.post('/search', async (req, res) => {
-  // extract GET parameters
-  //const criteria = req.params.key;
-  // const params = JSON.parse(req.params.key);
-  // extract POST parameters
-
-  const params = _.pick(req.body, [
-    'refNo',
-    'contactSurname',
-    'contactFirstName',
-    'entityName',
-    'entityRefNum'
-  ]);
-  
-  console.log("===> Request parameters: ", params);
-
- 
-  //const query = createQuery(params);
+  //
+  // Extract parameters and create query for find request
+  // Query allows for partial case insentive parameters
+  // 
   var query = {};
-    
-    if (params.refNo !== '') {
-        query["reference"] = params.refNo;
-    }
-    if (params.contactSurname !== '') {
-        query["surname"] = params.contactSurname;
-    }
-    if (params.contactFirstName !== '') {
-        query["firstName"] = params.contactFirstName;
-    }
-    if (params.entityName !== '') {
-        query["entityName"] = params.entityName;
-    }
-    if (params.entityRefNum !== '') {
-        query.entity = {};
-        query.entity.entRefNum = params.entityRefNum;
-    }
-    console.log("===> Search Query: ", query);
-  
+  var p = 0; 
+  var param = ["reference", "surname", "firstName", "entityName", "entity.entRefNum"];
+  for(var key in req.body){ //could also be req.query and req.params
+    req.body[key] !== "" ? query[param[p]] = {$regex: req.body[key], $options: 'i' }: null;
+    p++;
+  }
+  console.log("===> Search Query: ", query);
+  //
+  // Find Documents
+  //
   try {
     const leads = await Lead.find(
       query,
@@ -137,7 +115,7 @@ router.post('/search', async (req, res) => {
 
     console.log(">>> Data Returned: ", leads);
     //
-    // Format data for list display
+    // Create data set for client
     //
     var listData = [];
     for (var i = 0, j = leads.length; i < j; i++) {
@@ -161,11 +139,14 @@ router.post('/search', async (req, res) => {
           status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
           firstName : leads[i].firstName,
           surname : leads[i].surname,
-          langPref : leads[i].langPref,
+          // langPref : leads[i].langPref,
           contactNum : leads[i].contactNum,
-          altNumber : leads[i].altNumber,
+          // altNumber : leads[i].altNumber,
           cellNumber : leads[i].cellNumber,
-          eMail : leads[i].eMail,
+          // eMail : leads[i].eMail,
+          enityType : leads[i].entity.entType,
+          entityRefNum : leads[i].entity.entRefNum,
+          entityName : leads[i].entityName,
           postal : leads[i].contactLocation.postal,
           suburb : leads[i].contactLocation.suburb,
           service : lines
@@ -356,26 +337,98 @@ router.post('/assignAdviser', (req, res) => {
 //----------------------------------------
 //	Update Lead
 //----------------------------------------
-// router.post('/Update', async (req, res) => {
-//   try {
-//     const body = _.pick(req.body, [
-//       'firstname',
-//       'surname',
-// 	    'phone',
-// 	    'cell',
-// 	    'roleCode',
-// 	    'practiseCode',
-// 	    'email',
-//       'password'
-//     ]);
-//     const user = new User(body);
-//     await user.save();
-//     const token = await user.generateAuthToken();
-//     res.header('x-auth', token).send(user);
-//   }
-//   catch (e) {
-//     res.status(400).send(e);
-//   }
-// });
+router.post('/update', async (req, res) => {
+  console.log(">>> Request body and url: ", req.body, req.url);
+  try {
+    const body = _.pick(req.body, [
+      //'reference',
+      'langPref',
+      'entity',
+      'entityName',
+      'lineOfBusiness',
+      //'title',
+      'firstName',
+      'surname',
+      'contactNum',
+      'altNumber',
+      'cellNumber',
+      'eMail',
+      //'agentApproval',
+      'currentInsurer',
+      'previousInsured',
+      'contactLocation',
+      'postBox',
+      'contactPref',
+      'services',
+      'comments',
+      'allocatedPractice',
+      'assignedAdviser',
+      'statusHistory',
+      // stateHistory,
+      'outcome',
+      'policyNumber',
+      'who'
+    ]);
+    console.log("---> Update Data Received: ", body);
+    await Lead.findOneAndUpdate(
+      { reference: body.reference },
+      {
+        //'reference' : body.reference,
+        'langPref' : body.langPref,
+        'entity.entType' : body.entity.entType,
+        'entity.entRefNum' : body.entity.entRefNum,
+        'entityName' : body.entityName,
+        'lineOfBusiness': body.lineOfBusiness,
+        //title: ,
+        'firstName' : body.firstName,
+        'surname' : body.surname,
+        'contactNum' : body.contactNum,
+        'altNumber' : body.altNumber,
+        'cellNumber' : body.cellNumber,
+        'eMail': body.eMail,
+        //agentApproval: ,
+        'currentInsurer': body.currentInsurer,
+        'previousInsured' : body.previousInsured,
+        'contactLocation.postal' : body.contactLocation.postal,
+        'contactLocation.suburb': body.contactLocation.suburb,
+        'contactLocation.streetNum' : body.contactLocation.streetNum,
+        'contactLocation.streetName' : body.contactLocation.streetName,
+        'contactLocation.buildingName' : body.contactLocation.buildingName,
+        'contactLocation.floor' : body.contactLocation.floor,
+        'contactLocation.room' : body.contactLocation.room,
+        'postBox.postalCode' : body.postBox.postalCode,
+        'postBox.boxNumber' : body.postBox.boxNumber,
+        'contactPref.contactDay' : body.contactPref.contactDay,
+        'contactPref.time' : body.contactPref.time,
+        'contactPref.timeBA' : body.contactPref.timeBA,
+        'services.line' : body.line,
+        'services.types' : body.types,
+        'comments.comment1' : body.comments.comment1,
+        'comments.comment2' : body.comments.comment2,
+        //'comments.comment3' : body.comment3,
+        //'comments.comment4.date' : body.c4Date,
+        //'comments.comment4.body' : body.c4Body,
+        //'allocatedPractice' : body.allocatedPractice,
+        //'assignedAdviser' : body.adviser,
+        //'statusHistory.status' : body.status,
+        //'statusHistory.statusDate' : body.statusDate,
+        // stateHistory.state: ,
+        // stateHistory.stateDate: ,
+        //'outcome' : body.outcome,
+        //'policyNumber' : body.policyNumber,
+        'who' : body.who
+      },
+      {
+        upsert: false,
+        new: true
+      }
+    )
+    res.status(200).send("Ok");
+  }
+  catch (e) {
+    console.log(">>> Practice update error: ", e);
+    res.status(400).send(e);
+  }
+});
 
 module.exports = router;

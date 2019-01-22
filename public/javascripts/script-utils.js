@@ -252,14 +252,14 @@ function resetform(form) {
   //  Test if data item is a string
   // -------------------------------
   function isString(o) {
-      return typeof o == "string" || (typeof o == "object" && o.constructor === String);
+    return typeof o == "string" || (typeof o == "object" && o.constructor === String);
   }
   
   // -------------------------------
   //  Test if data item is a string
   // -------------------------------
   function isNumber(o) {
-      return typeof o == "number" || (typeof o == "object" && o.constructor === Number);
+    return typeof o == "number" || (typeof o == "object" && o.constructor === Number);
   }
   
   // // ===========================================

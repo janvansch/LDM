@@ -15,24 +15,24 @@ var LeadSchema = new mongoose.Schema({
   entity: {
     entType: {
       type: String,
-      //required: true,
+      required: true,
       trim: true
     },
     entRefNum: {
       type: String,
-      //required: false,
+      required: false,
       trim: true
     },
   },
   entityName: {
     type: String,
     required: false,
-    default: null,
+    //default: null,
     trim: true
   },
   lineOfBusiness: {
     type: String,
-    default: null,
+    //default: null,
     trim: true
   },
   title: {
@@ -76,12 +76,12 @@ var LeadSchema = new mongoose.Schema({
   },
   currentInsurer: {
     type: String,
-    default: null
+    //default: null
   },
   previousInsured: {
     // returning customer
     type: String,
-    default: null,
+    //default: null,
     trim: true
   },
   contactLocation: {
@@ -95,27 +95,27 @@ var LeadSchema = new mongoose.Schema({
     },
     streetNum: {
       type: String,
-      default: null,
+      //default: null,
       trim: true
     },
     streetName: {
       type: String,
-      default: null,
+      //default: null,
       trim: true
     },
     buildingName: {
       type:String,
-      default: null,
+      //default: null,
       trim: true
     },
     floor: {
       type:String,
-      default: null,
+      //default: null,
       trim: true
     },
     room: {
       type:String,
-      default: null,
+      //default: null,
       trim: true
     }
   },
@@ -156,17 +156,17 @@ var LeadSchema = new mongoose.Schema({
   comments: {
     comment1: {
       type: String,
-      default: null,
+      //default: null,
       trim: true
     },
     comment2: {
       type: String,
-      default: null,
+      //default: null,
       trim: true
     },
     comment3: {
       type: String,
-      default: null,
+      //default: null,
       trim: true
     },
     comment4: [{
@@ -176,18 +176,18 @@ var LeadSchema = new mongoose.Schema({
       },
       body: {
         type: String,
-        default: null,
+        //default: null,
         trim: true
       }
     }]
   },
   allocatedPractice: {
     type: String,
-    default: null  
+    //default: null  
   },
   assignedAdviser: {
     type: String,
-    default: null  
+    //default: null  
   },
   statusHistory: [{
     status: {
@@ -215,11 +215,11 @@ var LeadSchema = new mongoose.Schema({
   outcome: {
     // lost, rejected, accepted
     type: String,
-    default: null
+    //default: null
   },
   policyNumber: {
     type: String,
-    default: null  
+    //default: null  
    },
   who: {
     type: String,
