@@ -43,21 +43,6 @@ app.use(cookieParser());
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use(logger('dev'));
 
-////==========================================================
-//// Log Requests
-////==========================================================
-//app.use((req, res, next) => {
-//  var now = new Date().toString();
-//  var log = `${now}: ${req.method} ${req.url}`;
-//
-//  console.log(log);
-//  fs.appendFile('server.log', log + '\n', function (err) {
-//    if (err) throw err;
-//    console.log('Updated!');
-//  });
-//  next();
-//});
-
 // ===============================
 //  Routes
 // ===============================

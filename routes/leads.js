@@ -1,3 +1,5 @@
+"use strict";
+
 const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
@@ -341,7 +343,7 @@ router.post('/update', async (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
   try {
     const body = _.pick(req.body, [
-      //'reference',
+      'reference',
       'langPref',
       'entity',
       'entityName',
@@ -401,8 +403,8 @@ router.post('/update', async (req, res) => {
         'contactPref.contactDay' : body.contactPref.contactDay,
         'contactPref.time' : body.contactPref.time,
         'contactPref.timeBA' : body.contactPref.timeBA,
-        'services.line' : body.line,
-        'services.types' : body.types,
+        //'services.line' : body.line,
+        //'services.types' : body.types,
         'comments.comment1' : body.comments.comment1,
         'comments.comment2' : body.comments.comment2,
         //'comments.comment3' : body.comment3,

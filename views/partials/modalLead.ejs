@@ -1,7 +1,7 @@
 <fieldset>
-    <legend>Client</legend>
-    <% include ./client %>
-  </fieldset>
+  <legend>Client</legend>
+  <% include ./client %>
+</fieldset>
 <fieldset>
   <legend>Contact Information:</legend>
   <% include ./contact %>
@@ -9,19 +9,41 @@
 <br/>
 <fieldset>
   <legend>Cover Required:</legend>
-  <ul>
-    <li id="pl" style="display:block">Personal: none</li>
-    <li id="cl" style="display:none">Commercial: none</li>
-    <li id="sl" style="display:none">Sasria: none</li>
-    <li id="al" style="display:none">Agriculture: none</li>
-    <li id="xl" style="display:none">Specialist: none</li>
-  </ul>
+  <div id="ins-lines" style="display:none">
+    <span id="lead-ins-line">Insurance Line(s) Selected:</span>
+
+    <!-- Insurance Lines Selection Checkbox -->
+    <% for (var i = 0; i < productDef.length; i++) { %>
+      <input id="<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" type="checkbox" name="line" value="<%= productDef[i].lineValue %>"> 
+      <%= productDef[i].lineLabel %>
+    <% } %>
+
+    <% for (var i = 0; i < productDef.length; i++) { %>
+      <div id="<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
+        <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span>
+        <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
+          <input 
+            id="<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
+            type="checkbox" 
+            name="<%= productDef[i].lineValue %>" 
+            value="<%= productDef[i].lineTypes[j].typeValue %>"> 
+          <%= productDef[i].lineTypes[j].typeLabel %>
+        <% } %>
+      </div>
+    <% } %>
+    <br/>
+    <label for="serviceComment">
+      Service Comment:
+      <textarea id="serviceComment" name="comment2"></textarea>
+    </label>
+  </div>
 </fieldset>
 <br/>
-<label for="serviceComment">
-  Service Comment:
-  <textarea id="serviceComment" name="comment2"></textarea>
-</label>
+<fieldset>
+  <legend>Lead Progress:</legend>
+  Display the leads progress, allocation, assignment & status
+</fieldset>
+
 <hr/>
 
 <div id="updateLeadButtons">

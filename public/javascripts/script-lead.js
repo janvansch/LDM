@@ -179,15 +179,11 @@ function findLead() {
 //  Display lead detail in modal box
 // ----------------------------------
 function displayLead(leadRef) {
-  console.log("---> This lead: ", leadRef);
+  console.log("---> Lead selected (this): ", leadRef);
   //
   // open model window
   //
-  // var modal = document.getElementById('modalBox');
   modal.style.display = "block";
-  //
-  // Display lead
-  //
   document.getElementById("displayLead").style.display = 'block';
   document.getElementById("modal-header-text").innerHTML = "Detail for lead: " + leadRef;
   document.getElementById("updateLeadButtons").style.display = "block";
@@ -206,7 +202,7 @@ function displayLead(leadRef) {
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var lead = JSON.parse(res.responseText);
-      console.log(">>> Lead Detail: ", lead);
+      console.log(">>> Lead data returned: ", lead);
       //
       // Fill form with lead data
       //
@@ -290,90 +286,19 @@ function displayLead(leadRef) {
         document.getElementById("after").checked = true;
       }
       //
-      // Extract cover required
-      //            
+      // Display required cover detail
+      //
+      document.getElementById("ins-lines").style.display = 'block';
       var services = lead[0].services;
-      var pServ;
+      showServices(services);
       //
-      // Create cover required display text  
+      // Display comments
       //
-      document.getElementById('selectAbility').style.display = 'block';
-      for (var i = 0, j = services.length; i < j; i++) {
-
-        if (services[i].line === "PL") {
-          //
-          // Build personal lines service request text
-          //
-          pServ = "Personal:";
-          for (var x = 0, z = services[i].types.length; x < z; x++) {
-            console.log(">>> Services Detail: ", x, services[i].types[x]);
-            pServ = pServ + " " + services[i].types[x];
-          }
-          console.log(">>> Services List: ", pServ);
-          document.getElementById("pl").innerHTML = pServ;
-          document.getElementById('pl').style.display = 'block';
-        }
-
-        if (services[i].line === "CL") {
-          //
-          // Build commercial lines service request text
-          //
-          pServ = "Commercial:";
-          for (var x = 0, z = services[i].types.length; x < z; x++) {
-            console.log(">>> Services Detail: ", x, services[i].types[x]);
-            pServ = pServ + " " + services[i].types[x];
-          }
-          console.log(">>> Services List: ", pServ);
-          document.getElementById("cl").innerHTML = pServ;
-          document.getElementById('cl').style.display = 'block';
-        }
-
-        if (services[i].line === "SL") {
-          //
-          // Build commercial lines service request text
-          //
-          pServ = "Sasria:";
-          for (var x = 0, z = services[i].types.length; x < z; x++) {
-            console.log(">>> Services Detail: ", x, services[i].types[x]);
-            pServ = pServ + " " + services[i].types[x];
-          }
-          console.log(">>> Services List: ", pServ);
-          document.getElementById("sl").innerHTML = pServ;
-          document.getElementById('sl').style.display = 'block';
-        }
-
-        if (services[i].line === "AL") {
-          //
-          // Build commercial lines service request text
-          //
-          pServ = "Agriculture:";
-          for (var x = 0, z = services[i].types.length; x < z; x++) {
-            console.log(">>> Services Item: ", x, services[i].types[x]);
-            pServ = pServ + " " + services[i].types[x];              
-          }
-          console.log(">>> Services List: ", pServ);
-          document.getElementById("al").innerHTML = pServ;
-          document.getElementById('al').style.display = 'block';
-        }
-
-        if (services[i].line === "XL") {
-          //
-          // Build commercial lines service request text
-          //
-          pServ = "Specialist:";
-          for (var x = 0, z = services[i].types.length; x < z; x++) {
-            console.log(">>> Services Detail: ", x, services[i].types[x]);
-            pServ = pServ + " " + services[i].types[x];              
-          }
-          console.log(">>> Services List: ", pServ);
-          document.getElementById("xl").innerHTML = pServ;
-          document.getElementById('xl').style.display = 'block';
-        }
-        document.getElementById("contactComment").value = lead[0].comments.comment1;
-        document.getElementById("serviceComment").value = lead[0].comments.comment2;
-        document.getElementById("u6").value = lead[0].comments.comment3;
-        document.getElementById("u6").value = lead[0].comments.comment4;
-      }
+      document.getElementById("contactComment").value = lead[0].comments.comment1;
+      document.getElementById("serviceComment").value = lead[0].comments.comment2;
+      document.getElementById("u6").value = lead[0].comments.comment3;
+      document.getElementById("u6").value = lead[0].comments.comment4;
+      
     }
     else {
       var prompt = "User detail request error";
@@ -381,32 +306,117 @@ function displayLead(leadRef) {
     }
   });
 }
+//
+// This creates a text display of the services but you can't edit it so created above code
+//
+// var pServ;
+// //
+// // Create cover required display text  
+// //
+// document.getElementById('selectAbility').style.display = 'block';
+// for (var i = 0, j = services.length; i < j; i++) {
+
+//   if (services[i].line === "PL") {
+//     //
+//     // Build personal lines service request text
+//     //
+//     pServ = "Personal:";
+//     for (var x = 0, z = services[i].types.length; x < z; x++) {
+//       console.log(">>> Services Detail: ", x, services[i].types[x]);
+//       pServ = pServ + " " + services[i].types[x];
+//     }
+//     console.log(">>> Services List: ", pServ);
+//     document.getElementById("pl").innerHTML = pServ;
+//     document.getElementById('pl').style.display = 'block';
+//   }
+
+//   if (services[i].line === "CL") {
+//     //
+//     // Build commercial lines service request text
+//     //
+//     pServ = "Commercial:";
+//     for (var x = 0, z = services[i].types.length; x < z; x++) {
+//       console.log(">>> Services Detail: ", x, services[i].types[x]);
+//       pServ = pServ + " " + services[i].types[x];
+//     }
+//     console.log(">>> Services List: ", pServ);
+//     document.getElementById("cl").innerHTML = pServ;
+//     document.getElementById('cl').style.display = 'block';
+//   }
+
+//   if (services[i].line === "SL") {
+//     //
+//     // Build commercial lines service request text
+//     //
+//     pServ = "Sasria:";
+//     for (var x = 0, z = services[i].types.length; x < z; x++) {
+//       console.log(">>> Services Detail: ", x, services[i].types[x]);
+//       pServ = pServ + " " + services[i].types[x];
+//     }
+//     console.log(">>> Services List: ", pServ);
+//     document.getElementById("sl").innerHTML = pServ;
+//     document.getElementById('sl').style.display = 'block';
+//   }
+
+//   if (services[i].line === "AL") {
+//     //
+//     // Build commercial lines service request text
+//     //
+//     pServ = "Agriculture:";
+//     for (var x = 0, z = services[i].types.length; x < z; x++) {
+//       console.log(">>> Services Item: ", x, services[i].types[x]);
+//       pServ = pServ + " " + services[i].types[x];              
+//     }
+//     console.log(">>> Services List: ", pServ);
+//     document.getElementById("al").innerHTML = pServ;
+//     document.getElementById('al').style.display = 'block';
+//   }
+
+//   if (services[i].line === "XL") {
+//     //
+//     // Build commercial lines service request text
+//     //
+//     pServ = "Specialist:";
+//     for (var x = 0, z = services[i].types.length; x < z; x++) {
+//       console.log(">>> Services Detail: ", x, services[i].types[x]);
+//       pServ = pServ + " " + services[i].types[x];              
+//     }
+//     console.log(">>> Services List: ", pServ);
+//     document.getElementById("xl").innerHTML = pServ;
+//     document.getElementById('xl').style.display = 'block';
+//   }
+// }  
 
 // ------------------------------
 //  Send new lead data to server
 // ------------------------------
 function submitLead() {
   console.log("*** Add Lead ***");
-  var leadData = leadData("ADD");
-  var dataString = JSON.stringify(leadData);
-  console.log("---> Data String: ", dataString);
-  var method = "POST";
-  var route = "/leads/add";
-  var contentType = "application/json";
-  //
-  //  Send Lead POST Request
-  //
-  xhrRequest(method, route, contentType, dataString, (err, result) => {
-    if (!err) {
-      var resBody = result.responseText;
-      document.getElementById("addLeadForm").reset();
-      //document.getElementById("coverForm").reset();
-    }
-    else {
-      var prompt = "Lead add submit error";
-      document.getElementById("leadErr").innerHTML = prompt;
-    }
-  });
+  var leadData = getLeadData("ADD");
+  if (leadData !== "error") {
+    var dataString = JSON.stringify(leadData);
+    console.log("---> Data String: ", dataString);
+    var method = "POST";
+    var route = "/leads/add";
+    var contentType = "application/json";
+    //
+    //  Send Lead POST Request
+    //
+    xhrRequest(method, route, contentType, dataString, (err, result) => {
+      if (!err) {
+        var resBody = result.responseText;
+        document.getElementById("addLeadForm").reset();
+        //document.getElementById("coverForm").reset();
+      }
+      else {
+        var prompt = "Lead add submit error";
+        document.getElementById("leadErr").innerHTML = prompt;
+      }
+    });
+  }
+  else {
+    console.log("*** Lead add failed - no data ***");
+  }
 }
 
 // ---------------------------------
@@ -415,39 +425,44 @@ function submitLead() {
 function updateLead() {
   console.log("*** Update Lead ***");
   var leadData = getLeadData("UPDATE");
-  var dataString = JSON.stringify(leadData);
-  console.log("---> Update Data String: ", dataString);
-  var method = "POST";
-  var route = "/leads/update";
-  var contentType = "application/json";
-  //
-  //  Send Lead POST Request
-  //
-  xhrRequest(method, route, contentType, dataString, (err, result) => {
-    if (!err) {
-      //
-      // Clear form
-      document.getElementById("formLead").reset();
-      //
-      // Close form and modal
-      //
-      document.getElementById("formLead").style.display = 'none';
-      document.getElementById('pl').style.display = 'none';
-      document.getElementById('cl').style.display = 'none';
-      document.getElementById('sl').style.display = 'none';
-      document.getElementById('al').style.display = 'none';
-      document.getElementById('xl').style.display = 'none';
-      modal.style.display = "none";
-      //
-      // Update practice list
-      //
-      selectLead();
-    }
-    else {
-      var prompt = "Lead update submit error";
-      document.getElementById("leadErr").innerHTML = prompt;
-    }
-  });
+  if (leadData !== "error") {
+    var dataString = JSON.stringify(leadData);
+    console.log("---> Update Data String: ", dataString);
+    var method = "POST";
+    var route = "/leads/update";
+    var contentType = "application/json";
+    //
+    //  Send Lead POST Request
+    //
+    xhrRequest(method, route, contentType, dataString, (err, result) => {
+      if (!err) {
+        //
+        // Clear form
+        document.getElementById("formLead").reset();
+        //
+        // Close form and modal
+        //
+        //document.getElementById("formLead").style.display = 'none';
+        document.getElementById('pl').style.display = 'none';
+        document.getElementById('cl').style.display = 'none';
+        document.getElementById('sl').style.display = 'none';
+        document.getElementById('al').style.display = 'none';
+        document.getElementById('xl').style.display = 'none';
+        modal.style.display = "none";
+        //
+        // Update practice list
+        //
+        selectLead();
+      }
+      else {
+        var prompt = "Lead update submit error";
+        document.getElementById("leadErr").innerHTML = prompt;
+      }
+    });
+  }
+  else {
+    console.log("*** Lead update failed - no data ***");
+  }
 }
 
 // ----------------------------
@@ -461,9 +476,17 @@ function getLeadData(form){
     console.log("*** Extract New Lead Data ***");
     var leadData = document.getElementById("yesForm");
   }
-  else {
+  else if (form === "UPDATE") {
     console.log("*** Extract Lead Update Data ***");
     var leadData = document.getElementById("formLead");
+    var header = document.getElementById("modal-header-text").innerHTML;
+    var leadRef = header.substr(17, 10);
+    console.log("Lead Reference: ", leadRef);
+  }
+  else {
+    console.log("*** ERROR: Invalid parameter value ***");
+    var leadData = "error";
+    return leadData;
   }
   //console.log("---> Lead Data: ", leadData);
   var radioName = "";
@@ -573,13 +596,13 @@ function getLeadData(form){
         value.push("none selected");
         selection[checkboxName] = value;
       }
-      var lineTypes = {
+      var serviceItem = {
         line : element,
         types : selection[element]
       };
-      console.log("---> Insurance Line Cover Types: ", lineTypes);
+      console.log("---> Insurance Line Cover Types: ", serviceItem);
       
-      leadServices.push(lineTypes);
+      leadServices.push(serviceItem);
       console.log("---> Lead Services: ", leadServices);
     })
   }
@@ -593,6 +616,7 @@ function getLeadData(form){
   //  create Lead data object
   //
   var leadData = {
+    reference : leadRef,
     langPref: contactLanguage.langPref,
     entity: {
       entType: entType.entity,
@@ -641,4 +665,246 @@ function getLeadData(form){
   };
   console.log("---> Data extracted: ", leadData);
   return leadData;
+}
+
+function showServices(services) {
+  /*
+  the code from line 160 in script-admin.js 
+  make it a utility function which can be used by script-lead.js 
+  and script-admin.js to show services selection
+  */
+  //
+  // Make the line below part of script-admin.js just before calling this routine
+  //
+  //   document.getElementById("adv-skill-lines").style.display = 'block';
+  //
+  console.log(">>> Param value: ", services);
+  for (var i = 0, j = services.length; i < j; i++) {
+    console.log(">>> Services Line: ", i, services[i].line);
+    //
+    // Set insurance line selector to selected
+    //
+    document.getElementById("line-" + services[i].line).checked = true;
+    //
+    // Display insurance type selector for line
+    //
+    document.getElementById(services[i].line.toLocaleLowerCase() + "-types").style.display = 'block';
+    //
+    // For the insurance types found set the selector tickbox to selected
+    //
+    for (var x = 0, z = services[i].types.length; x < z; x++) {
+      console.log(">>> Services Detail: ", x, services[i].types[x]);
+      document.getElementById(services[i].line + "-"+ services[i].types[x].replace(/\s/g, '')).checked = true;
+    }
+  }
+
+
+  //   if (services[i].line === "PL") {
+  //     //
+  //     // Set insurance line selector tickbox for PL to selected
+  //     //
+  //     document.getElementById("p-line").checked = true;
+  //     //
+  //     // Display insurance type selector for PL
+  //     //
+  //     document.getElementById("pl-types").style.display = 'block';
+  //     //
+  //     // For the insurance types found set the selector tickbox to selected
+  //     //
+  //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+  //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+  //       if (services[i].types[x] === "Private Vehicle") {
+  //         document.getElementById("pVehicle").checked = true;
+  //         console.log(">>> Private Vehicle set: ", x, services[i].types[x]);
+  //       }
+  //       else if (services[i].types[x] === "Home Contents") {
+  //         document.getElementById("pHomeContents").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "SOS") {
+  //         document.getElementById("pSOS").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Building") {
+  //         document.getElementById("pBuilding").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Watercraft") {
+  //         document.getElementById("pWatercraft").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "All Risk") {
+  //         document.getElementById("pAllRisk").checked = true;
+  //       }
+  //       else {
+  //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+  //       }
+  //     }
+  //   }
+  //   if (services[i].line === "CL") {
+  //     //
+  //     // Set insurance line selector tickbox for CL to selected
+  //     //
+  //     document.getElementById("c-line").checked = true;
+  //     //
+  //     // Display insurance type selector for CL
+  //     //
+  //     document.getElementById("cl-types").style.display = 'block';
+  //     //
+  //     // For the insurance types found set the selector tickbox to selected
+  //     //
+  //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+  //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+  //       if (services[i].types[x] === "Commercial Vehicle") {
+  //         document.getElementById("cVehicle").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Business") {
+  //         document.getElementById("cBusiness").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Guesthouse") {
+  //         document.getElementById("cGuesthouse").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Tourism,Leisure & Entertainment") {
+  //         document.getElementById("cTourLeisEnter").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Small Business") {
+  //         document.getElementById("cSmallBusiness").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Dental") {
+  //         document.getElementById("cDental").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Medical") {
+  //         document.getElementById("cMedical").checked = true;
+  //       }
+  //       else {
+  //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+  //       }
+  //     }
+  //   }
+  //   if (services[i].line === "SL") {
+  //     //
+  //     // Set insurance line selector tickbox for SL to selected
+  //     //
+  //     document.getElementById("s-line").checked = true;
+  //     //
+  //     // Display insurance type selector for SL
+  //     //
+  //     document.getElementById("sl-types").style.display = 'block';
+  //     //
+  //     // For the insurance types found set the selector tickbox to selected
+  //     //
+  //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+  //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+  //       if (services[i].types[x] === "Vehicle") {
+  //         document.getElementById("sVehicle").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Property") {
+  //         document.getElementById("sProperty").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Asset") {
+  //         document.getElementById("sAsset").checked = true;
+  //       }
+  //       else {
+  //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+  //       }
+  //     }
+  //   }
+  //   if (services[i].line === "AL") {
+  //     //
+  //     // Set insurance line selector tickbox for AL to selected
+  //     //
+  //     document.getElementById("a-line").checked = true;
+  //     //
+  //     // Display insurance type selector for AL
+  //     //
+  //     document.getElementById("al-types").style.display = 'block';
+  //     //
+  //     // For the insurance types found set the selector tickbox to selected
+  //     //
+  //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+  //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+  //       if (services[i].types[x] === "Asset") {
+  //         document.getElementById("aAsset").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Game") {
+  //         document.getElementById("aGame").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Fire") {
+  //         document.getElementById("aFire").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Crop") {
+  //         document.getElementById("aCrop").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Dairy") {
+  //         document.getElementById("aDairy").checked = true;
+  //       }
+  //       else {
+  //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+  //       }
+  //     }
+  //   }
+  //   if (services[i].line === "XL") {
+  //     //
+  //     // Set insurance line selector tickbox for XL to selected
+  //     //
+  //     document.getElementById("x-line").checked = true;
+  //     //
+  //     // Display insurance type selector for AL
+  //     //
+  //     document.getElementById("xl-types").style.display = 'block';
+  //     //
+  //     // For the insurance types found set the selector tickbox to selected
+  //     //
+  //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+  //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+  //       if (services[i].types[x] === "Aviation") {
+  //         document.getElementById("xAviation").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Bonds & Guarantees") {
+  //         document.getElementById("xBondsGuarantees").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Cell Captive") {
+  //         document.getElementById("xCellCapt").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Coporate Property") {
+  //         document.getElementById("xCoporateProperty").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Crop") {
+  //         document.getElementById("xCrop").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Engineering") {
+  //         document.getElementById("xEngineering").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Heavy Haulage") {
+  //         document.getElementById("xHeavyHaulage").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Hospitality Industry") {
+  //         document.getElementById("xHospitalityInd").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Liability") {
+  //         document.getElementById("xLiability").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Marine") {
+  //         document.getElementById("xMarine").checked = true;
+  //       }
+  //       if (services[i].types[x] === "Private Client") {
+  //         document.getElementById("xPrivateClient").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Seamless Prod") {
+  //         document.getElementById("xSeamless Prod").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Specialist Real Estate") {
+  //         document.getElementById("xSpecRealEst").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Structured Insurance") {
+  //         document.getElementById("xStructuredInsurance").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Taxi & SEM") {
+  //         document.getElementById("xTaxiSEM").checked = true;
+  //       }
+  //       else if (services[i].types[x] === "Travel") {
+  //         document.getElementById("xTravel").checked = true;
+  //       }
+  //       else {
+  //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+  //       }
+  //     }
+  //   }
+  // }
 }

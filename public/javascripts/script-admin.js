@@ -18,7 +18,7 @@ function listUsers() {
     //
     // Create User Data request
     //
-    var request = "XXXX";
+    var request = "";
     var method = "GET";
     var route = "/users/list";
     var contentType = "application/json";
@@ -50,9 +50,9 @@ function listUsers() {
       }
     });
   }
-  // -------------------------------------------------------
-  //  If adviser role is selected display service else hide
-  // -------------------------------------------------------
+  // -------------------------------------------------------------------------
+  //  If adviser role is selected display service ability selection else hide
+  // -------------------------------------------------------------------------
   function isAdviser() {
     if (document.getElementById('roleC').checked) {
       // switch accreditation and skills on
@@ -94,7 +94,7 @@ function listUsers() {
     //
     // Display user form
     //
-    document.getElementById("addUser").style.display = 'block';
+    document.getElementById("displayUser").style.display = 'block';
     document.getElementById("modal-header-text").innerHTML = "Selected User's Detail - Update/Delete";
     document.getElementById("addUserButtons").style.display = "none";
     document.getElementById("updateUserButtons").style.display = "block";
@@ -155,7 +155,7 @@ function listUsers() {
         }
         //
         // If user is an adviser set selection boxes
-        // to indicate adviser services
+        // to indicate the adviser's accreditation/services
         //
         if (role === "C") {
           var services = user[0].services;
@@ -340,51 +340,6 @@ function listUsers() {
     });
   }
   
-  // -----------------------------------------------------
-  //  Open or Close the display of a service type's items
-  // -----------------------------------------------------
-  function servPers() {
-    if (document.getElementById('pServType').checked) {
-      // if selected switch on
-      document.getElementById('dispPersServ').style.display = 'block';
-    }
-    else {
-      // if not selected switch off
-      document.getElementById('dispPersServ').style.display = 'none';
-    }
-  }
-  function servComm() {
-    if (document.getElementById('cServType').checked) {
-      document.getElementById('dispCommServ').style.display = 'block';
-    }
-    else {
-      document.getElementById('dispCommServ').style.display = 'none';
-    }
-  }
-  function servSasr() {
-    if (document.getElementById('sServType').checked) {
-      document.getElementById('dispSasrServ').style.display = 'block';
-    }
-    else {
-      document.getElementById('dispSasrServ').style.display = 'none';
-    }
-  }
-  function servAgri() {
-    if (document.getElementById('aServType').checked) {
-      document.getElementById('dispAgriServ').style.display = 'block';
-    }
-    else {
-      document.getElementById('dispAgriServ').style.display = 'none';
-    }
-  }
-  function servSpec() {
-    if (document.getElementById('xServType').checked) {
-      document.getElementById('dispSpecServ').style.display = 'block';
-    }
-    else {
-      document.getElementById('dispSpecServ').style.display = 'none';
-    }
-  }
   // ----------------------------
   //  Submit User Data to Server
   // ----------------------------
@@ -551,7 +506,7 @@ function listUsers() {
     //
     // Create Practise Data request
     //
-    var request = "XXXX";
+    var request = "";
     var method = "GET";
     var route = "/practices/list";
     var contentType = "application/json";

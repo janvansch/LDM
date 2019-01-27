@@ -24,7 +24,7 @@ span.onclick = function() {
   // Clear Add User Form
   //
   resetform("formAddUser");
-  document.getElementById("addUser").style.display = 'none';
+  document.getElementById('displayUser').style.display = 'none';
   document.getElementById('selectAbility').style.display = 'none';
   document.getElementById('dispPersServ').style.display = 'none';
   document.getElementById('dispCommServ').style.display = 'none';
@@ -45,11 +45,12 @@ span.onclick = function() {
   // Clear lead View Form
   //  
   resetform("formLead");
-  document.getElementById('pl').style.display = 'none';
-  document.getElementById('cl').style.display = 'none';
-  document.getElementById('sl').style.display = 'none';
-  document.getElementById('al').style.display = 'none';
-  document.getElementById('xl').style.display = 'none';
+  document.getElementById('displayLead').style.display = 'none';
+  document.getElementById('pl-types').style.display = 'none';
+  document.getElementById('cl-types').style.display = 'none';
+  document.getElementById('sl-types').style.display = 'none';
+  document.getElementById('al-types').style.display = 'none';
+  document.getElementById('xl-types').style.display = 'none';
   //
   // Close modal display
   //
@@ -65,7 +66,7 @@ window.onclick = function(event) {
     // Clear Add User Form
     //
     resetform("formAddUser");
-    document.getElementById("addUser").style.display = 'none';
+    document.getElementById('displayUser').style.display = 'none';
     document.getElementById('selectAbility').style.display = 'none';
     document.getElementById('dispPersServ').style.display = 'none';
     document.getElementById('dispCommServ').style.display = 'none';
@@ -86,12 +87,12 @@ window.onclick = function(event) {
     // Clear lead View Form
     //  
     resetform("formLead");
-    document.getElementById('pl').style.display = 'none';
-    document.getElementById('cl').style.display = 'none';
-    document.getElementById('sl').style.display = 'none';
-    document.getElementById('al').style.display = 'none';
-    document.getElementById('xl').style.display = 'none';
-    
+    document.getElementById('displayLead').style.display = 'none';
+    document.getElementById('pl-types').style.display = 'none';
+    document.getElementById('cl-types').style.display = 'none';
+    document.getElementById('sl-types').style.display = 'none';
+    document.getElementById('al-types').style.display = 'none';
+    document.getElementById('xl-types').style.display = 'none';
     //
     // Close modal display
     //
@@ -360,6 +361,108 @@ function navSetup(menuType, user, data) {
 //   //
 //   filterTable(tableId, filterObj);
 // }
+
+// =============================================================================
+//  Utilities - Reusable Data Display Functions 
+// =============================================================================
+
+
+  
+// ------------------------------------------------------------------
+//  Functions to open or close the display of a line's service types
+// ------------------------------------------------------------------
+/*
+Note modalUser.ejs must be updated to use the naming:
+    E.g. functions servPers() becomes plDispSwitch(), 
+    views insuranceLinesB.ejs becomes insLinesCBox.ejs and
+    ids dispPersServ becomes pl-types and pSerType becomes p-line
+
+    Change implemented for leads, must be done for user maint in Admin
+*/
+function servPers() {
+  if (document.getElementById('pServType').checked) {
+    // if selected switch on
+    document.getElementById('dispPersServ').style.display = 'block';
+  }
+  else {
+    // if not selected switch off
+    document.getElementById('dispPersServ').style.display = 'none';
+  }
+}
+function plDispSwitch() {
+  if (document.getElementById('p-line').checked) {
+    // if selected switch on
+    document.getElementById('pl-types').style.display = 'block';
+  }
+  else {
+    // if not selected switch off
+    document.getElementById('pl-types').style.display = 'none';
+  }
+}
+function servComm() {
+  if (document.getElementById('cServType').checked) {
+    document.getElementById('dispCommServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispCommServ').style.display = 'none';
+  }
+}
+function clDispSwitch() {
+  if (document.getElementById('c-line').checked) {
+    document.getElementById('cl-types').style.display = 'block';
+  }
+  else {
+    document.getElementById('cl-types').style.display = 'none';
+  }
+}
+function servSasr() {
+  if (document.getElementById('sServType').checked) {
+    document.getElementById('dispSasrServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispSasrServ').style.display = 'none';
+  }
+}
+function slDispSwitch() {
+  if (document.getElementById('s-line').checked) {
+    document.getElementById('sl-types').style.display = 'block';
+  }
+  else {
+    document.getElementById('sl-types').style.display = 'none';
+  }
+}
+function servAgri() {
+  if (document.getElementById('aServType').checked) {
+    document.getElementById('dispAgriServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispAgriServ').style.display = 'none';
+  }
+}
+function alDispSwitch() {
+  if (document.getElementById('a-line').checked) {
+    document.getElementById('al-types').style.display = 'block';
+  }
+  else {
+    document.getElementById('al-types').style.display = 'none';
+  }
+}
+function servSpec() {
+  if (document.getElementById('xServType').checked) {
+    document.getElementById('dispSpecServ').style.display = 'block';
+  }
+  else {
+    document.getElementById('dispSpecServ').style.display = 'none';
+  }
+}
+function xlDispSwitch() {
+  if (document.getElementById('x-line').checked) {
+    document.getElementById('xl-types').style.display = 'block';
+  }
+  else {
+    document.getElementById('xl-types').style.display = 'none';
+  }
+}
 
 // =============================================================================
 //  Utilities - Table Display Functions 
