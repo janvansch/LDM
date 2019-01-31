@@ -6,24 +6,39 @@
   <legend>Contact Information:</legend>
   <% include ./contact %>
 </fieldset>
-<br/>
+
 <fieldset>
   <legend>Cover Required:</legend>
-  <div id="ins-lines" style="display:none">
+  <div id="v-ins-lines" style="display:none">
     <span id="lead-ins-line">Insurance Line(s) Selected:</span>
+
+    <!-- ============================================================================= -->
+    
+    <!--
+    Id prefix definition for insurance product lines and types display":
+      "a" for the add lead functionality
+      "v" for the lead detail modal (view, edit)
+      "s" for the user detail modal (add, view, edit)
+    The prefix is required to make the ids unique to enable the reuse of this code
+    -->
 
     <!-- Insurance Lines Selection Checkbox -->
     <% for (var i = 0; i < productDef.length; i++) { %>
-      <input id="<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" type="checkbox" name="line" value="<%= productDef[i].lineValue %>"> 
+      <input id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" 
+        type="checkbox" 
+        name="viewLine" 
+        value="<%= productDef[i].lineValue %>" 
+        onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');"> 
       <%= productDef[i].lineLabel %>
     <% } %>
 
+    <!-- Insurance Line Types Selection Checkbox -->
     <% for (var i = 0; i < productDef.length; i++) { %>
-      <div id="<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
+      <div id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
         <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span>
         <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
           <input 
-            id="<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
+            id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
             type="checkbox" 
             name="<%= productDef[i].lineValue %>" 
             value="<%= productDef[i].lineTypes[j].typeValue %>"> 
@@ -31,11 +46,15 @@
         <% } %>
       </div>
     <% } %>
-    <br/>
-    <label for="serviceComment">
-      Service Comment:
-      <textarea id="serviceComment" name="comment2"></textarea>
-    </label>
+
+    <!-- ============================================================================= -->
+
+    <div id="comment">
+      <label for="serviceComment">
+        Service Comment:
+        <textarea id="serviceComment" name="comment2"></textarea>
+      </label>
+    </div>  
   </div>
 </fieldset>
 <br/>

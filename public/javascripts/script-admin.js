@@ -56,7 +56,7 @@ function listUsers() {
   function isAdviser() {
     if (document.getElementById('roleC').checked) {
       // switch accreditation and skills on
-      document.getElementById('selectAbility').style.display = 'block';
+      document.getElementById('s-ins-lines').style.display = 'block';
     }
     else if (
         document.getElementById('roleA').checked ||
@@ -64,7 +64,7 @@ function listUsers() {
         document.getElementById('roleD').checked
       ) {
       // switch accreditation and skills off
-      document.getElementById('selectAbility').style.display = 'none';
+      document.getElementById('s-ins-lines').style.display = 'none';
     }
   }
   // -----------------------------
@@ -117,7 +117,7 @@ function listUsers() {
         var user = JSON.parse(res.responseText);
         console.log(">>> User Detail: ", user);
         //
-        // Fill form with user's data
+        // Fill display form with user's data
         //
         console.log("---> firstname: ", user[0].firstName);
         document.getElementById("u0").value = user[0].firstName;
@@ -158,177 +158,189 @@ function listUsers() {
         // to indicate the adviser's accreditation/services
         //
         if (role === "C") {
+          //
+          // Display adviser skill detail
+          //
+          document.getElementById("s-ins-lines").style.display = 'block';
           var services = user[0].services;
-          //
-          // Display insurance line selector 
-          //
-          document.getElementById('selectAbility').style.display = 'block';
-          for (var i = 0, j = services.length; i < j; i++) {
-            if (services[i].line === "PL") {
-              //
-              // Set insurance line selector tickbox to selected
-              //
-              document.getElementById("pServType").checked = true;
-              //
-              // Display insurance type selector
-              //
-              document.getElementById('dispPersServ').style.display = 'block';
-              for (var x = 0, z = services[i].types.length; x < z; x++) {
-                console.log(">>> Services Detail: ", x, services[i].types[x]);
-                if (services[i].types[x] === "Private Vehicle") {
-                  document.getElementById("pVehicle").checked = true;
-                }
-                else if (services[i].types[x] === "Home Contents") {
-                  document.getElementById("pHomeContents").checked = true;
-                }
-                else if (services[i].types[x] === "SOS") {
-                  document.getElementById("pSOS").checked = true;
-                }
-                else if (services[i].types[x] === "Building") {
-                  document.getElementById("pBuilding").checked = true;
-                }
-                else if (services[i].types[x] === "Watercraft") {
-                  document.getElementById("pWatercraft").checked = true;
-                }
-                else if (services[i].types[x] === "All Risk") {
-                  document.getElementById("pAllRisk").checked = true;
-                }
-                else {
-                  console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
-                }
-              }
-            }
-            if (services[i].line === "CL") {
-              document.getElementById("cServType").checked = true;
-              document.getElementById('dispCommServ').style.display = 'block';
-              for (var x = 0, z = services[i].types.length; x < z; x++) {
-                console.log(">>> Services Detail: ", x, services[i].types[x]);
-                if (services[i].types[x] === "Business") {
-                  document.getElementById("cBusiness").checked = true;
-                }
-                else if (services[i].types[x] === "Guesthouse") {
-                  document.getElementById("cGuesthouse").checked = true;
-                }
-                else if (services[i].types[x] === "Tourism,Leisure & Entertainment") {
-                  document.getElementById("cTourLeisEnter").checked = true;
-                }
-                else if (services[i].types[x] === "Small Business") {
-                  document.getElementById("cSmallBusiness").checked = true;
-                }
-                else if (services[i].types[x] === "Dental") {
-                  document.getElementById("cDental").checked = true;
-                }
-                else if (services[i].types[x] === "Medical") {
-                  document.getElementById("cMedical").checked = true;
-                }
-                else {
-                  console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
-                }
-              }
-            }
-            if (services[i].line === "SL") {
-              document.getElementById("sServType").checked = true;
-              document.getElementById('dispSasrServ').style.display = 'block';
-              for (var x = 0, z = services[i].types.length; x < z; x++) {
-                console.log(">>> Services Detail: ", x, services[i].types[x]);
-                if (services[i].types[x] === "Vehicle") {
-                  document.getElementById("sVehicle").checked = true;
-                }
-                else if (services[i].types[x] === "Property") {
-                  document.getElementById("sProperty").checked = true;
-                }
-                else if (services[i].types[x] === "Asset") {
-                  document.getElementById("sAsset").checked = true;
-                }
-                else {
-                  console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
-                }
-              }
-            }
-            if (services[i].line === "AL") {
-              document.getElementById("aServType").checked = true;
-              document.getElementById('dispAgriServ').style.display = 'block';
-              for (var x = 0, z = services[i].types.length; x < z; x++) {
-                console.log(">>> Services Detail: ", x, services[i].types[x]);
-                if (services[i].types[x] === "Asset") {
-                  document.getElementById("aAsset").checked = true;
-                }
-                else if (services[i].types[x] === "Game") {
-                  document.getElementById("aGame").checked = true;
-                }
-                else if (services[i].types[x] === "Fire") {
-                  document.getElementById("aFire").checked = true;
-                }
-                else if (services[i].types[x] === "Crop") {
-                  document.getElementById("aCrop").checked = true;
-                }
-                else if (services[i].types[x] === "Dairy") {
-                  document.getElementById("aDairy").checked = true;
-                }
-                else {
-                  console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
-                }
-              }
-            }
-            if (services[i].line === "XL") {
-              document.getElementById("xServType").checked = true;
-              document.getElementById('dispSpecServ').style.display = 'block';
-              for (var x = 0, z = services[i].types.length; x < z; x++) {
-                console.log(">>> Services Detail: ", x, services[i].types[x]);
-                if (services[i].types[x] === "Aviation") {
-                  document.getElementById("xAviation").checked = true;
-                }
-                else if (services[i].types[x] === "Bonds & Guarantees") {
-                  document.getElementById("xBondsGuarantees").checked = true;
-                }
-                else if (services[i].types[x] === "Cell Captive") {
-                  document.getElementById("xCellCapt").checked = true;
-                }
-                else if (services[i].types[x] === "Coporate Property") {
-                  document.getElementById("xCoporateProperty").checked = true;
-                }
-                else if (services[i].types[x] === "Crop") {
-                  document.getElementById("xCrop").checked = true;
-                }
-                else if (services[i].types[x] === "Engineering") {
-                  document.getElementById("xEngineering").checked = true;
-                }
-                else if (services[i].types[x] === "Heavy Haulage") {
-                  document.getElementById("xHeavyHaulage").checked = true;
-                }
-                else if (services[i].types[x] === "Hospitality Industry") {
-                  document.getElementById("xHospitalityInd").checked = true;
-                }
-                else if (services[i].types[x] === "Liability") {
-                  document.getElementById("xLiability").checked = true;
-                }
-                else if (services[i].types[x] === "Marine") {
-                  document.getElementById("xMarine").checked = true;
-                }
-                if (services[i].types[x] === "Private Client") {
-                  document.getElementById("xPrivateClient").checked = true;
-                }
-                else if (services[i].types[x] === "Seamless Prod") {
-                  document.getElementById("xSeamless Prod").checked = true;
-                }
-                else if (services[i].types[x] === "Specialist Real Estate") {
-                  document.getElementById("xSpecRealEst").checked = true;
-                }
-                else if (services[i].types[x] === "Structured Insurance") {
-                  document.getElementById("xStructuredInsurance").checked = true;
-                }
-                else if (services[i].types[x] === "Taxi & SEM") {
-                  document.getElementById("xTaxiSEM").checked = true;
-                }
-                else if (services[i].types[x] === "Travel") {
-                  document.getElementById("xTravel").checked = true;
-                }
-                else {
-                  console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
-                }
-              }
-            }
-          }
+          showServices(services, 's');
+
+
+
+          // var services = user[0].services;
+          // //
+          // // Display insurance line selector 
+          // //
+          // document.getElementById('selectAbility').style.display = 'block';
+          // for (var i = 0, j = services.length; i < j; i++) {
+          //   if (services[i].line === "PL") {
+          //     //
+          //     // Set insurance line selector tickbox to selected
+          //     //
+          //     document.getElementById("pServType").checked = true;
+          //     //
+          //     // Display insurance type selector
+          //     //
+          //     document.getElementById('dispPersServ').style.display = 'block';
+          //     //
+          //     // Set insurance line type tickboxes 
+          //     //
+          //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+          //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+          //       if (services[i].types[x] === "Private Vehicle") {
+          //         document.getElementById("pVehicle").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Home Contents") {
+          //         document.getElementById("pHomeContents").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "SOS") {
+          //         document.getElementById("pSOS").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Building") {
+          //         document.getElementById("pBuilding").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Watercraft") {
+          //         document.getElementById("pWatercraft").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "All Risk") {
+          //         document.getElementById("pAllRisk").checked = true;
+          //       }
+          //       else {
+          //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+          //       }
+          //     }
+          //   }
+          //   if (services[i].line === "CL") {
+          //     document.getElementById("cServType").checked = true;
+          //     document.getElementById('dispCommServ').style.display = 'block';
+          //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+          //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+          //       if (services[i].types[x] === "Business") {
+          //         document.getElementById("cBusiness").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Guesthouse") {
+          //         document.getElementById("cGuesthouse").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Tourism,Leisure & Entertainment") {
+          //         document.getElementById("cTourLeisEnter").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Small Business") {
+          //         document.getElementById("cSmallBusiness").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Dental") {
+          //         document.getElementById("cDental").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Medical") {
+          //         document.getElementById("cMedical").checked = true;
+          //       }
+          //       else {
+          //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+          //       }
+          //     }
+          //   }
+          //   if (services[i].line === "SL") {
+          //     document.getElementById("sServType").checked = true;
+          //     document.getElementById('dispSasrServ').style.display = 'block';
+          //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+          //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+          //       if (services[i].types[x] === "Vehicle") {
+          //         document.getElementById("sVehicle").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Property") {
+          //         document.getElementById("sProperty").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Asset") {
+          //         document.getElementById("sAsset").checked = true;
+          //       }
+          //       else {
+          //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+          //       }
+          //     }
+          //   }
+          //   if (services[i].line === "AL") {
+          //     document.getElementById("aServType").checked = true;
+          //     document.getElementById('dispAgriServ').style.display = 'block';
+          //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+          //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+          //       if (services[i].types[x] === "Asset") {
+          //         document.getElementById("aAsset").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Game") {
+          //         document.getElementById("aGame").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Fire") {
+          //         document.getElementById("aFire").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Crop") {
+          //         document.getElementById("aCrop").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Dairy") {
+          //         document.getElementById("aDairy").checked = true;
+          //       }
+          //       else {
+          //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+          //       }
+          //     }
+          //   }
+          //   if (services[i].line === "XL") {
+          //     document.getElementById("xServType").checked = true;
+          //     document.getElementById('dispSpecServ').style.display = 'block';
+          //     for (var x = 0, z = services[i].types.length; x < z; x++) {
+          //       console.log(">>> Services Detail: ", x, services[i].types[x]);
+          //       if (services[i].types[x] === "Aviation") {
+          //         document.getElementById("xAviation").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Bonds & Guarantees") {
+          //         document.getElementById("xBondsGuarantees").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Cell Captive") {
+          //         document.getElementById("xCellCapt").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Coporate Property") {
+          //         document.getElementById("xCoporateProperty").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Crop") {
+          //         document.getElementById("xCrop").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Engineering") {
+          //         document.getElementById("xEngineering").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Heavy Haulage") {
+          //         document.getElementById("xHeavyHaulage").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Hospitality Industry") {
+          //         document.getElementById("xHospitalityInd").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Liability") {
+          //         document.getElementById("xLiability").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Marine") {
+          //         document.getElementById("xMarine").checked = true;
+          //       }
+          //       if (services[i].types[x] === "Private Client") {
+          //         document.getElementById("xPrivateClient").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Seamless Prod") {
+          //         document.getElementById("xSeamless Prod").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Specialist Real Estate") {
+          //         document.getElementById("xSpecRealEst").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Structured Insurance") {
+          //         document.getElementById("xStructuredInsurance").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Taxi & SEM") {
+          //         document.getElementById("xTaxiSEM").checked = true;
+          //       }
+          //       else if (services[i].types[x] === "Travel") {
+          //         document.getElementById("xTravel").checked = true;
+          //       }
+          //       else {
+          //         console.log(">>> ERROR - Invalid type: ", services[i].types[x]);
+          //       }
+          //     }
+          //   }
+          //}
         }
       }
       else {

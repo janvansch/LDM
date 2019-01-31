@@ -138,7 +138,9 @@ router.post('/search', async (req, res) => {
       listData.push(
         {
           reference : leads[i].reference,
-          status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
+          status : (leads[i].statusHistory.length === 0) ? (" - ") : (leads[i].statusHistory[leads[i].statusHistory.length-1].status),
+          //status : (typeof leads[i].statusHistory === 'undefined') ? (" - ") : (leads[i].statusHistory[leads[i].statusHistory.length-1].status),
+          // status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
           firstName : leads[i].firstName,
           surname : leads[i].surname,
           // langPref : leads[i].langPref,
@@ -161,6 +163,7 @@ router.post('/search', async (req, res) => {
     }
     console.log(">>> Data list: ", listData);
     res.send(listData);
+    // res.send(leads);
   }
   catch (e) {
     res.status(400).send(e);
@@ -403,6 +406,7 @@ router.post('/update', async (req, res) => {
         'contactPref.contactDay' : body.contactPref.contactDay,
         'contactPref.time' : body.contactPref.time,
         'contactPref.timeBA' : body.contactPref.timeBA,
+        'services' : body.services,
         //'services.line' : body.line,
         //'services.types' : body.types,
         'comments.comment1' : body.comments.comment1,

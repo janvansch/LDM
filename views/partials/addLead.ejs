@@ -1,5 +1,5 @@
 <h3>Capture Lead Information</h3>
-<p id="approval-msg" class="intense">
+<div id="approval-msg" class="intense">
   You cannot register a lead without the customer's concent!
   <br/>
   Do you confirm that the customer understands and agrees
@@ -12,7 +12,7 @@
     <input id="trfNo" type="radio" name="trfYN" onclick="javascript:leadOk();"/>
     No
   </label>
-</p>
+</div>
 
 <!-- Client has not approved -->
 <div id="noForm" style="display:none">
@@ -33,57 +33,57 @@
       <legend>Contact Information</legend>
       <% include ./contact %>
     </fieldset>
-    <!-- Get insurance line -->
-    <span class="intense">Service Required*</span>
+
     <fieldset>
-      <legend>Select insurance line</legend>
-      <% include ./insuranceLines %>
+      <legend>Cover Required*:</legend>
+
+      <!--
+      Id prefix definition for insurance product lines and types display":
+        "a" for the add lead functionality
+        "v" for the lead detail modal (view, edit)
+        "s" for the user detail modal (add, view, edit)
+      The prefix is required to make the ids unique to enable the reuse of this code
+      -->
+
+      <!-- Insurance Lines Selection Checkbox -->
+      <% for (var i = 0; i < productDef.length; i++) { %>
+        <input id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" 
+          type="checkbox" 
+          name="addLine" 
+          value="<%= productDef[i].lineValue %>" 
+          onclick="javascript:typeSwitch('a-<%= productDef[i].lineValue.toLocaleLowerCase() %>');"> 
+        <%= productDef[i].lineLabel %>
+      <% } %>
+
+      <!-- Insurance Line Types Selection Checkbox -->
+      <% for (var i = 0; i < productDef.length; i++) { %>
+        <div id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
+          <fieldset>
+            <legend><%= productDef[i].lineLabel %> Types</legend>
+            <!-- <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span> -->
+            <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
+              <input 
+                id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
+                type="checkbox" 
+                name="<%= productDef[i].lineValue %>" 
+                value="<%= productDef[i].lineTypes[j].typeValue %>"> 
+              <%= productDef[i].lineTypes[j].typeLabel %>
+            <% } %>
+          </fieldset> 
+        </div>
+      <% } %>
+      <!-- <div id="ServiceComment" style="display:none"> -->
+      <div id="comment">
+        <label for="serviceComment">
+          Service Comment:
+          <textarea id="serviceComment" name="comment2">
+          </textarea>
+        </label>
+      </div>
     </fieldset>
-    <!-- Personnal Line Insurance Type Selection -->
-    <div id="ifPersonal" style="display:none">
-      <fieldset>
-        <legend>Select type of personal insurance cover</legend>
-        <% include ./typePersonal %>
-      </fieldset>
-    </div>
-    <!-- Commercial Line Insurance Type Selection -->
-    <div id="ifCommercial" style="display:none">
-      <fieldset>
-        <legend>Select type of commercial insurance cover</legend>
-        <% include ./typeCommercial %>
-      </fieldset>
-    </div>
-    <!-- SASRIA Line Insurance Type Selection -->
-    <div id="ifSasria" style="display:none">
-      <fieldset>
-        <legend>Select type of cover</legend>
-        <% include ./typeSasria %>
-      </fieldset>
-    </div>
-    <!-- Agriculture Line Insurance Type Selection -->
-    <div id="ifAgriculture" style="display:none">
-      <fieldset>
-        <legend>Select type of agricultural insurance cover</legend>
-        <% include ./typeAgri %>
-      </fieldset>
-    </div>
-    <!-- Specialist Line Insurance Type Selection -->
-    <div id="ifSpecialist" style="display:none">
-      <fieldset>
-        <legend>Type of Specialist Insurance Cover</legend>
-        <% include ./typeSpecialist %>
-      </fieldset>
-    </div>
-    <div id="ServiceComment" style="display:none">
-      <br/>
-      <label for="serviceComment">
-        Service Comment:
-        <textarea id="serviceComment" name="comment2">
-        </textarea>
-      </label>
-    </div>
+    
   </form>
-  <br/>
+
   <button onclick="submitLead()">Submit Lead</button>
   <button onclick="resetForm()">Cancel</button>
 </div>

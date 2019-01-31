@@ -43,7 +43,7 @@ a:active {
   color:  darkblue;
   font-size: 100%;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .warning {
@@ -153,6 +153,7 @@ footer {
 /*    General Form elements    */
 /* =========================== */
 fieldset {
+  margin-top: 5px;
   display: block;
   font-size: 100%;
   margin-left: 2px;
@@ -171,7 +172,15 @@ legend {
 }
 
 input {
+  margin: 4px;
+}
+
+button {
   margin: 5px;
+}
+
+#comment {
+  margin-top: 4px;
 }
 
 /* =============================== */

@@ -153,20 +153,24 @@ function findLead() {
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var data = JSON.parse(res.responseText);
-      console.log(">>> lead Docs: ", data);
-      //
-      // load report layout definition
-      //
-      var layoutId = '5';
-      var prompt = 'Leads found';
-      //
-      // Display Leads List
-      //
-      displayData(data, prompt, layoutId);
-      //
-      // Add row select handlers to enable editing of rows
-      //
-      addRowHandlers(layoutId);
+      if (data.length !== 0) {
+        //
+        // load report layout definition
+        //
+        var layoutId = '5';
+        var prompt = 'Leads found';
+        //
+        // Display Leads List
+        //
+        displayData(data, prompt, layoutId);
+        //
+        // Add row select handlers to enable editing of rows
+        //
+        addRowHandlers(layoutId);
+      }
+      else {
+        document.getElementById("tPos5").innerHTML = "None found";
+      }
     }
     else {
       var prompt = "Lead request error";
@@ -204,7 +208,7 @@ function displayLead(leadRef) {
       var lead = JSON.parse(res.responseText);
       console.log(">>> Lead data returned: ", lead);
       //
-      // Fill form with lead data
+      // Fill display form with lead data
       //
       //
       // Set language option
@@ -288,9 +292,9 @@ function displayLead(leadRef) {
       //
       // Display required cover detail
       //
-      document.getElementById("ins-lines").style.display = 'block';
+      document.getElementById("v-ins-lines").style.display = 'block';
       var services = lead[0].services;
-      showServices(services);
+      showServices(services, 'v');
       //
       // Display comments
       //
@@ -392,7 +396,13 @@ function displayLead(leadRef) {
 // ------------------------------
 function submitLead() {
   console.log("*** Add Lead ***");
+  //
+  // Extract new lead data from DOM
+  //
   var leadData = getLeadData("ADD");
+  //
+  // If data found send to server
+  //
   if (leadData !== "error") {
     var dataString = JSON.stringify(leadData);
     console.log("---> Data String: ", dataString);
@@ -424,6 +434,9 @@ function submitLead() {
 // ---------------------------------
 function updateLead() {
   console.log("*** Update Lead ***");
+  //
+  // Extract lead update data from DOM
+  //
   var leadData = getLeadData("UPDATE");
   if (leadData !== "error") {
     var dataString = JSON.stringify(leadData);
@@ -438,16 +451,18 @@ function updateLead() {
       if (!err) {
         //
         // Clear form
+        //
         document.getElementById("formLead").reset();
         //
         // Close form and modal
         //
-        //document.getElementById("formLead").style.display = 'none';
-        document.getElementById('pl').style.display = 'none';
-        document.getElementById('cl').style.display = 'none';
-        document.getElementById('sl').style.display = 'none';
-        document.getElementById('al').style.display = 'none';
-        document.getElementById('xl').style.display = 'none';
+        document.getElementById("displayLead").style.display = 'none';
+        document.getElementById('v-ins-lines').style.display = 'none';
+        document.getElementById('v-pl-types').style.display = 'none';
+        document.getElementById('v-cl-types').style.display = 'none';
+        document.getElementById('v-sl-types').style.display = 'none';
+        document.getElementById('v-al-types').style.display = 'none';
+        document.getElementById('v-xl-types').style.display = 'none';
         modal.style.display = "none";
         //
         // Update practice list
@@ -473,12 +488,20 @@ function getLeadData(form){
   //  Extract Lead Data from DOM
   //
   if (form === "ADD") {
-    console.log("*** Extract New Lead Data ***");
+    console.log("*** Extract add lead data ***");
     var leadData = document.getElementById("yesForm");
+    //
+    // Insurance line checkbox name for lead add
+    //
+    var linesCheckboxName = "addLine";
   }
   else if (form === "UPDATE") {
-    console.log("*** Extract Lead Update Data ***");
+    console.log("*** Extract lead update data ***");
     var leadData = document.getElementById("formLead");
+    //
+    // Insurance line checkbox name for lead update
+    //
+    var linesCheckboxName = "viewLine";
     var header = document.getElementById("modal-header-text").innerHTML;
     var leadRef = header.substr(17, 10);
     console.log("Lead Reference: ", leadRef);
@@ -569,10 +592,13 @@ function getLeadData(form){
   //
   // Extract lead service line data
   //
-  var checkboxName = "insLine";
-  var insLine = getCheckedValues(leadData, checkboxName);
-  console.log("---> Insurance Line(s): ", insLine);
+  console.log("---> Insurance Lines Checkbox Name: ", linesCheckboxName);
+  var insLine = getCheckedValues(leadData, linesCheckboxName);
+  console.log("---> Insurance Line(s): ", insLine[linesCheckboxName]);
   if (Object.keys(insLine).length === 0 && insLine.constructor === Object) {
+    //
+    // No insurance line was selected
+    //
     var name = "line";
     var value = [];
     value.push("none selected");
@@ -582,8 +608,8 @@ function getLeadData(form){
     //
     // Extract lead services for each of the insurance lines selected
     //
-    console.log("---> Insurance Line(s): ", insLine.insLine);
-    var lines = insLine.insLine;
+    console.log("---> Insurance Line(s): ", insLine[linesCheckboxName]);
+    var lines = insLine[linesCheckboxName];
     console.log("---> Lines Array: ", lines);
     var leadServices = [];
     lines.forEach((element) => {
@@ -667,36 +693,7 @@ function getLeadData(form){
   return leadData;
 }
 
-function showServices(services) {
-  /*
-  the code from line 160 in script-admin.js 
-  make it a utility function which can be used by script-lead.js 
-  and script-admin.js to show services selection
-  */
-  //
-  // Make the line below part of script-admin.js just before calling this routine
-  //
-  //   document.getElementById("adv-skill-lines").style.display = 'block';
-  //
-  console.log(">>> Param value: ", services);
-  for (var i = 0, j = services.length; i < j; i++) {
-    console.log(">>> Services Line: ", i, services[i].line);
-    //
-    // Set insurance line selector to selected
-    //
-    document.getElementById("line-" + services[i].line).checked = true;
-    //
-    // Display insurance type selector for line
-    //
-    document.getElementById(services[i].line.toLocaleLowerCase() + "-types").style.display = 'block';
-    //
-    // For the insurance types found set the selector tickbox to selected
-    //
-    for (var x = 0, z = services[i].types.length; x < z; x++) {
-      console.log(">>> Services Detail: ", x, services[i].types[x]);
-      document.getElementById(services[i].line + "-"+ services[i].types[x].replace(/\s/g, '')).checked = true;
-    }
-  }
+
 
 
   //   if (services[i].line === "PL") {
@@ -907,4 +904,3 @@ function showServices(services) {
   //     }
   //   }
   // }
-}

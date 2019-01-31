@@ -25,12 +25,12 @@ span.onclick = function() {
   //
   resetform("formAddUser");
   document.getElementById('displayUser').style.display = 'none';
-  document.getElementById('selectAbility').style.display = 'none';
-  document.getElementById('dispPersServ').style.display = 'none';
-  document.getElementById('dispCommServ').style.display = 'none';
-  document.getElementById('dispSasrServ').style.display = 'none';
-  document.getElementById('dispAgriServ').style.display = 'none';
-  document.getElementById('dispSpecServ').style.display = 'none';
+  document.getElementById('s-ins-lines').style.display = 'none';
+  document.getElementById('s-pl-types').style.display = 'none';
+  document.getElementById('s-cl-types').style.display = 'none';
+  document.getElementById('s-sl-types').style.display = 'none';
+  document.getElementById('s-al-types').style.display = 'none';
+  document.getElementById('s-xl-types').style.display = 'none';
   //
   // Clear Add Practice Form
   //
@@ -46,11 +46,12 @@ span.onclick = function() {
   //  
   resetform("formLead");
   document.getElementById('displayLead').style.display = 'none';
-  document.getElementById('pl-types').style.display = 'none';
-  document.getElementById('cl-types').style.display = 'none';
-  document.getElementById('sl-types').style.display = 'none';
-  document.getElementById('al-types').style.display = 'none';
-  document.getElementById('xl-types').style.display = 'none';
+  document.getElementById('v-ins-lines').style.display = 'none';
+  document.getElementById('v-pl-types').style.display = 'none';
+  document.getElementById('v-cl-types').style.display = 'none';
+  document.getElementById('v-sl-types').style.display = 'none';
+  document.getElementById('v-al-types').style.display = 'none';
+  document.getElementById('v-xl-types').style.display = 'none';
   //
   // Close modal display
   //
@@ -67,12 +68,12 @@ window.onclick = function(event) {
     //
     resetform("formAddUser");
     document.getElementById('displayUser').style.display = 'none';
-    document.getElementById('selectAbility').style.display = 'none';
-    document.getElementById('dispPersServ').style.display = 'none';
-    document.getElementById('dispCommServ').style.display = 'none';
-    document.getElementById('dispSasrServ').style.display = 'none';
-    document.getElementById('dispAgriServ').style.display = 'none';
-    document.getElementById('dispSpecServ').style.display = 'none';
+    document.getElementById('s-ins-lines').style.display = 'none';
+    document.getElementById('s-pl-types').style.display = 'none';
+    document.getElementById('s-cl-types').style.display = 'none';
+    document.getElementById('s-sl-types').style.display = 'none';
+    document.getElementById('s-al-types').style.display = 'none';
+    document.getElementById('s-xl-types').style.display = 'none';
     //
     // Clear Add Practice Form
     //  
@@ -88,11 +89,12 @@ window.onclick = function(event) {
     //  
     resetform("formLead");
     document.getElementById('displayLead').style.display = 'none';
-    document.getElementById('pl-types').style.display = 'none';
-    document.getElementById('cl-types').style.display = 'none';
-    document.getElementById('sl-types').style.display = 'none';
-    document.getElementById('al-types').style.display = 'none';
-    document.getElementById('xl-types').style.display = 'none';
+    document.getElementById('v-ins-lines').style.display = 'none';
+    document.getElementById('v-pl-types').style.display = 'none';
+    document.getElementById('v-cl-types').style.display = 'none';
+    document.getElementById('v-sl-types').style.display = 'none';
+    document.getElementById('v-al-types').style.display = 'none';
+    document.getElementById('v-xl-types').style.display = 'none';
     //
     // Close modal display
     //
@@ -107,12 +109,12 @@ window.onclick = function(event) {
 //  Initiate views
 // ----------------
 window.onload = function() {
-  document.getElementById('ifPersonal').style.display = 'none';
-  document.getElementById('ifCommercial').style.display = 'none';
-  document.getElementById('ifSasria').style.display = 'none';
-  document.getElementById('ifAgriculture').style.display = 'none';
-  document.getElementById('ifSpecialist').style.display = 'none';
-  document.getElementById('ServiceComment').style.display = 'none';
+  // document.getElementById('ifPersonal').style.display = 'none';
+  // document.getElementById('ifCommercial').style.display = 'none';
+  // document.getElementById('ifSasria').style.display = 'none';
+  // document.getElementById('ifAgriculture').style.display = 'none';
+  // document.getElementById('ifSpecialist').style.display = 'none';
+  // document.getElementById('ServiceComment').style.display = 'none';
   toggleView("viewLogin");
   toggleView("navLogin");
 }
@@ -366,19 +368,58 @@ function navSetup(menuType, user, data) {
 //  Utilities - Reusable Data Display Functions 
 // =============================================================================
 
-
-  
+// --------------------------------------------
+//  For data found set the check boxes to true
+// --------------------------------------------
+function showServices(services, prefix) {
+  /*
+  the code from line 160 in script-admin.js 
+  make it a utility function which can be used by script-lead.js 
+  and script-admin.js to show services selection
+  */
+  //
+  // Make the line below part of script-admin.js just before calling this routine
+  //
+  //   document.getElementById("adv-skill-lines").style.display = 'block';
+  //
+  console.log(">>> Param value: ", services);
+  for (var i = 0, j = services.length; i < j; i++) {
+    console.log(">>> Services Line: ", i, services[i].line);
+    //
+    // Set insurance line selector to selected
+    //
+    document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-line").checked = true;
+    //
+    // Display insurance type selector for line
+    //
+    document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-types").style.display = 'block';
+    //
+    // For the insurance types found set the selector tickbox to selected
+    //
+    for (var x = 0, z = services[i].types.length; x < z; x++) {
+      console.log(">>> Services Detail: ", x, services[i].types[x]);
+      document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-" + services[i].types[x].toLocaleLowerCase().replace(/\s/g, '-')).checked = true;
+    }
+  }
+} 
 // ------------------------------------------------------------------
 //  Functions to open or close the display of a line's service types
 // ------------------------------------------------------------------
-/*
-Note modalUser.ejs must be updated to use the naming:
-    E.g. functions servPers() becomes plDispSwitch(), 
-    views insuranceLinesB.ejs becomes insLinesCBox.ejs and
-    ids dispPersServ becomes pl-types and pSerType becomes p-line
 
-    Change implemented for leads, must be done for user maint in Admin
-*/
+function typeSwitch(el) {
+  if (document.getElementById(el + "-line").checked) {
+    // if selected switch on
+    document.getElementById(el + "-types").style.display = 'block';
+  }
+  else {
+    // if not selected switch off
+    document.getElementById(el + "-types").style.display = 'none';
+  }
+}
+//
+// The functions below can be removed once user skill and add lead
+// functions has been converted to use the new data driven product structure
+//
 function servPers() {
   if (document.getElementById('pServType').checked) {
     // if selected switch on

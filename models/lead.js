@@ -230,7 +230,6 @@ var LeadSchema = new mongoose.Schema({
 
 LeadSchema.pre('save', function (next) {
   if (!this.reference) {
-    // this.reference = generateReference();
     var date = new Date();
     //var yr = date.getFullYear();
     //var mh = date.getMonth() + 1;
@@ -243,6 +242,12 @@ LeadSchema.pre('save', function (next) {
     var pr = rdm.toString().padStart(3, '0');
     //this.reference = yr.toString() + pmh.toString() + "-" + psd + pmd + pr;
     this.reference = psd + "-" + pmd + "-" + pr;
+    this.statusHistory.push(
+      {
+        status : "open",
+        statusDate : Date.now
+      }
+    )
     next();
   } 
   else {

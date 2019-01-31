@@ -45,6 +45,7 @@ User Role Selection
   <input id="roleD" type="radio" name="role" value="D" onclick="javascript:isAdviser();"/>
   Capture Leads
 </label>
+
 <br/>
 <!--
 If user role = Adviser select service abilities.
@@ -52,49 +53,57 @@ Note that this is not mandatory as it can maintained by the practice.
 The skills of the adviser must be captured for it to be considered
 during the leads allocation process.
 -->
-<div id="selectAbility" style="display:none">
-  <br/>
-  <strong>Select Adviser's Service Skill Lines:</strong>
-  <% include ./servLinesCBox %>
-  <!--
-  === Sub-view for Type of Cover ===
-  -->
-  <!-- Personnal Insurance Selected -->
-  <div id="dispPersServ" style="display:none">
-    <fieldset>
-      <legend>Personal Line Skills:</legend>
-      <% include ./typePersonal %>
-    </fieldset>
-  </div>
-  <!-- Commercial Insurance Selected -->
-  <div id="dispCommServ" style="display:none">
-    <fieldset>
-      <legend>Commercial Line Skills:</legend>
-      <% include ./typeCommercial %>
-    </fieldset>
-  </div>
-  <!-- SASRIA Insurance Selected -->
-  <div id="dispSasrServ" style="display:none">
-    <fieldset>
-      <legend>Sasria Line Skills:</legend>
-      <% include ./typeSasria %>
-    </fieldset>
-  </div>
-  <!-- Agriculture Insurance Selected -->
-  <div id="dispAgriServ" style="display:none">
-    <fieldset>
-      <legend>Agriculture Line Skills:</legend>
-      <% include ./typeAgri %>
-    </fieldset>
-  </div>
-  <!-- Specialist Insurance Selected -->
-  <div id="dispSpecServ" style="display:none">
-    <fieldset>
-      <legend>Specialist Line Skills:</legend>
-      <% include ./typeSpecialist %>
-    </fieldset>
-  </div>
+<div id="s-ins-lines" style="display:none">
+   
+  <fieldset>
+    <legend>Select Adviser's Service Skill Lines:</legend>
+    <span id="lead-ins-line">Insurance Lines:</span>
+    <!--
+    Id prefix definition for insurance product lines and types display":
+      "a" for the add lead functionality
+      "v" for the lead detail modal (view, edit)
+      "s" for the user detail modal (add, view, edit)
+    The prefix is required to make the ids unique to enable the reuse of this code
+    -->
+    <!-- Insurance Lines Selection Checkbox -->
+    <% for (var i = 0; i < productDef.length; i++) { %>
+      <input id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" 
+        type="checkbox" 
+        name="line" 
+        value="<%= productDef[i].lineValue %>" 
+        onclick="javascript:typeSwitch('s-<%= productDef[i].lineValue.toLocaleLowerCase() %>');"> 
+      <%= productDef[i].lineLabel %>
+    <% } %>
+    <!-- Insurance Line Types Selection Checkbox -->
+    <% for (var i = 0; i < productDef.length; i++) { %>
+      <div id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
+        <fieldset>
+          <legend><%= productDef[i].lineLabel %> Types</legend>
+          <!-- <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span> -->
+          <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
+            <input 
+              id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
+              type="checkbox" 
+              name="<%= productDef[i].lineValue %>" 
+              value="<%= productDef[i].lineTypes[j].typeValue %>"> 
+            <%= productDef[i].lineTypes[j].typeLabel %>
+          <% } %>
+        </fieldset> 
+      </div>
+    <% } %>
+
+    <!-- <div id="ServiceComment" style="display:none"> -->
+    <div id="comment">
+      <label for="serviceComment">
+        Service Comment:
+        <textarea id="serviceComment" name="comment2">
+        </textarea>
+      </label>
+    </div>
+  </fieldset>
+
 </div>
+
 <div id="addUserButtons" style="display:none">
   <input id="formAddUser" type="button" value="Add User" onclick="submitUser('add')"/>
 </div>
@@ -102,6 +111,3 @@ during the leads allocation process.
   <input id="formAddUser" type="button" value="Update User" onclick="submitUser('update')"/>
   <input id="formAddUser" type="button" value="Delete User" onclick="deleteUser()"/>
 </div>
-
-
-<!-- <input type="reset"/> -->
