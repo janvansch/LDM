@@ -28,7 +28,9 @@ const usersRouter = require('./routes/users');
 
 const newLeadEvent = require('./middleware/emitter');
 const {allocate} = require('./middleware/allocate');
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 const {myCache} = require('./middleware/cache');
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 const {mongoose} = require('./db/mongoose');
 //var {User} = require('./models/user');
 //var {authenticate} = require('./middleware/authenticate');
@@ -39,12 +41,16 @@ myCache.set( "myKey", obj, function( err, success ){
     console.log( "Node Cache Success: ", success );
     // true
     // ... do something ...
-    
+
   }
   else {
     console.log( "Node Cache Error" );
   }
 });
+
+// xxxxxxxxxxxxxxxxxxxxxxxx
+//  Investigate node-cache
+// xxxxxxxxxxxxxxxxxxxxxxxx
 myCache.get( "myKey", function( err, value ){
   if( !err ){
     if(value == undefined){
@@ -63,7 +69,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Basic middleware that every app would require 
+// Basic middleware that every app would require
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
