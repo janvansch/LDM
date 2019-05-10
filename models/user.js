@@ -12,7 +12,7 @@ var UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
     trim: true,
-    required: false
+    required: true
   },
   surname: {
     type: String,
@@ -46,6 +46,11 @@ var UserSchema = new mongoose.Schema({
     required: true
   },
   practiceCode: {
+    type: String,
+    trim: true,
+    required: false
+  },
+  adviserCode: {
     type: String,
     trim: true,
     required: false

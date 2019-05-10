@@ -2,23 +2,23 @@
 User Description attributes
 -->
 <label>
-  First Name: <input id="u0" type="text" name="firstName" size="15"/>
+  First Name*: <input id="u0" type="text" name="firstName" size="15" required/>
 </label>
 <label>
-  Surname: <input id="u1" type="text" name="surname" size="20"/>
+  Surname*: <input id="u1" type="text" name="surname" size="20"/ required>
 </label>
 <label>
-  Password: <input id="u2" type="text" name="password" size="15"/>
-</label>
+  Password (6 characters minimum)*: </label>
+<input id="u2" type="password" name="password" minlength="6" size="15" required/>
 <br/>
 <label>
   Phone: <input id="u3" type="text" name="phone" size="15"/>
 </label>
 <label>
-  Cell: <input id="u4" type="text" name="cell" size="15"/>
+  Cell*: <input id="u4" type="text" name="cell" size="15"/  required>
 </label>
 <label>
-  Email: <input id="u5" type="email" name="email" size="60"/>
+  Email*: <input id="u5" type="email" name="email" size="60"/  required>
 </label>
 <br/>
 <label>
@@ -28,7 +28,7 @@ User Description attributes
 <!--
 User Role Selection
 -->
-<label><b>Select User's Role:</b></label>
+<label><b>Select User's Role*:</b></label>
 <label for="roleA">
   <input id="roleA" type="radio" name="role" value="A" onclick="javascript:isAdviser();"/>
   System Administrator

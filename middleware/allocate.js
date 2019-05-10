@@ -1,7 +1,7 @@
 const {sendSMS} = require('../utils/SMS');
 
 var allocate = function (lead) {
-  console.log("===> lead info: ", lead);
+  console.log("===> ALLOCATE Lead Called - lead info: ", lead);
 
   // allocate()
 

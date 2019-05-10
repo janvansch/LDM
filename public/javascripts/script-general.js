@@ -367,21 +367,12 @@ function navSetup(menuType, user, data) {
 // =============================================================================
 //  Utilities - Reusable Data Display Functions 
 // =============================================================================
-
-// --------------------------------------------
-//  For data found set the check boxes to true
-// --------------------------------------------
+//
+// -------------------------------------------------------------
+//  Set the line and type check boxes to true for the data view 
+// -------------------------------------------------------------
 function showServices(services, prefix) {
-  /*
-  the code from line 160 in script-admin.js 
-  make it a utility function which can be used by script-lead.js 
-  and script-admin.js to show services selection
-  */
-  //
-  // Make the line below part of script-admin.js just before calling this routine
-  //
-  //   document.getElementById("adv-skill-lines").style.display = 'block';
-  //
+  
   console.log(">>> Param value: ", services);
   for (var i = 0, j = services.length; i < j; i++) {
     console.log(">>> Services Line: ", i, services[i].line);
@@ -401,11 +392,11 @@ function showServices(services, prefix) {
       document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-" + services[i].types[x].toLocaleLowerCase().replace(/\s/g, '-')).checked = true;
     }
   }
-} 
-// ------------------------------------------------------------------
-//  Functions to open or close the display of a line's service types
-// ------------------------------------------------------------------
+}
 
+// -----------------------------------------------------
+//  Open or close the display of a line's service types
+// -----------------------------------------------------
 function typeSwitch(el) {
   if (document.getElementById(el + "-line").checked) {
     // if selected switch on
@@ -420,90 +411,90 @@ function typeSwitch(el) {
 // The functions below can be removed once user skill and add lead
 // functions has been converted to use the new data driven product structure
 //
-function servPers() {
-  if (document.getElementById('pServType').checked) {
-    // if selected switch on
-    document.getElementById('dispPersServ').style.display = 'block';
-  }
-  else {
-    // if not selected switch off
-    document.getElementById('dispPersServ').style.display = 'none';
-  }
-}
-function plDispSwitch() {
-  if (document.getElementById('p-line').checked) {
-    // if selected switch on
-    document.getElementById('pl-types').style.display = 'block';
-  }
-  else {
-    // if not selected switch off
-    document.getElementById('pl-types').style.display = 'none';
-  }
-}
-function servComm() {
-  if (document.getElementById('cServType').checked) {
-    document.getElementById('dispCommServ').style.display = 'block';
-  }
-  else {
-    document.getElementById('dispCommServ').style.display = 'none';
-  }
-}
-function clDispSwitch() {
-  if (document.getElementById('c-line').checked) {
-    document.getElementById('cl-types').style.display = 'block';
-  }
-  else {
-    document.getElementById('cl-types').style.display = 'none';
-  }
-}
-function servSasr() {
-  if (document.getElementById('sServType').checked) {
-    document.getElementById('dispSasrServ').style.display = 'block';
-  }
-  else {
-    document.getElementById('dispSasrServ').style.display = 'none';
-  }
-}
-function slDispSwitch() {
-  if (document.getElementById('s-line').checked) {
-    document.getElementById('sl-types').style.display = 'block';
-  }
-  else {
-    document.getElementById('sl-types').style.display = 'none';
-  }
-}
-function servAgri() {
-  if (document.getElementById('aServType').checked) {
-    document.getElementById('dispAgriServ').style.display = 'block';
-  }
-  else {
-    document.getElementById('dispAgriServ').style.display = 'none';
-  }
-}
-function alDispSwitch() {
-  if (document.getElementById('a-line').checked) {
-    document.getElementById('al-types').style.display = 'block';
-  }
-  else {
-    document.getElementById('al-types').style.display = 'none';
-  }
-}
-function servSpec() {
-  if (document.getElementById('xServType').checked) {
-    document.getElementById('dispSpecServ').style.display = 'block';
-  }
-  else {
-    document.getElementById('dispSpecServ').style.display = 'none';
-  }
-}
-function xlDispSwitch() {
-  if (document.getElementById('x-line').checked) {
-    document.getElementById('xl-types').style.display = 'block';
-  }
-  else {
-    document.getElementById('xl-types').style.display = 'none';
-  }
-}
+// function servPers() {
+//   if (document.getElementById('pServType').checked) {
+//     // if selected switch on
+//     document.getElementById('dispPersServ').style.display = 'block';
+//   }
+//   else {
+//     // if not selected switch off
+//     document.getElementById('dispPersServ').style.display = 'none';
+//   }
+// }
+// function plDispSwitch() {
+//   if (document.getElementById('p-line').checked) {
+//     // if selected switch on
+//     document.getElementById('pl-types').style.display = 'block';
+//   }
+//   else {
+//     // if not selected switch off
+//     document.getElementById('pl-types').style.display = 'none';
+//   }
+// }
+// function servComm() {
+//   if (document.getElementById('cServType').checked) {
+//     document.getElementById('dispCommServ').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('dispCommServ').style.display = 'none';
+//   }
+// }
+// function clDispSwitch() {
+//   if (document.getElementById('c-line').checked) {
+//     document.getElementById('cl-types').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('cl-types').style.display = 'none';
+//   }
+// }
+// function servSasr() {
+//   if (document.getElementById('sServType').checked) {
+//     document.getElementById('dispSasrServ').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('dispSasrServ').style.display = 'none';
+//   }
+// }
+// function slDispSwitch() {
+//   if (document.getElementById('s-line').checked) {
+//     document.getElementById('sl-types').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('sl-types').style.display = 'none';
+//   }
+// }
+// function servAgri() {
+//   if (document.getElementById('aServType').checked) {
+//     document.getElementById('dispAgriServ').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('dispAgriServ').style.display = 'none';
+//   }
+// }
+// function alDispSwitch() {
+//   if (document.getElementById('a-line').checked) {
+//     document.getElementById('al-types').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('al-types').style.display = 'none';
+//   }
+// }
+// function servSpec() {
+//   if (document.getElementById('xServType').checked) {
+//     document.getElementById('dispSpecServ').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('dispSpecServ').style.display = 'none';
+//   }
+// }
+// function xlDispSwitch() {
+//   if (document.getElementById('x-line').checked) {
+//     document.getElementById('xl-types').style.display = 'block';
+//   }
+//   else {
+//     document.getElementById('xl-types').style.display = 'none';
+//   }
+// }
 
 // =============================================================================
 //  Utilities - Table Display Functions 
@@ -620,8 +611,8 @@ function addRowHandlers(id) {
     // cells[4] = user email
   }
   if (id === "1"){
-    // lead list
-    var rowFunc = function(){ displayLead(this.cells[0].innerHTML); };
+    // practice lead list
+    var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
     // cells[0] = lead reference
   }
   if (id === "2"){
@@ -631,7 +622,7 @@ function addRowHandlers(id) {
   }
   if (id === "5"){
     // lead list
-    var rowFunc = function(){ displayLead(this.cells[0].innerHTML); };
+    var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
     // cells[0] = lead reference
   }
   for (var i = 1; i < rowCount; i++) {

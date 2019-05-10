@@ -182,7 +182,7 @@ function findLead() {
 // ----------------------------------
 //  Display lead detail in modal box
 // ----------------------------------
-function displayLead(leadRef) {
+function displayLead(leadRef, viewID) {
   console.log("---> Lead selected (this): ", leadRef);
   //
   // open model window
@@ -190,8 +190,18 @@ function displayLead(leadRef) {
   modal.style.display = "block";
   document.getElementById("displayLead").style.display = 'block';
   document.getElementById("modal-header-text").innerHTML = "Detail for lead: " + leadRef;
-  document.getElementById("updateLeadButtons").style.display = "block";
-  
+  document.getElementById("updateLeadButtons").style.display = "none";
+  document.getElementById("practiceLeadButtons").style.display = "none";
+  document.getElementById("adviserLeadButtons").style.display = "none";
+  if (viewID === "5") {
+    document.getElementById("updateLeadButtons").style.display = "block";
+  }
+  if (viewID === "1") {
+  document.getElementById("practiceLeadButtons").style.display = "block";
+  }
+  if (viewID === "4") {
+  document.getElementById("adviserLeadButtons").style.display = "block";
+  }
   //
   // Define lead data request
   //
@@ -310,86 +320,6 @@ function displayLead(leadRef) {
     }
   });
 }
-//
-// This creates a text display of the services but you can't edit it so created above code
-//
-// var pServ;
-// //
-// // Create cover required display text  
-// //
-// document.getElementById('selectAbility').style.display = 'block';
-// for (var i = 0, j = services.length; i < j; i++) {
-
-//   if (services[i].line === "PL") {
-//     //
-//     // Build personal lines service request text
-//     //
-//     pServ = "Personal:";
-//     for (var x = 0, z = services[i].types.length; x < z; x++) {
-//       console.log(">>> Services Detail: ", x, services[i].types[x]);
-//       pServ = pServ + " " + services[i].types[x];
-//     }
-//     console.log(">>> Services List: ", pServ);
-//     document.getElementById("pl").innerHTML = pServ;
-//     document.getElementById('pl').style.display = 'block';
-//   }
-
-//   if (services[i].line === "CL") {
-//     //
-//     // Build commercial lines service request text
-//     //
-//     pServ = "Commercial:";
-//     for (var x = 0, z = services[i].types.length; x < z; x++) {
-//       console.log(">>> Services Detail: ", x, services[i].types[x]);
-//       pServ = pServ + " " + services[i].types[x];
-//     }
-//     console.log(">>> Services List: ", pServ);
-//     document.getElementById("cl").innerHTML = pServ;
-//     document.getElementById('cl').style.display = 'block';
-//   }
-
-//   if (services[i].line === "SL") {
-//     //
-//     // Build commercial lines service request text
-//     //
-//     pServ = "Sasria:";
-//     for (var x = 0, z = services[i].types.length; x < z; x++) {
-//       console.log(">>> Services Detail: ", x, services[i].types[x]);
-//       pServ = pServ + " " + services[i].types[x];
-//     }
-//     console.log(">>> Services List: ", pServ);
-//     document.getElementById("sl").innerHTML = pServ;
-//     document.getElementById('sl').style.display = 'block';
-//   }
-
-//   if (services[i].line === "AL") {
-//     //
-//     // Build commercial lines service request text
-//     //
-//     pServ = "Agriculture:";
-//     for (var x = 0, z = services[i].types.length; x < z; x++) {
-//       console.log(">>> Services Item: ", x, services[i].types[x]);
-//       pServ = pServ + " " + services[i].types[x];              
-//     }
-//     console.log(">>> Services List: ", pServ);
-//     document.getElementById("al").innerHTML = pServ;
-//     document.getElementById('al').style.display = 'block';
-//   }
-
-//   if (services[i].line === "XL") {
-//     //
-//     // Build commercial lines service request text
-//     //
-//     pServ = "Specialist:";
-//     for (var x = 0, z = services[i].types.length; x < z; x++) {
-//       console.log(">>> Services Detail: ", x, services[i].types[x]);
-//       pServ = pServ + " " + services[i].types[x];              
-//     }
-//     console.log(">>> Services List: ", pServ);
-//     document.getElementById("xl").innerHTML = pServ;
-//     document.getElementById('xl').style.display = 'block';
-//   }
-// }  
 
 // ------------------------------
 //  Send new lead data to server

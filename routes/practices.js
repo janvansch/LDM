@@ -168,4 +168,24 @@ router.delete('/users/me/token', async (req, res) => {
   }
 });
 
+// ------------------------------------
+//	Add practice test data via Postman
+// ------------------------------------
+router.post('/addPractice', async (req, res) => {
+  try {
+    //
+    // Extract POST Data
+    //
+    var body = req.body;
+    console.log("===> Adviser test data: ", body);
+    //const user = new User(body);
+    await Practice.insertMany(body);
+    res.status(200).send("ok");
+  }
+  catch (e) {
+    console.log("===> ERROR - Insert Adviser Data: ", e);
+    res.status(400).send(e);
+  }
+});
+
 module.exports = router;

@@ -2,7 +2,7 @@ const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
 
-const {mongoose} = require('../db/mongoose');
+//const {mongoose} = require('../db/mongoose');
 //const {Lead} = require('../models/lead');
 const {User} = require('../models/user');
 const {authenticate} = require('../middleware/authenticate');
@@ -19,7 +19,8 @@ router.get('/', function(req, res, next) {
 //	Add User
 // ----------------------------------------
 router.post('/add', async (req, res) => {
-  console.log(">>> Router - Add User request received: ", req.url, req.body);
+  console.log(">>> Add User request received: ", req.url, req.body);
+  console.log(">>> Add User Services: ", req.body.services[0].line, req.body.services[0].types[0]);
   try {
     const body = _.pick(req.body, [
       'firstName',
@@ -32,13 +33,14 @@ router.post('/add', async (req, res) => {
 	    'services',
       'password'
     ]);
-    console.log(">>> body _.picked: ", body);
+    console.log(">>> body: ", body);
     const user = new User(body);
     await user.save();
     const token = await user.generateAuthToken();
     res.header('x-auth', token).send(user);
   }
   catch (e) {
+    console.log(">>> Error: ", e);
     res.status(400).send(e);
   }
 });
@@ -77,7 +79,6 @@ router.post('/update', (req, res) => {
     'roleCode',
     'practiceCode',
     'services'
-    
   ]);
   console.log(">>> Body data: ", body);
   User.findOneAndUpdate(
@@ -98,13 +99,16 @@ router.post('/update', (req, res) => {
       new: true
     }
   )
-  .then((user) => {
+  .then(
+    (user) => {
       console.log(">>> Res: ", user);
       res.send(user);
-    }, (e) => {
+    }, 
+    (e) => {
       console.log(">>> Res: ", user);
       res.status(400).send(e);
-    });
+    }
+  );
 });
 
 //----------------------------------------
@@ -207,16 +211,36 @@ router.post('/login', async (req, res) => {
 	console.log(">>> Router - login request received: ", req.body, req.url);
   try {
     const body = _.pick(req.body, ['email', 'password']);
-    console.log(">>> Body: ", body);
+    //console.log(">>> Body: ", body);
     const user = await User.findByCredentials(body.email, body.password);
-    console.log("===> User: ", user);
+    //console.log("===> User: ", user);
     const token = await user.generateAuthToken();
-    console.log("===> token: ", token);
+    //console.log("===> token: ", token);
     //res.header('x-auth', token).send(user);
     res.header('x-auth', token).send(_.pick(user, ['_id', 'roleCode', 'practiceCode', 'email']));
   }
   catch (e) {
     res.status(400).send();
+  }
+});
+
+// ----------------------------------------
+//	Add adviser user test data via Postman
+// ----------------------------------------
+router.post('/addAdviser', async (req, res) => {
+  try {
+    //
+    // Extract POST Data
+    //
+    var body = req.body;
+    console.log("===> Adviser test data: ", body);
+    //const user = new User(body);
+    await User.insertMany(body);
+    res.status(200).send("ok");
+  }
+  catch (e) {
+    console.log("===> ERROR - Insert Adviser Data: ", e);
+    res.status(400).send(e);
   }
 });
 

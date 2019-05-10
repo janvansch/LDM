@@ -2,17 +2,19 @@
 
 var express = require('express');
 var router = express.Router();
+// import { Router } from "express"
 const fs = require('fs');
 const {Product} = require('../models/product');
+const {myCache} = require('../middleware/cache');
 
 //==========================================================
-// Log Requests
+// Log Requests (middleware specific to this router)
 //==========================================================
 router.use((req, res, next) => {
  var now = new Date().toString();
  var log = `${now}: ${req.method} ${req.url}`;
 
- console.log(log);
+ console.log("Log entry: ", log);
  fs.appendFile('server.log', log + '\n', function (err) {
    if (err) throw err;
  });
@@ -31,8 +33,18 @@ router.get('/', async function(req, res, next) {
         _id : 0,
       }
     );
-    console.log(">>> Product list: ", product);
-    
+    myCache.get( "myKey", function( err, value ){
+      if( !err ){
+          if(value == undefined){
+          // key not found
+          }
+          else{
+          console.log( "INDEX - Cached Data: ", value );
+          //{ my: "Special", variable: 42 }
+          // ... do something ...
+          }
+      }
+    });
     res.render('index', { productDef: product, title: 'LDM - Login' });
   }
   catch (e) {
