@@ -10,3 +10,5 @@ The app is a single page web app that enables the following:
   - The allocation of a lead based on the service requested to a practice with suitably qualified advisers.
   - Assigning the lead to an adviser.
   - Recording the progress.
+
+Although all the required functionality has not been implemented I'm going to convert the code to be ES6 compatable by using the new ES6 features as far as possible in order to get practical experience with these new JavaScript features.
