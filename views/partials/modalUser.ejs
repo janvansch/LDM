@@ -5,7 +5,7 @@ User Description attributes
   First Name*: <input id="u0" type="text" name="firstName" size="15" required/>
 </label>
 <label>
-  Surname*: <input id="u1" type="text" name="surname" size="20"/ required>
+  Surname*: <input id="u1" type="text" name="surname" size="20" required/>
 </label>
 <label>
   Password (6 characters minimum)*: </label>
@@ -15,10 +15,10 @@ User Description attributes
   Phone: <input id="u3" type="text" name="phone" size="15"/>
 </label>
 <label>
-  Cell*: <input id="u4" type="text" name="cell" size="15"/  required>
+  Cell*: <input id="u4" type="text" name="cell" size="15" required/>
 </label>
 <label>
-  Email*: <input id="u5" type="email" name="email" size="60"/  required>
+  Email*: <input id="u5" type="email" name="email" size="60" required/>
 </label>
 <br/>
 <label>
@@ -54,7 +54,7 @@ The skills of the adviser must be captured for it to be considered
 during the leads allocation process.
 -->
 <div id="s-ins-lines" style="display:none">
-   
+
   <fieldset>
     <legend>Select Adviser's Service Skill Lines:</legend>
     <span id="lead-ins-line">Insurance Lines:</span>
@@ -67,11 +67,11 @@ during the leads allocation process.
     -->
     <!-- Insurance Lines Selection Checkbox -->
     <% for (var i = 0; i < productDef.length; i++) { %>
-      <input id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" 
-        type="checkbox" 
-        name="line" 
-        value="<%= productDef[i].lineValue %>" 
-        onclick="javascript:typeSwitch('s-<%= productDef[i].lineValue.toLocaleLowerCase() %>');"> 
+      <input id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
+        type="checkbox"
+        name="line"
+        value="<%= productDef[i].lineValue %>"
+        onclick="javascript:typeSwitch('s-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
       <%= productDef[i].lineLabel %>
     <% } %>
     <!-- Insurance Line Types Selection Checkbox -->
@@ -81,14 +81,14 @@ during the leads allocation process.
           <legend><%= productDef[i].lineLabel %> Types</legend>
           <!-- <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span> -->
           <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
-            <input 
-              id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
-              type="checkbox" 
-              name="<%= productDef[i].lineValue %>" 
-              value="<%= productDef[i].lineTypes[j].typeValue %>"> 
+            <input
+              id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>"
+              type="checkbox"
+              name="<%= productDef[i].lineValue %>"
+              value="<%= productDef[i].lineTypes[j].typeValue %>">
             <%= productDef[i].lineTypes[j].typeLabel %>
           <% } %>
-        </fieldset> 
+        </fieldset>
       </div>
     <% } %>
 

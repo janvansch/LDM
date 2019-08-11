@@ -10,16 +10,17 @@ var modal = document.getElementById('modalBox');
 // var btn = document.getElementById("myBtn");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+var xButton = document.getElementsByClassName("close")[0];
+
 // When the user clicks the button, open the modal
 //btn.onclick = function() {
 //    modal.style.display = "block";
 //}
 
-// -----------------------------------------------------
-//  When the user clicks on <span> (x), close the modal
-// -----------------------------------------------------
-span.onclick = function() {
+// ---------------------------------------------------
+//  When close button (x) is clicked, close the modal
+// ---------------------------------------------------
+xButton.onclick = function() {
   //
   // Clear Add User Form
   //
@@ -43,7 +44,7 @@ span.onclick = function() {
   table.innerHTML = "<tr> </tr>";
   //
   // Clear lead View Form
-  //  
+  //
   resetform("formLead");
   document.getElementById('displayLead').style.display = 'none';
   document.getElementById('v-ins-lines').style.display = 'none';
@@ -76,7 +77,7 @@ window.onclick = function(event) {
     document.getElementById('s-xl-types').style.display = 'none';
     //
     // Clear Add Practice Form
-    //  
+    //
     resetform("formAddPractice");
     document.getElementById("addPractice").style.display = 'none';
     //
@@ -86,7 +87,7 @@ window.onclick = function(event) {
     table.innerHTML = "<tr> </tr>";
     //
     // Clear lead View Form
-    //  
+    //
     resetform("formLead");
     document.getElementById('displayLead').style.display = 'none';
     document.getElementById('v-ins-lines').style.display = 'none';
@@ -115,8 +116,9 @@ window.onload = function() {
   // document.getElementById('ifAgriculture').style.display = 'none';
   // document.getElementById('ifSpecialist').style.display = 'none';
   // document.getElementById('ServiceComment').style.display = 'none';
+  toggleView("section");
   toggleView("viewLogin");
-  toggleView("navLogin");
+  //toggleView("navLogin");
 }
 
 // ---------------------
@@ -137,7 +139,7 @@ function toggleView(viewID){
 }
 
 // ==============================================================================
-//  Login 
+//  Login
 // ==============================================================================
 
 // -----------------------------------------------
@@ -163,7 +165,11 @@ function login() {
       // Close login View
       //
       toggleView("viewLogin");
-      toggleView("navLogin");
+      //
+      // Open system
+      //
+      toggleView("section");
+      //toggleView("navLogin");
       //
       // Display user id in system header
       //
@@ -249,19 +255,20 @@ function openRoleView(user) {
   }
   else if (userRole==="D"){
     toggleView("viewLead");
+    toggleView("nav");
     toggleView("navLead");
     navSetup("D", userId, userId);
   }
   else {
     console.log(`>>> Error - No role defined!
-      User ID: ${userID},
+      User ID: ${userId},
       User Role: ${userRole},
       Practice Code: ${userPracCode}`);
   }
 }
 
 // -------------------------------
-//  Setup view navigation options 
+//  Setup view navigation options
 // -------------------------------
 function navSetup(menuType, user, data) {
   //
@@ -276,11 +283,11 @@ function navSetup(menuType, user, data) {
     const opt1Func = function(){ listPractices(); }; // has block scope
     const opt2Func = function(){ listUsers(); }; // has block scope
     var optFunc = [opt0Func, opt1Func, opt2Func]; // user outside the block
-  }  
+  }
   if (menuType === "B") {
     //
     // Functions for Practice view options
-    //    
+    //
     var menuName = ".navOptPrac";
     const opt0Func = function(){ profile(user); };
     const opt1Func = function(){ listPracLeads(data); };
@@ -295,7 +302,7 @@ function navSetup(menuType, user, data) {
     const opt0Func = function(){ profile(user); };
     const opt1Func = function(){ listAdvLeads(data); };
     const opt2Func = function(){ listAdvClients(data); };
-    var optFunc = [opt0Func, opt1Func, opt2Func];    
+    var optFunc = [opt0Func, opt1Func, opt2Func];
   }
   if (menuType === "D") {
     //
@@ -305,7 +312,7 @@ function navSetup(menuType, user, data) {
     const opt0Func = function(){ profile(user); };
     const opt1Func = function(){ addLead(); };
     const opt2Func = function(){ selectLead(); };
-    var optFunc = [opt0Func, opt1Func, opt2Func]; 
+    var optFunc = [opt0Func, opt1Func, opt2Func];
   }
   //
   // Select view navigation options from DOM
@@ -315,12 +322,12 @@ function navSetup(menuType, user, data) {
   //
   // Link required functions to navigation options
   //
-  for(var i=0;i<menuOptions.length;i++) { 
+  for(var i=0;i<menuOptions.length;i++) {
     console.log("---> Option Func: ", optFunc[i]);
     menuOptions[i].onclick = optFunc[i];
     menuOptions[i].onmouseover = function(){ ChangeColor(this, true); };
     menuOptions[i].onmouseout = function(){ ChangeColor(this, false); };
-    
+
   }
   console.log("---> Menu Options", menuOptions);
 }
@@ -365,14 +372,14 @@ function navSetup(menuType, user, data) {
 // }
 
 // =============================================================================
-//  Utilities - Reusable Data Display Functions 
+//  Utilities - Reusable Data Display Functions
 // =============================================================================
 //
 // -------------------------------------------------------------
-//  Set the line and type check boxes to true for the data view 
+//  Set the line and type check boxes to true for the data view
 // -------------------------------------------------------------
 function showServices(services, prefix) {
-  
+
   console.log(">>> Param value: ", services);
   for (var i = 0, j = services.length; i < j; i++) {
     console.log(">>> Services Line: ", i, services[i].line);
@@ -497,7 +504,7 @@ function typeSwitch(el) {
 // }
 
 // =============================================================================
-//  Utilities - Table Display Functions 
+//  Utilities - Table Display Functions
 // =============================================================================
 
 // ----------------------------------
@@ -518,7 +525,7 @@ function displayData(content, title, layoutId) {
     var cells = [];
     for (var j=0; j < colCount; j++) {
       //
-      // If there is no data for a cell create it as a dash 
+      // If there is no data for a cell create it as a dash
       //
       cells.push((typeof content[i][layout.definition[j].fname] === 'undefined') ? (" - ") : (content[i][layout.definition[j].fname]));
     }
@@ -591,7 +598,7 @@ function displayData(content, title, layoutId) {
   console.log("<<< Data list display updated >>>");
 }
 // -----------------------------
-//  Add table row functionality 
+//  Add table row functionality
 // -----------------------------
 function addRowHandlers(id) {
   console.log("<<< Start adding Row Handlers >>>");
@@ -785,10 +792,10 @@ function filterDef(filterId) {
         '{ "tableCol" : 8 , "valueId" : "leads-contName-filter" }' +
         '{ "tableCol" : 8 , "valueId" : "leads-contSurname-filter" }' +
         '{ "tableCol" : 8 , "valueId" : "leads-contNumb-filter" }' +
-        '{ "tableCol" : 8 , "valueId" : "leads-refID-filter" }' +       
+        '{ "tableCol" : 8 , "valueId" : "leads-refID-filter" }' +
         ']}'
       ;
-      break; 
+      break;
   }
   var filter = JSON.parse(filterDef); // convert JSON text into JS object
   console.log("JSON Definition: ", filter);

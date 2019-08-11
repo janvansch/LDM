@@ -1,91 +1,99 @@
-<h3>Capture Lead Information</h3>
-<div id="approval-msg" class="intense">
-  You cannot register a lead without the customer's concent!
-  <br/>
-  Do you confirm that the customer understands and agrees
+<fieldset>
+  <legend>Contact Information</legend>
+  <% include ./contact %>
+</fieldset>
+
+<fieldset>
+  <legend>Client Information</legend>
+  <% include ./client %>
+</fieldset>
+
+<fieldset>
+  <legend>Cover Required*:</legend>
+  <% include ./cover %>
+</fieldset>
+
+<!-- Assign to Agent or Adviser -->
+
+<div class="intense">
+  <label>* Assign to: </label>
+
+  <input  id="assign-agent"
+          type="radio"
+          name="servicerType"
+          value="agent"
+          onclick="javascript:assignFork();"
+  />
+  <label for="assign-agent">Me</label>
+
+  <input  id=assign-adviser
+          type="radio"
+          name="servicerType"
+          value="adviser"
+          onclick="javascript:assignFork();"
+  />
+  <label for="assign-adviser">
+    Adviser
+    <span class="spacer">
+      Note: An adviser cannot be assigned to a lead without the contact's concent!
+    </span>
+  </label>
+</div>
+
+<!-- If assigned to adviser confirmation of approval must be obtained -->
+
+<div id="approval-msg" class="intense" style="display:none">
+  Do you confirm that the contact understands and agrees
   to follow-up contact from an accredited Tied Adviser?
   <label for="trfYes">
-    <input id="trfYes" type="radio" name="trfYN" onclick="javascript:leadOk();"/>
+    <input id="trfYes" type="radio" name="trfApproval" onclick="javascript:leadOk();"/>
     Yes
   </label>
   <label for="trfNo">
-    <input id="trfNo" type="radio" name="trfYN" onclick="javascript:leadOk();"/>
+    <input id="trfNo" type="radio" name="trfApproval" onclick="javascript:leadOk();"/>
     No
   </label>
 </div>
 
-<!-- Client has not approved -->
+<!-- Approval not given -->
+
 <div id="noForm" style="display:none">
   <p class="warning">
-    You must have the customer's approval to register a lead!
+    You must have the contact's approval to assign a lead to an adviser!
   </p>
 </div>
 
-<!-- Client has approved -->
+<!-- Approval given -->
+
 <div id="yesForm" style="display:none">
-  <form id="addLeadForm">
-    <fieldset>
-      <legend>Client</legend>
-      <% include ./client %>
-    </fieldset>
-    <!-- Get contact information -->
-    <fieldset>
-      <legend>Contact Information</legend>
-      <% include ./contact %>
-    </fieldset>
 
-    <fieldset>
-      <legend>Cover Required*:</legend>
+  <fieldset>
+    <legend>Contact's Preferred Contact Times:</legend>
+    <% include ./time %>
+  </fieldset>
 
-      <!--
-      Id prefix definition for insurance product lines and types display":
-        "a" for the add lead functionality
-        "v" for the lead detail modal (view, edit)
-        "s" for the user detail modal (add, view, edit)
-      The prefix is required to make the ids unique to enable the reuse of this code
-      -->
+  <fieldset>
+    <legend>Contact's Location & Postal Information:</legend>
+    <% include ./location %>
+  </fieldset>
 
-      <!-- Insurance Lines Selection Checkbox -->
-      <% for (var i = 0; i < productDef.length; i++) { %>
-        <input id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" 
-          type="checkbox" 
-          name="addLine" 
-          value="<%= productDef[i].lineValue %>" 
-          onclick="javascript:typeSwitch('a-<%= productDef[i].lineValue.toLocaleLowerCase() %>');"> 
-        <%= productDef[i].lineLabel %>
-      <% } %>
-
-      <!-- Insurance Line Types Selection Checkbox -->
-      <% for (var i = 0; i < productDef.length; i++) { %>
-        <div id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
-          <fieldset>
-            <legend><%= productDef[i].lineLabel %> Types</legend>
-            <!-- <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span> -->
-            <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
-              <input 
-                id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
-                type="checkbox" 
-                name="<%= productDef[i].lineValue %>" 
-                value="<%= productDef[i].lineTypes[j].typeValue %>"> 
-              <%= productDef[i].lineTypes[j].typeLabel %>
-            <% } %>
-          </fieldset> 
-        </div>
-      <% } %>
-      <!-- <div id="ServiceComment" style="display:none"> -->
-      <div id="comment">
-        <label for="serviceComment">
-          Service Comment:
-          <textarea id="serviceComment" name="comment2">
-          </textarea>
-        </label>
-      </div>
-    </fieldset>
-    
-  </form>
-
-  <button onclick="submitLead()">Submit Lead</button>
-  <button onclick="resetForm()">Cancel</button>
 </div>
+
+<div id="leadAction" style="display:none">
+  <button type="button" onclick="addLeadCtrl()">Create Lead</button>
+  <button type="button" onclick="resetForm()">Cancel</button>
+</div>
+
+<!-- If assigned to an agent obtain progress feedback from agent -->
+
+<!-- <div id="progress" style="display:none">
+
+  <fieldset>
+    <legend>Progress Feedback:</legend>
+    <% include ./progress %>
+  </fieldset>
+
+</div> -->
+
 <!-- Place holder for error message -->
-<div id="leadErr"></div>
+<!-- <div id="leadErr" class="warning"></div>  -->

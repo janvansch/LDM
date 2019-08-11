@@ -1,13 +1,92 @@
 "use strict";
 
-// ===========================================================================
-//  Leads View - Add Lead & Display Lead Panels
-// ===========================================================================
+// =======================================================
+//  Leads View - Display Lead Panel and sections required
+// =======================================================
 
-// -----------------------------
+// --------------------------------------------------------------
+//  If Agent is selected display progress feedback view
+//  If Adviser is selected display approval confirmation message
+// --------------------------------------------------------------
+function assignFork() {
+  if (document.getElementById('assign-adviser').checked) {
+    // switch on
+    document.getElementById('approval-msg').style.display = 'block';
+    // switch off
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('leadAction').style.display = 'none';
+    document.getElementById("leadErr").innerHTML = "";
+  }
+  else if (document.getElementById('assign-agent').checked) {
+    // switch off
+    document.getElementById('approval-msg').style.display = 'none';
+    document.getElementById('noForm').style.display = 'none';
+    document.getElementById('yesForm').style.display = 'none';
+    document.getElementById("trfYes").checked = false;
+    document.getElementById("leadErr").innerHTML = "";
+    // switch on
+    document.getElementById('leadAction').style.display = 'block';
+  }
+}
+//
+// After the lead is created:
+//    1) reset add lead form if adviser was selected
+//    2) display progress form if agent was selected
+//
+async function addLeadCtrl() {
+  try {
+    let result = await submitLead();
+    console.log("---> Result", result);
+    let prompt;
+    if (result === "ok") {
+      prompt = "Lead created";
+      document.getElementById("leadErr").innerHTML = prompt;
+      if (document.getElementById('assign-adviser').checked){
+        document.getElementById("addLeadForm").reset();
+        //document.getElementById("coverForm").reset();
+      }
+      else {
+        document.getElementById('progress').style.display = 'block';
+      }
+    }
+  }
+  catch(err) {
+    document.getElementById("leadErr").innerHTML = err;
+    alert(err);
+  }
+}
+
+// -------------------------------------------
+//  Close section, reset panels and open menu
+// -------------------------------------------
+function openMenu() {
+  resetform("addLeadForm");
+  document.getElementById("tPos5").innerHTML = 'Enter lead selection criteria and click "Find"';
+  toggleView("nav");
+  //toggleView("navLead");
+  toggleView("section");
+  //toggleView("viewLead");
+  toggleView("headerMain");
+  toggleView("headerSub");
+}
+
+// ------------------------
 //  Display Add Lead Panel
-// -----------------------------
+// ------------------------
 function addLead() {
+  //
+  // Setup View
+  //
+  toggleView("nav");
+  //toggleView("navLead");
+  toggleView("section");
+  //toggleView("viewLead");
+  toggleView("headerMain");
+  toggleView("headerSub");
+  //
+  // Set panel title
+  //
+  document.getElementById('viewName').innerHTML = "Create Lead";
   //
   // Switch Add Lead display on
   //
@@ -22,6 +101,17 @@ function addLead() {
 //  Display Lead Selection Panel
 // ------------------------------
 function selectLead() {
+  //
+  // Setup View
+  //
+  toggleView("nav");
+  toggleView("section");
+  toggleView("headerMain");
+  toggleView("headerSub");
+  //
+  // Set panel title
+  //
+  document.getElementById('viewName').innerHTML = "View Leads";
   //
   // Switch Lead View display on
   //
@@ -40,6 +130,7 @@ function leadOk() {
     // switch Yes on
     document.getElementById('yesForm').style.display = 'block';
     //document.getElementById('approval-msg').style.display = 'block';
+    document.getElementById('leadAction').style.display = 'block';
     // switch No off
     document.getElementById('noForm').style.display = 'none';
   }
@@ -116,7 +207,7 @@ function line() {
 }
 
 // --------------------------------------------------------------
-//  Extract & Display a subset of leads based on search criteria 
+//  Extract & Display a subset of leads based on search criteria
 // --------------------------------------------------------------
 function findLead() {
   //
@@ -129,11 +220,11 @@ function findLead() {
     entityName : document.getElementById('view-lead-org-name').value,
     entityRefNum : document.getElementById('view-lead-ref-id').value
   };
-  console.log(">>> Criteria values: ", 
-    criteria.refNo, 
-    criteria.contactSurname, 
-    criteria.contactFirstName, 
-    criteria.entityName, 
+  console.log(">>> Criteria values: ",
+    criteria.refNo,
+    criteria.contactSurname,
+    criteria.contactFirstName,
+    criteria.entityName,
     criteria.entityRefNum
   );
   //
@@ -153,15 +244,17 @@ function findLead() {
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var data = JSON.parse(res.responseText);
+      console.log("---> Leads list: ", data);
       if (data.length !== 0) {
         //
         // load report layout definition
         //
         var layoutId = '5';
-        var prompt = 'Leads found';
+        var prompt = 'Lead Agent View';
         //
         // Display Leads List
         //
+        console.log("---> Leads list: ", data);
         displayData(data, prompt, layoutId);
         //
         // Add row select handlers to enable editing of rows
@@ -178,14 +271,14 @@ function findLead() {
     }
   });
 }
-  
+
 // ----------------------------------
 //  Display lead detail in modal box
 // ----------------------------------
 function displayLead(leadRef, viewID) {
   console.log("---> Lead selected (this): ", leadRef);
   //
-  // open model window
+  // open modal window
   //
   modal.style.display = "block";
   document.getElementById("displayLead").style.display = 'block';
@@ -312,7 +405,6 @@ function displayLead(leadRef, viewID) {
       document.getElementById("serviceComment").value = lead[0].comments.comment2;
       document.getElementById("u6").value = lead[0].comments.comment3;
       document.getElementById("u6").value = lead[0].comments.comment4;
-      
     }
     else {
       var prompt = "User detail request error";
@@ -326,37 +418,41 @@ function displayLead(leadRef, viewID) {
 // ------------------------------
 function submitLead() {
   console.log("*** Add Lead ***");
-  //
-  // Extract new lead data from DOM
-  //
-  var leadData = getLeadData("ADD");
-  //
-  // If data found send to server
-  //
-  if (leadData !== "error") {
-    var dataString = JSON.stringify(leadData);
-    console.log("---> Data String: ", dataString);
-    var method = "POST";
-    var route = "/leads/add";
-    var contentType = "application/json";
+  return new Promise((resolve, reject) => {
     //
-    //  Send Lead POST Request
+    // Extract new lead data from DOM
     //
-    xhrRequest(method, route, contentType, dataString, (err, result) => {
-      if (!err) {
-        var resBody = result.responseText;
-        document.getElementById("addLeadForm").reset();
-        //document.getElementById("coverForm").reset();
-      }
-      else {
-        var prompt = "Lead add submit error";
-        document.getElementById("leadErr").innerHTML = prompt;
-      }
-    });
-  }
-  else {
-    console.log("*** Lead add failed - no data ***");
-  }
+    var leadData = getLeadData("ADD");
+    //
+    // If data found send to server
+    //
+    if (leadData !== "error") {
+      var dataString = JSON.stringify(leadData);
+      console.log("---> Data String: ", dataString);
+      var method = "POST";
+      var route = "/leads/add";
+      var contentType = "application/json";
+      //
+      //  Send Lead POST Request
+      //
+      xhrRequest(method, route, contentType, dataString, (err, result) => {
+        if (!err) {
+          console.log("*** Lead add - success ***");
+          var resBody = result.responseText;
+          console.log("---> Result response text:", resBody);
+          resolve("ok");
+        }
+        else {
+          console.log("*** Lead add - submit error ***");
+          reject("Lead submit error!");
+        }
+      });
+    }
+    else {
+      console.log("*** Lead add - no data ***");
+      reject("no-data");
+    }
+  });
 }
 
 // ---------------------------------
@@ -419,7 +515,7 @@ function getLeadData(form){
   //
   if (form === "ADD") {
     console.log("*** Extract add lead data ***");
-    var leadData = document.getElementById("yesForm");
+    var leadData = document.getElementById("addLeadForm");
     //
     // Insurance line checkbox name for lead add
     //
@@ -441,7 +537,7 @@ function getLeadData(form){
     var leadData = "error";
     return leadData;
   }
-  //console.log("---> Lead Data: ", leadData);
+  console.log("---> Lead Data: ", leadData);
   var radioName = "";
   var formElement = "";
   var inputType = "";
@@ -514,13 +610,15 @@ function getLeadData(form){
   var formElement = "textarea";
   var contactComment = extractFormData(leadData, formElement);
   console.log("---> Contact Comment: ", contactComment);
-  // extract postal codes
-  formElement = "input";
-  inputType = "number";
-  var contactPostalCode = extractFormData(leadData, formElement, inputType);
-  console.log("---> Postal Codes: ", contactPostalCode);
   //
-  // Extract lead service line data
+  // extract postal codes
+  //
+  // formElement = "input";
+  // inputType = "number";
+  // var contactPostalCode = extractFormData(leadData, formElement, inputType);
+  // console.log("---> Postal Codes: ", contactPostalCode);
+  //
+  // Extract cover required - insurance lines
   //
   console.log("---> Insurance Lines Checkbox Name: ", linesCheckboxName);
   var insLine = getCheckedValues(leadData, linesCheckboxName);
@@ -536,7 +634,7 @@ function getLeadData(form){
   }
   else {
     //
-    // Extract lead services for each of the insurance lines selected
+    // For each insurance line selected extract the selected types
     //
     console.log("---> Insurance Line(s): ", insLine[linesCheckboxName]);
     var lines = insLine[linesCheckboxName];
@@ -557,7 +655,7 @@ function getLeadData(form){
         types : selection[element]
       };
       console.log("---> Insurance Line Cover Types: ", serviceItem);
-      
+
       leadServices.push(serviceItem);
       console.log("---> Lead Services: ", leadServices);
     })
@@ -569,6 +667,26 @@ function getLeadData(form){
   var coverComment = extractFormData(leadData, formElement);
   console.log("---> Cover Comment: ", coverComment);
   //
+  // extract servicer type, i.e. agent or adviser
+  //
+  radioName = "servicerType";
+  var servType = getRadioCheckedValue(leadData, radioName);
+  console.log("---> Servicer Type: ", servType);
+  //
+  // Extract transfer approval state
+  //
+  radioName = "trfApproval";
+  var trfAppr = getRadioCheckedValue(leadData, radioName);
+  console.log("---> Transfer Approval: ", trfAppr.trfApproval);
+  //
+  // There are certain fields are required for an Adviser but not for an Agent
+  //
+  if (servType.servicerType === "agent") {
+    textInfo.suburb = "n/a";
+    textInfo.postalCode = "n/a";
+    trfAppr.trfApproval = "No";
+  }
+  //
   //  create Lead data object
   //
   var leadData = {
@@ -579,7 +697,7 @@ function getLeadData(form){
       entRefNum: textInfo.entityRefNum
     },
     entityName: textInfo.entityName,
-    title: "",
+    title: textInfo.conTitle,
     firstName: textInfo.firstname,
     surname: textInfo.surname,
     initials: textInfo.initials,
@@ -587,12 +705,13 @@ function getLeadData(form){
     altNumber: textInfo.altNumber,
     cellNumber: textInfo.cellNumber,
     eMail: contactEmail.eMail,
-    agentApproval: "Yes",
+    servicerType: servType.servicerType,
+    trfApproval: trfAppr.trfApproval,
     currentInsurer: textInfo.currInsurer,
     previousInsured: previousInsured.prevIns,
-    lineOfBusiness: "line of Buss.",
+    lineOfBusiness: "not in use",
     contactLocation: {
-      postal: contactPostalCode.postalCode,
+      postal: textInfo.postalCode,
       suburb: textInfo.suburb,
       streetNum: textInfo.streetNum,
       streetName: textInfo.streetName,
@@ -601,7 +720,7 @@ function getLeadData(form){
       room: textInfo.room
     },
     postBox: {
-      postalCode: contactPostalCode.boxPostalCode,
+      postalCode: textInfo.boxPostalCode,
       boxNumber: textInfo.box
     },
     contactPref: {

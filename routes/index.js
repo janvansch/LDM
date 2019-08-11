@@ -1,7 +1,7 @@
 "use strict";
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 // import { Router } from "express"
 const fs = require('fs');
 const {Product} = require('../models/product');
@@ -10,34 +10,36 @@ const {myCache} = require('../middleware/cache');
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 //==========================================================
-// Log Requests (middleware specific to this router)
+// Log Requests (middleware)
 //==========================================================
 router.use((req, res, next) => {
- var now = new Date().toString();
- var log = `${now}: ${req.method} ${req.url}`;
+ let now = new Date().toString();
+ let log = `${now}: ${req.method} ${req.url}`;
 
- console.log("Log entry: ", log);
+ console.log("===> Log entry: ", log);
  fs.appendFile('server.log', log + '\n', function (err) {
    if (err) throw err;
  });
  next();
 });
 
-// ---------------
-//  GET home page
-// ---------------
+// -------------
+//  GET UI page
+// -------------
 router.get('/', async function(req, res, next) {
   try {
     //
-    //  Retrieve all product definitions from DB
+    // Retrieve all product definitions from DB
+    // Required for UI display
     //
+    console.log("Start Product data load");
     const product = await Product.find(
       {},
       {
         _id : 0,
       }
     );
-
+    console.log("Product data loaded");
     // xxxxxxxxxxxxxxxxxxxxxxxx
     //  Investigate node-cache
     // xxxxxxxxxxxxxxxxxxxxxxxx

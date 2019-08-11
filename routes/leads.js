@@ -6,6 +6,7 @@ const router = express.Router();
 
 // const {mongoose} = require('../db/mongoose');
 const {Lead} = require('../models/lead');
+const {LeadUpdate} = require('../controllers/leadsX');
 //const {User} = require('../models/user');
 //const {authenticate} = require('../middleware/authenticate');
 //const {leadBody} = require('../utils/leadBody');
@@ -47,7 +48,7 @@ router.post('/add', async (req, res) => {
 router.post('/lead', (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
   User.find(
-    { reference : req.body.reference 
+    { reference : req.body.reference
     },
     {
       _id : 0,
@@ -68,8 +69,8 @@ router.post('/lead', async (req, res) => {
   try {
     const body = _.pick(req.body, ['reference']);
     const lead = await Lead.find(
-      { 
-        reference : body.reference 
+      {
+        reference : body.reference
       },
       {
         _id : 0
@@ -92,9 +93,9 @@ router.post('/search', async (req, res) => {
   //
   // Extract parameters and create query for find request
   // Query allows for partial case insentive parameters
-  // 
+  //
   var query = {};
-  var p = 0; 
+  var p = 0;
   var param = ["reference", "surname", "firstName", "entityName", "entity.entRefNum"];
   for(var key in req.body){ //could also be req.query and req.params
     req.body[key] !== "" ? query[param[p]] = {$regex: req.body[key], $options: 'i' }: null;
@@ -182,8 +183,8 @@ router.post('/allocatePractice', async (req, res) => {
       'who'
     ]);
     await Lead.findOneAndUpdate(
-      { 
-        _id: body._id 
+      {
+        _id: body._id
       },
       {
         'allocatedPractice' : body.allocatedPractice,
@@ -342,9 +343,20 @@ router.post('/assignAdviser', (req, res) => {
 //----------------------------------------
 //	Update Lead
 //----------------------------------------
+//router.route("/update").post(LeadUpdate());
+router.post('/update', async (req, res) => {
+  LeadUpdate(req, res);
+});
+
+/*
 router.post('/update', async (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
+  router.route("/updateLead").post(leadCtrl.updateLead);
+  // make this a separate controller
+  // call with router.route("/updateLead").post(leadCtrl.updateLead);
+  // updateLead(req.body)
   try {
+    // Extract data for update
     const body = _.pick(req.body, [
       'reference',
       'langPref',
@@ -375,8 +387,12 @@ router.post('/update', async (req, res) => {
       'who'
     ]);
     console.log("---> Update Data Received: ", body);
+
+    // Execute update - Model.method(query, data, options)
     await Lead.findOneAndUpdate(
+      // Update document key
       { reference: body.reference },
+      // Update data
       {
         //'reference' : body.reference,
         'langPref' : body.langPref,
@@ -424,17 +440,21 @@ router.post('/update', async (req, res) => {
         //'policyNumber' : body.policyNumber,
         'who' : body.who
       },
+      // Update options
       {
         upsert: false,
         new: true
       }
     )
+    // Return success status
     res.status(200).send("Ok");
   }
   catch (e) {
     console.log(">>> Practice update error: ", e);
+    // Return error status
     res.status(400).send(e);
   }
 });
+*/
 
 module.exports = router;

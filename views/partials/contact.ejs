@@ -1,15 +1,26 @@
 
+<label for="conTitle" >Title*:</label>
+<input id="conTitle" type="text" list="titles" name="conTitle" size="5" required/>
+<datalist id="titles">
+  <option value="Mr.">
+  <option value="Mrs.">
+  <option value="Mx.">
+  <option value="Ms.">
+  <option value="Miss">
+  <option value="Master">
+  <option value="Madam">
+  <option value="Hon.">
+  <option value="Prof.">
+  <option value="Dr.">
+  <option value="Hon.">
+  <option value="Rev.">
+</datalist>
 <label>
   First Name*: <input id="conFirstName" type="text" name="firstname" size="15" required/>
 </label>
 <label>
   Surname*: <input id="conSurname" type="text" name="surname" size="20" required/>
 </label>
-<!--
-<label>
-  Initials: <input id="conInitials" type="text" name="initials" size="5"/>
-</label>
--->
 <label>
   Contact Num*: <input id="conTelNum" type="text" name="contactNum" size="15" required/>
 </label>
@@ -23,90 +34,3 @@
 <label>
   Email: <input id="conEMail" type="email" name="eMail" size="60"/>
 </label>
-<br/>
-<label>Preferred contact time:</label>
-<label for="monday">
-  <input id="monday" type="checkbox" name="contactDay" value="Monday"/>
-  Mon
-</label>
-<label for="tuesday">
-  <input id="tuesday" type="checkbox" name="contactDay" value="Tuesday"/>
-  Tue
-</label>
-<label for="wednesday">
-  <input id="wednesday" type="checkbox" name="contactDay" value="Wednesday"/>
-  Wed
-</label>
-<label for="thursday">
-  <input id="thursday" type="checkbox" name="contactDay" value="Thursday"/>
-  Thu
-</label>
-<label for="friday">
-  <input id="friday" type="checkbox" name="contactDay" value="Friday"/>
-  Fri
-</label>
-<label for="saturday">
-  <input id="saturday" type="checkbox" name="contactDay" value="Saturday"/>
-  Sat
-</label>
-<label for="time">
-  Time
-  <input id="time" type="time" name="time" size="5"/>
-</label>
-<label for="before">
-  <input id="before" type="radio" name="timeBA" value="before"/> Before
-</label>
-<label for="after">
-  <input id="after" type="radio" name="timeBA" value="after"/> After
-</label>
-<div id="comment">
-  <label for="contactComment">
-    Comment:
-    <textarea id="contactComment" name="comment1">
-    </textarea>
-  </label>
-<div/>
-<fieldset>
-  <legend>Contact's location & postal information:</legend>
-  <div class="flex-container">
-    <div class="flex-item">
-      <label>
-        Postal Code <input id="conPostCode" type="number" name="postalCode" min="0" max="9999" size="5"/>
-      </label>
-      <br/>
-      <label>
-        Suburb* <input id="conSuburb" type="text" name="suburb" size="20" required/>
-      </label>
-    </div>
-    <div class="flex-item">
-      <label>
-        Street Number <input id="conStreetNum" type="text" name="streetNum" size="5"/>
-      </label>
-      <br/>
-      <label>
-        Street Name <input id="conStreetName" type="text" name="streetName" size="20"/>
-      </label>
-    </div>
-    <div class="flex-item">
-      <label>
-        Building Name <input id="conBuildName" type="text" name="buildingName" size="25"/>
-      </label>
-      <br/>
-      <label>
-        Floor <input id="conBuildFloor" type="text" name="floor" size="3"/>
-      </label>
-      <label>
-        Room <input id="conBuildRoom" type="text" name="room" size="10"/>
-      </label>
-    </div>
-    <div class="flex-item">
-      <label>
-        Postal Code <input id="conBoxPostCode" type="number" name="boxPostalCode" min="0" max="9999" size="5"/>
-      </label>
-      <br/>
-      <label>
-        P.O. Box <input id="conBoxNum" type="text" name="box" size="10"/>
-      </label>
-    </div>
-  </div>
-</fieldset>

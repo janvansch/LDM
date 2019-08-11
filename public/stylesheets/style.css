@@ -1,15 +1,44 @@
+/* Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+/* Set root element font size for rem */
+html {
+  font-size: 62.5%;
+}
+
+/*
+  The above sets the root element's font size equal to 10px.
+  The default browser font size is 16px.
+  This will make 1rem = 10px which makes the conversion from px to rem easier.
+  If the user changes the default everything will change accordingly.
+*/
+
+body {
+  box-sizing: border-box; }
+  /*
+    Set padding to use space inside the box, i.e. the content space
+    instead of making the box bigger and consume more screen space.
+  */
+
 /* =========================== */
 /*     General UI elements     */
 /* =========================== */
 
 body {
-  width: 1200px;
-  padding: 10px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  
+  width: 120rem;
+  padding: 1rem;
+
+  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+  font: 1.6rem "Lucida Grande", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+
   /*
   ----------------------------------------------
-   Background image from www.subtlepatterns.com 
+   Background image from www.subtlepatterns.com
   ----------------------------------------------
   */
   /* background-image: url("../images/random_grey_variations.png"); */
@@ -23,26 +52,46 @@ a {
 a:link,
 a:visited {
   /* color: #cf6317; */
-  color: #555;
+  /* color: #555; */
+  color: darkblue;
   text-decoration: none;
-  padding-bottom: 1px;
-  border-bottom: 1px solid #cf6317;
+  /* padding-bottom: 1px; */
+  /* border-bottom: 1px solid #cf6317;
   -webkit-transition: border-bottom 0.2s, color 0.2s;
-  transition: border-bottom 0.2s, color 0.2s;
+  transition: border-bottom 0.2s, color 0.2s; */
 }
 
 a:hover,
 a:active {
   /* color: #555; */
-  color: #cf6317;
-  border-bottom: 1px solid transparent;
+  /* color: #cf6317; */
+  color: #fdfcfb;
+  /* border-bottom: 1px solid transparent; */
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.abscenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center {
+  width: 50%;
+  margin: auto;
 }
 
 .intense {
   margin-top: 5px;
   color:  darkblue;
   font-size: 100%;
-  font-size: 14px;
+  font-size: 1.6rem;
   font-weight: 600;
 }
 
@@ -52,6 +101,14 @@ a:active {
   font-weight: 900;
 }
 
+.spacer {
+  padding-left: 3rem;
+}
+
+.spacer-small {
+  padding-left: .5rem;
+}
+
 input:valid {
   border-bottom: 1px solid color rgb(33, 190, 12);
 }
@@ -59,6 +116,10 @@ input:invalid {
   border-bottom: 1px solid color crimson;
 }
 
+
+.spacer {
+  padding-left: 3rem;
+}
 #errMsg {
   color:  crimson;
   font-size: 100%;
@@ -70,14 +131,15 @@ input:invalid {
 /* ============================== */
 
 header {
-  height: 100px;
+  height: 10rem;
   background-color: darkblue;
   color: white;
-  text-align: center;
-  padding: 5px;
+  /* text-align: center; */
+  /* padding: 1rem; */
 }
 
 nav {
+  /*
   width: 9%;
   line-height: 30px;
   background-color: #ffeeff;
@@ -85,11 +147,16 @@ nav {
   font-size: 100%;
   float: left;
   padding: 5px;
+  */
+  width: 100%;
+  /*height: 50vh;*/
+  padding: 1rem;
+  background-color: #ffeeff;
 }
 
 section {
-  width: 89%;
-  /* height: 300px; */
+  width: 100%;
+  /* height: 50vh; */
   font-size: 100%;
   background-color: rgb(244, 244, 248);
   float: left;
@@ -105,6 +172,52 @@ footer {
   padding: 5px;
 }
 
+/* ============================== */
+/*     Page Header Formatting     */
+/* ============================== */
+#version {
+  float: right;
+  color: white;
+  margin-top: .1rem;
+  margin-right: .2rem;
+}
+
+#mainTitle {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+#subTitle {
+  text-align: left;
+  padding-left: 1rem;
+}
+
+#viewName {
+  text-align: center;
+  margin: 0rem;
+  padding: 0rem 0rem 0rem;
+}
+
+#user {
+  text-align: center;
+  color: white;
+}
+
+.closeP {
+  color: rgb(175, 4, 4);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.closeP:hover,
+.closeP:focus {
+  color: rgb(247, 4, 4);
+  text-decoration: none;
+  cursor: pointer;
+}
+
 /* =============================== */
 /*    flex container formatting    */
 /* =============================== */
@@ -115,12 +228,13 @@ footer {
   justify-content: space-around;
   height: 50px;
 }
-  
+
 .flex-item {
   flex-grow: 0;
   margin: auto;
 }
 
+/* select input inside .flex-item */
 .flex-item input {
   margin-top: 3px;
   margin-bottom: 5px;
@@ -131,27 +245,35 @@ footer {
 /*    General Nav Menu elements    */
 /* =============================== */
 .nav-menu {
-  margin-left: 2px;
-  padding-left: 0px;
-  text-align: left;
+  width: 15%;
+  margin: 0 auto;
+
 }
 
 .nav-menu-list {
-  margin-left: 1px;
-  padding-left: 0px;
-  text-align: left;
-  list-style-type: none;
+  margin: 14rem 1rem;
+  list-style: none;
+  font-size: 1.8rem;
+
+
+  /* position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+
+  text-align: center;
 }
 
 .nav-menu-item {
-  margin-left: 2px;
-  padding-left: 0px;
-  text-align: left;
+  margin: 1rem;
+
+
 }
 
 /* =========================== */
 /*    General Form elements    */
 /* =========================== */
+
 fieldset {
   margin-top: 5px;
   display: block;
@@ -193,17 +315,10 @@ button {
 
 #viewLogin {
   display: block;
+  margin: 14rem 1rem;
   width: 99%;
+  /*height: 50vh;*/
   text-align: center;
-}
-
-#version {
-  float: right;
-  color: white;
-}
-
-#user {
-  color: white;
 }
 
 #prompt {
@@ -292,17 +407,23 @@ button {
 
 /* =============================== */
 /*     Leads View & Navigation     */
-/* =============================== */  
+/* =============================== */
 #navLead {
   display: none;
-  width: 99%;
+  width: 100%;
 }
 #viewLead {
   display: none;
-  width: 99%;
+  width: 100%;
   font-size: 95%;
   text-align: center;
 }
+
+#tPos5 {
+  max-height: 51.2rem;
+  overflow: auto;
+}
+
 #contactComment {
   width: 88%;
   height: 30px;
@@ -310,7 +431,7 @@ button {
   font-size: 100%;
 }
 #serviceComment {
-  width: 88%;
+  width: 85%;
   height: 30px;
   text-align: left;
   font-size: 100%;
@@ -335,9 +456,37 @@ button {
   background-color: green;
   color: white;
 }
-.spacer {
-  padding-left: 30px;
+
+#addLeadForm input {
+  font-size: 1.4rem;
+  font-family: inherit;
+  color: inherit;
+  /*padding: 1.5rem 2rem;*/
+  border-radius: 3px;
+  background-color: rbga(#fff, 0.5);
+  border: none;
+  border-bottom: 2px solid transparent;
+  /*width: 90%;*/
+  /* display: block;*/
+  transition: all .3s;
 }
+
+#addLeadForm input:focus {
+    outline: none;
+    box-shadow: 0 .1rem .5rem rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #55c57a;
+}
+
+#addLeadForm input:focus:invalid {
+    border-bottom: 2px solid #e7ad3f;
+}
+
+/*
+#addLeadForm input::-webkit-input-placeholder {
+    color: #999;
+}
+*/
+
 
 /* ================================== */
 /*     Practice View & Navigation     */

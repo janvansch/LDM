@@ -1,0 +1,54 @@
+<!--
+    Id prefix definition for insurance product lines and types display":
+      "a" for the add lead functionality
+      "v" for the lead detail modal (view, edit)
+      "s" for the user detail modal (add, view, edit)
+    The prefix is required to make the ids unique to enable the reuse of this code
+  -->
+
+  <!-- Create selection checkbox for each Insurance Line -->
+
+  <% for (var i = 0; i < productDef.length; i++) { %>
+    <span class="spacer">
+    <input
+      id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
+      type="checkbox"
+      name="addLine"
+      value="<%= productDef[i].lineValue %>"
+      onclick="javascript:typeSwitch('a-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
+    <%= productDef[i].lineLabel %>
+    </span>
+  <% } %>
+
+  <!-- For each Insurance Line create a selection checkbox for each Type of the Insurance Line -->
+
+  <!-- For each of the Insurance Lines create fieldset -->
+  <% for (var i = 0; i < productDef.length; i++) { %>
+    <div id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
+      <fieldset>
+        <legend><%= productDef[i].lineLabel %> Types</legend>
+        <!-- <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span> -->
+
+        <!-- For each of the Types of the Insurance Line create a checkbox -->
+        <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
+          <span class="spacer-small">
+          <input
+            id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>"
+            type="checkbox"
+            name="<%= productDef[i].lineValue %>"
+            value="<%= productDef[i].lineTypes[j].typeValue %>">
+          <label for="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>">
+          <%= productDef[i].lineTypes[j].typeLabel %>
+          </label>
+          </span>
+        <% } %>
+      </fieldset>
+    </div>
+  <% } %>
+  <!-- <div id="ServiceComment" style="display:none"> -->
+  <div id="comment">
+    <label for="serviceComment">
+      Cover Comment(s):
+    </label>
+    <textarea id="serviceComment" name="comment2"></textarea>
+  </div>

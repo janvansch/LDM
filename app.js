@@ -13,6 +13,7 @@ and suddenly you are doing the impossible." - Francis of Assasi
 //
 const createError = require('http-errors');
 const express = require('express');
+const helmet = require('helmet');
 const favicon = require('serve-favicon');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -35,6 +36,9 @@ const {mongoose} = require('./db/mongoose');
 //var {User} = require('./models/user');
 //var {authenticate} = require('./middleware/authenticate');
 
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//  Investigate node-cache - set
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 var obj = { my: "Special", variable: 42 };
 myCache.set( "myKey", obj, function( err, success ){
   if( !err && success ){
@@ -48,9 +52,9 @@ myCache.set( "myKey", obj, function( err, success ){
   }
 });
 
-// xxxxxxxxxxxxxxxxxxxxxxxx
-//  Investigate node-cache
-// xxxxxxxxxxxxxxxxxxxxxxxx
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//  Investigate node-cache - get
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 myCache.get( "myKey", function( err, value ){
   if( !err ){
     if(value == undefined){
@@ -64,7 +68,10 @@ myCache.get( "myKey", function( err, value ){
   }
 });
 
-var app = express();
+const app = express();
+
+// Helmet header security
+app.use(helmet());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -122,14 +129,5 @@ app.on('listening', function () {
   // server ready to accept connections here
   console.log("===> Ready to start loading practice service list");
 });
-
-// app.on('testEvent', function () {
-//   return console.log('responded to testEvent');
-// });
-
-// app.get('/test', function (req, res) {
-//   app.emit('testEvent');
-//   return res.status(200).end();
-// });
 
 module.exports = app;

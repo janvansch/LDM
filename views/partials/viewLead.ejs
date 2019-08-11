@@ -4,7 +4,27 @@
 ======================
 -->
 <div id=panelAddLead style="display:none">
-  <% include ./addLead %>
+  <form id="addLeadForm">
+    <% include ./addLead %>
+  </form>
+
+  <!-- If assigned to an agent obtain progress feedback from agent -->
+
+  <div id="progress" style="display:none">
+    <fieldset>
+      <legend>Progress Feedback:</legend>
+      <form id="leadProgressForm">
+        <% include ./progress %>
+      </form>
+    </fieldset>
+    <div id="leadUpdateAction" style="display:none">
+        <button type="button" onclick="updateLeadProgress()">Update Lead Progress</button>
+        <button type="button" onclick="resetLeadProgressForm()">Cancel</button>
+      </div>
+  </div>
+
+  <!-- Place holder for messages -->
+  <div id="leadErr" class="warning"></div>
 </div>
 
 <!--
@@ -13,7 +33,7 @@
 ========================
 -->
 <div id=panelViewLead style="display:none">
-  <h3 id="title5">View Lead</h3>
+  <h3 id="title5">Click Find to View leads</h3>
   <hr/>
   <div id="lead-selector">
     <b>Selection Criteria:</b>
@@ -29,11 +49,11 @@
     <input type="text" id="view-lead-org-name" placeholder="Organisation Name" title="Organisation Name">
     ID/Registration Number
     <input type="text" id="view-lead-ref-id" placeholder="ID/Registration No." title="ID/Registration Nunmber">
-    
+
     <input id="find-lead-btn" type="button" value="Find" onclick="javascript:findLead()"/>
   </div>
-  <br/>
-  <b>Result:</b>
+
+  <b>Find Result:</b>
   <br/>
   <hr/>
   <div id="tPos5">

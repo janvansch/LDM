@@ -5,21 +5,39 @@
   <title>LDM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+  <script src="javascripts/script-general.js" defer></script>
+  <script src="javascripts/script-utils.js" defer></script>
+  <script src="javascripts/script-admin.js" defer></script>
+  <script src="javascripts/script-lead.js" defer></script>
+  <script src="javascripts/script-practice.js" defer></script>
+  <script src="javascripts/script-adviser.js" defer></script>
 </head>
 
 <body>
-  <small id="version">ver 0.04</small>
-	<header>
-    <h1>Leads Distribution Management</h1>
-    <!--
-      Record information about a short term insurance need in order to pass
-      the lead on to an adviser located in the area of the contact person.
-    -->
-    <p id="user"> </p>
+
+	<header class="clearfix">
+
+    <div id="version">
+      <small>ver 0.04</small>
+    </div>
+
+    <div id="headerMain" style="display:block">
+      <h1 id="mainTitle" class="center">Signpost Leads Management</h1>
+    </div>
+
+    <div id="headerSub" style="display:none">
+      <h5 id="subTitle">Signpost Leads Management</h5>
+      <h2 id="viewName">View Name</h2>
+      <span class="closeP" onclick="javascript:openMenu()">&times;</span>
+    </div>
+
+    <p id="user">User Authentication Required</p>
+
 	</header>
 
-	<nav>
-    <h4>Select:</h4>
+	<nav id="nav" style="display:none">
+    <!--<h4>Select:</h4>-->
     <div id="navLogin" style="display:none">
       <% include ./partials/navLogin %>
     </div>
@@ -37,7 +55,7 @@
     </div>
 	</nav>
 
-	<section>
+	<section id="section" style="display:none">
     <!--
     ===========================================
     === Modal Display for Maintenance Pages ===
@@ -61,21 +79,21 @@
               <% include ./partials/modalUser %>
             </form>
           </div>
-          
+
           <!-- Display Practice Detail View -->
           <div id="addPractice" style="display:none">
             <form id="formAddPractice">
               <% include ./partials/modalPractice %>
             </form>
           </div>
-          
+
           <!-- Display Lead Detail View -->
           <div id="displayLead" style="display:none">
             <form id="formLead">
               <% include ./partials/modalLead %>
-            </form>            
+            </form>
           </div>
-          
+
         </div>
 
         <div class="modal-footer">
@@ -101,7 +119,7 @@
     =============================
     -->
     <div id="viewAdmin" style="display:none">
-      <% include ./partials/viewAdmin %> 
+      <% include ./partials/viewAdmin %>
     </div>
 
     <!--
@@ -110,8 +128,9 @@
     ==================
     -->
     <div id="viewLead" style="display:none">
-      <% include ./partials/viewLead %> 
+      <% include ./partials/viewLead %>
     </div>
+
     <!--
     =====================
     === Practise View ===
@@ -129,22 +148,12 @@
     <div id="viewAdviser" style="display:none">
       <% include ./partials/viewAdviser %>
     </div>
-		
+
 	</section>
 
 	<footer>
 		Copyright © J. van Schalkwyk (nimbledesign.co.za) 2018
 	</footer>
 
-  <!--
-  <script src="javascripts/script.js"></script>
-  -->
-  <script src="javascripts/script-general.js"></script>
-  <script src="javascripts/script-utils.js"></script>
-  <script src="javascripts/script-admin.js"></script>
-  <script src="javascripts/script-lead.js"></script>
-  <script src="javascripts/script-practice.js"></script>
-  <script src="javascripts/script-adviser.js"></script>
-    
 </body>
 </html>

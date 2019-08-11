@@ -1,3 +1,4 @@
+//import mongoose from 'mongoose';
 var mongoose = require('mongoose');
 var saveEvent = require('../middleware/emitter');
 
@@ -70,10 +71,6 @@ var LeadSchema = new mongoose.Schema({
     required: false,
     trim: true
   },
-  agentApproval: {
-    type: String,
-    required: true
-  },
   currentInsurer: {
     type: String,
     //default: null
@@ -87,11 +84,13 @@ var LeadSchema = new mongoose.Schema({
   contactLocation: {
     postal: {
       type: String,
+      trim: true,
       required: true
     },
     suburb: {
       type: String,
-      trim: true
+      trim: true,
+      required: true
     },
     streetNum: {
       type: String,
@@ -181,19 +180,27 @@ var LeadSchema = new mongoose.Schema({
       }
     }]
   },
+  servicerType: {
+    type: String,
+    required: true
+  },
+  trfApproval: {
+    type: String,
+    required: true
+  },
   allocatedPractice: {
     type: String,
-    //default: null  
+    //default: null
   },
   assignedAdviser: {
     type: String,
-    //default: null  
+    //default: null
   },
   statusHistory: [{
     status: {
-      // open, allocated, assigned, closed
-      // open, allocated, assigned, contacted, docs, quote, issue, closed
       type: String,
+      enum: ['open', 'allocated', 'assigned', 'in contact', 'docs', 'quote', 'issue', 'closed'],
+      // Should lead and process status be in one?
       default: "open"
     },
     statusDate: {
@@ -205,7 +212,7 @@ var LeadSchema = new mongoose.Schema({
   //   state: {
   //     // pending, contacted, docs, quote, issue
   //     type: String,
-  //     default: "pending" 
+  //     default: "pending"
   //   },
   //   stateDate: {
   //     type: Date,
@@ -219,7 +226,7 @@ var LeadSchema = new mongoose.Schema({
   },
   policyNumber: {
     type: String,
-    //default: null  
+    //default: null
    },
   who: {
     type: String,
@@ -228,6 +235,9 @@ var LeadSchema = new mongoose.Schema({
 },
 {timestamps: true});
 
+// ================================================
+//  Before saving
+// ================================================
 LeadSchema.pre('save', function (next) {
   if (!this.reference) {
     var date = new Date();
@@ -249,16 +259,24 @@ LeadSchema.pre('save', function (next) {
       }
     )
     next();
-  } 
+  }
   else {
     next();
   }
 });
 
+// ===============================================
+//  After saving
+// ===============================================
 LeadSchema.post('save', function () {
   var lead = this;
   saveEvent.emit('newLead', lead);
 });
 
+// =============================
+//  Export Module
+// =============================
+
 var Lead = mongoose.model('Lead', LeadSchema);
 module.exports = {Lead};
+

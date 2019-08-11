@@ -129,7 +129,9 @@ UserSchema.statics.findByToken = function (token) {
 
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (e) {
+  }
+
+  catch (e) {
     return Promise.reject();
   }
 
@@ -138,6 +140,7 @@ UserSchema.statics.findByToken = function (token) {
     'tokens.token': token,
     'tokens.access': 'auth'
   });
+
 };
 
 UserSchema.statics.findByCredentials = function (email, password) {
@@ -152,19 +155,25 @@ UserSchema.statics.findByCredentials = function (email, password) {
     if (!user) {
       return Promise.reject();
     }
+
     return new Promise((resolve, reject) => {
       // Use bcrypt.compare to compare password and user.password
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
           resolve(user);
-        } else {
+        }
+        else {
           reject();
         }
       });
+
     });
+
   });
+
 };
 
+// Before Save
 UserSchema.pre('save', function (next) {
   var user = this;
   if (user.isModified('password')) {
@@ -174,11 +183,14 @@ UserSchema.pre('save', function (next) {
         next();
       });
     });
-  } else {
+  }
+
+  else {
     next();
   }
+
 });
 
 var User = mongoose.model('User', UserSchema);
 
-module.exports = {User}
+module.exports = {User};
