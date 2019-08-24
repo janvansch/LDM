@@ -1,27 +1,28 @@
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: inherit;
 }
 
-/* Set root element font size for rem */
 html {
+  /* Set root element font size to 10px which will then equal 1rem */
   font-size: 62.5%;
-}
-
-/*
+  /*
   The above sets the root element's font size equal to 10px.
   The default browser font size is 16px.
   This will make 1rem = 10px which makes the conversion from px to rem easier.
   If the user changes the default everything will change accordingly.
-*/
+  */
+}
 
 body {
   box-sizing: border-box; }
   /*
     Set padding to use space inside the box, i.e. the content space
-    instead of making the box bigger and consume more screen space.
+    Padding now won't make the box bigger and consume more screen space.
   */
 
 /* =========================== */
@@ -43,8 +44,29 @@ body {
   /* background-repeat: repeat-x; */
 }
 
+/* Color Variables */
+$color-crimson: crimson;
+$color-darkblue: darkblue;
+$color-lightblue: #00B7FF;
+$color-white: #fdfcfb;
+
 a {
-  color: #00B7FF;
+  color: $color-lightblue;
+
+  &:link {
+    color: $color-darkblue;
+    text-decoration: none;
+  }
+
+  &:visited {
+    color: $color-darkblue;
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:active {
+    color: $color-white;
+  }
 }
 
 a:link,

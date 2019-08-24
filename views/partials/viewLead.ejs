@@ -11,16 +11,9 @@
   <!-- If assigned to an agent obtain progress feedback from agent -->
 
   <div id="progress" style="display:none">
-    <fieldset>
-      <legend>Progress Feedback:</legend>
-      <form id="leadProgressForm">
-        <% include ./progress %>
-      </form>
-    </fieldset>
-    <div id="leadUpdateAction" style="display:none">
-        <button type="button" onclick="updateLeadProgress()">Update Lead Progress</button>
-        <button type="button" onclick="resetLeadProgressForm()">Cancel</button>
-      </div>
+    <form id="leadProgressForm">
+      <% include ./progress %>
+    </form>
   </div>
 
   <!-- Place holder for messages -->

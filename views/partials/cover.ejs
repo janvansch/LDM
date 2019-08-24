@@ -29,9 +29,13 @@
         <legend><%= productDef[i].lineLabel %> Types</legend>
         <!-- <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span> -->
 
+        <div class="cover-flex-container">
+
         <!-- For each of the Types of the Insurance Line create a checkbox -->
         <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
-          <span class="spacer-small">
+
+          <div class="cover-flex-item">
+
           <input
             id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>"
             type="checkbox"
@@ -40,8 +44,13 @@
           <label for="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>">
           <%= productDef[i].lineTypes[j].typeLabel %>
           </label>
-          </span>
+
+          </div>
+
         <% } %>
+
+        </div>
+
       </fieldset>
     </div>
   <% } %>

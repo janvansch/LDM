@@ -1,10 +1,10 @@
 <fieldset>
   <legend>Client</legend>
-  <% include ./client %>
+  <% include ./contact %>
 </fieldset>
 <fieldset>
   <legend>Contact Information:</legend>
-  <% include ./contact %>
+  <% include ./info %>
 </fieldset>
 
 <fieldset>
@@ -13,7 +13,7 @@
     <span id="lead-ins-line">Insurance Line(s) Selected:</span>
 
     <!-- ============================================================================= -->
-    
+
     <!--
     Id prefix definition for insurance product lines and types display":
       "a" for the add lead functionality
@@ -24,11 +24,11 @@
 
     <!-- Insurance Lines Selection Checkbox -->
     <% for (var i = 0; i < productDef.length; i++) { %>
-      <input id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line" 
-        type="checkbox" 
-        name="viewLine" 
-        value="<%= productDef[i].lineValue %>" 
-        onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');"> 
+      <input id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
+        type="checkbox"
+        name="viewLine"
+        value="<%= productDef[i].lineValue %>"
+        onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
       <%= productDef[i].lineLabel %>
     <% } %>
 
@@ -37,11 +37,11 @@
       <div id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
         <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span>
         <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
-          <input 
-            id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>" 
-            type="checkbox" 
-            name="<%= productDef[i].lineValue %>" 
-            value="<%= productDef[i].lineTypes[j].typeValue %>"> 
+          <input
+            id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>"
+            type="checkbox"
+            name="<%= productDef[i].lineValue %>"
+            value="<%= productDef[i].lineTypes[j].typeValue %>">
           <%= productDef[i].lineTypes[j].typeLabel %>
         <% } %>
       </div>
@@ -54,7 +54,7 @@
         Service Comment:
         <textarea id="serviceComment" name="comment2"></textarea>
       </label>
-    </div>  
+    </div>
   </div>
 </fieldset>
 <br/>

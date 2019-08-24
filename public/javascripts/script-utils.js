@@ -37,18 +37,18 @@ function filterTable(tableId, filterId) {
   var td = [], i, j, txtValue;
   for (i = 1; i < tr.length; i++) {
     tr[i].style.display = "";
-    if (cols.length > 0) {  
+    if (cols.length > 0) {
       for (j = 0; j < cols.length; j++) {
         td = tr[i].getElementsByTagName("td")[cols[j]];
         console.log(">>> Cell: ", td);
         if (td) {
           txtValue = td.textContent || td.innerText;
           console.log(`>>> Cell content: ${txtValue} Filter criteria: ${criteria[j]}`);
-          if (txtValue.toUpperCase().indexOf(criteria[j].toUpperCase()) === -1) {  
+          if (txtValue.toUpperCase().indexOf(criteria[j].toUpperCase()) === -1) {
             tr[i].style.display = "none";
           }
         }
-      }       
+      }
     }
   }
 }
@@ -144,7 +144,59 @@ function extractFormData(form, formElement, inputType) {
 // ============================================
 //  Utilities - Generic XMLHttpRequest handler
 // ============================================
+// servReq serverRequest
+// serverAPI serverConnect servComs
+// serverCall
+// dataService
+//
+// Turn this into a promise
+//
+// Call with await from async function
+//
+/*
+Promisifying XMLHttpRequest
+Let's write a simple function to make a GET request:
+	function get(url) {
+    // Return a new promise.
+    return new Promise(function(resolve, reject) {
+      // Do the usual XHR stuff
+      var req = new XMLHttpRequest();
+      req.open('GET', url);
 
+      req.onload = function() {
+        // This is called even on 404 etc
+        // so check the status
+        if (req.status == 200) {
+          // Resolve the promise with the response text
+          resolve(req.response);
+        }
+        else {
+          // Otherwise reject with the status text
+          // which will hopefully be a meaningful error
+          reject(Error(req.statusText));
+        }
+      };
+
+      // Handle network errors
+      req.onerror = function() {
+        reject(Error("Network Error"));
+      };
+
+      // Make the request
+      req.send();
+    });
+  }
+Now let's use it:
+  get('story.json').then(
+    function(response) {
+      console.log("Success!", response);
+    },
+    function(error) {
+      console.error("Failed!", error);
+    }
+  )
+
+*/
 function xhrRequest(method, route, contentType, request, callback) {
     //Validate params - if params not valid end immediately
     if (request == null || route == null || contentType == null) {
@@ -185,7 +237,7 @@ function xhrRequest(method, route, contentType, request, callback) {
           }
         }
       }
-      //Request transact data from server
+      // Make request to server API
       method === "GET" ? xhr.open(method, route + request) : xhr.open(method, route);
       // if (method === "GET") {
       //   xhr.open(method, route + request);
@@ -205,7 +257,7 @@ function xhrRequest(method, route, contentType, request, callback) {
   }
 
 // =====================
-//  Utilities - General 
+//  Utilities - General
 // =====================
 
 // ------------
@@ -214,7 +266,7 @@ function xhrRequest(method, route, contentType, request, callback) {
 function resetform(form) {
     document.getElementById(form).reset();
   }
-  
+
   // -----------------------
   //  disable & enable form
   // -----------------------
@@ -254,14 +306,14 @@ function resetform(form) {
   function isString(o) {
     return typeof o == "string" || (typeof o == "object" && o.constructor === String);
   }
-  
+
   // -------------------------------
   //  Test if data item is a string
   // -------------------------------
   function isNumber(o) {
     return typeof o == "number" || (typeof o == "object" && o.constructor === Number);
   }
-  
+
   // // ===========================================
   // //  Functions to add elements and text to DOM
   // // ===========================================

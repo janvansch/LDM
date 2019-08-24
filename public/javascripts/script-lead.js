@@ -46,6 +46,7 @@ async function addLeadCtrl() {
         //document.getElementById("coverForm").reset();
       }
       else {
+        document.getElementById('leadAction').style.display = 'none';
         document.getElementById('progress').style.display = 'block';
       }
     }
@@ -413,12 +414,24 @@ function displayLead(leadRef, viewID) {
   });
 }
 
+/*
+
+function returnSomething(name) {
+  return new Promise(async (resolve, reject) => { // <--- this line
+    const somethingElse = await returnSomethingElse();
+    return resolve(somethingElse);
+  });
+}
+
+*/
+
 // ------------------------------
 //  Send new lead data to server
 // ------------------------------
 function submitLead() {
   console.log("*** Add Lead ***");
   return new Promise((resolve, reject) => {
+  /* return new Promise(async (resolve, reject) => { */
     //
     // Extract new lead data from DOM
     //
@@ -436,6 +449,7 @@ function submitLead() {
       //  Send Lead POST Request
       //
       xhrRequest(method, route, contentType, dataString, (err, result) => {
+      /* result = await xhrRequest(method, route, contentType, dataString); */
         if (!err) {
           console.log("*** Lead add - success ***");
           var resBody = result.responseText;

@@ -327,7 +327,6 @@ function navSetup(menuType, user, data) {
     menuOptions[i].onclick = optFunc[i];
     menuOptions[i].onmouseover = function(){ ChangeColor(this, true); };
     menuOptions[i].onmouseout = function(){ ChangeColor(this, false); };
-
   }
   console.log("---> Menu Options", menuOptions);
 }
