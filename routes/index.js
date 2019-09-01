@@ -29,8 +29,9 @@ router.use((req, res, next) => {
 router.get('/', async function(req, res, next) {
   try {
     //
-    // Retrieve all product definitions from DB
-    // Required for UI display
+    // Product Structure Definition
+    //
+    // Retrieve product definitions from DB
     //
     console.log("Start Product data load");
     const product = await Product.find(
@@ -55,11 +56,27 @@ router.get('/', async function(req, res, next) {
           }
       }
     });
-
     //
-    // Render App UI page with product definition data
+    // Leads Menu Definition
     //
-    res.render('index', { productDef: product, title: 'LDM - Login' });
+    const options = [
+      {func:'profile(user)',text:'Edit Profile'},
+      {func:'addLead()',text:'Add Lead'},
+      {func:'selectLead()',text:'View Leads'}
+    ]
+    // Modal definition for Login
+    //
+    const modal = "";
+    //
+    // Render App UI page with definition data
+    //
+    res.render('index', {
+      productDef: product,
+      menuDef: options,
+      modalDef: modal,
+      view: "login",
+      title: 'LDM - Login'
+    });
   }
 
   catch (e) {

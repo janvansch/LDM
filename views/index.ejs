@@ -16,143 +16,62 @@
 
 <body>
 
-  <header class="clearfix">
+  <!-- Page Header Content -->
+  <header>
+    <% include ./partials/uiHeader %>
+  </header>
 
-    <div id="version">
-      <small>ver 0.04</small>
-    </div>
-
-    <div id="headerMain" style="display:block">
-      <h1 id="mainTitle" class="center">Signpost Leads Management</h1>
-    </div>
-
-    <div id="headerSub" style="display:none">
-      <h5 id="subTitle">Signpost Leads Management</h5>
-      <h2 id="viewName">View Name</h2>
-      <span class="closeP" onclick="javascript:openMenu()">&times;</span>
-    </div>
-
-    <p id="user">User Authentication Required</p>
-
-	</header>
-
+  <!-- Role Navigation Content -->
   <nav id="nav" style="display:none">
-    <!--<h4>Select:</h4>-->
-    <div id="navLogin" style="display:none">
-      <% include ./partials/navLogin %>
-    </div>
-    <div id="navAdmin" style="display:none">
-      <% include ./partials/navAdmin %>
-    </div>
-    <div id="navLead" style="display:none">
-      <% include ./partials/navLead %>
-    </div>
-    <div id="navPractice" style="display:none">
-      <% include ./partials/navPractice %>
-    </div>
-    <div id="navAdviser" style="display:none">
-      <% include ./partials/navAdviser %>
-    </div>
+    <% include ./partials/uiNav %>
   </nav>
 
+  <!-- Role Function Content -->
 	<section id="section" style="display:none">
-    <!--
-    ===========================================
-    === Modal Display for Maintenance Pages ===
-    ===========================================
-    -->
+    <!-- Modal View Placeholder -->
+    <% include ./partials/modal %>
 
-    <!-- The Modal (source w3schools) -->
-    <div id="modalBox" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
+    <!-- Display Required View -->
 
-        <div class="modal-header">
-          <span class="close">&times;</span>
-          <h2 id="modal-header-text">XXXXXX</h2>
-        </div>
-
-        <div class="modal-body">
-          <!-- Display User Detail View -->
-          <div id="displayUser" style="display:none">
-            <form id="formAddUser">
-              <% include ./partials/modalUser %>
-            </form>
-          </div>
-
-          <!-- Display Practice Detail View -->
-          <div id="addPractice" style="display:none">
-            <form id="formAddPractice">
-              <% include ./partials/modalPractice %>
-            </form>
-          </div>
-
-          <!-- Display Lead Detail View -->
-          <div id="displayLead" style="display:none">
-            <form id="formLead">
-              <% include ./partials/modalLead %>
-            </form>
-          </div>
-
-        </div>
-
-        <div class="modal-footer">
-          * = mandatory
-          <p id="errMsg"> </p>
-        </div>
-
+    <% if (view === "login") { %>
+      <!-- Login View -->
+      <div id="viewLogin" style="display:none">
+        <% include ./partials/viewLogin %>
       </div>
-    </div>
+    <% } %>
 
-    <!--
-    ==========================
-    === Login View Display ===
-    ==========================
-    -->
-    <div id="viewLogin" style="display:none">
-      <% include ./partials/viewLogin %>
-    </div>
+    <% if (view === "admin") { %>
+      <!-- Admin Maintenence View -->
+      <div id="viewAdmin" style="display:none">
+        <% include ./partials/viewAdmin %>
+      </div>
+    <% } %>
 
-    <!--
-    =============================
-    === User Maintenence View ===
-    =============================
-    -->
-    <div id="viewAdmin" style="display:none">
-      <% include ./partials/viewAdmin %>
-    </div>
+    <% if (view === "lead") { %>
+      <!-- Leads Agent View -->
+      <div id="viewLead" style="display:none">
+        <% include ./partials/viewLead %>
+      </div>
+    <% } %>
 
-    <!--
-    ==================
-    === Leads View ===
-    ==================
-    -->
-    <div id="viewLead" style="display:none">
-      <% include ./partials/viewLead %>
-    </div>
+    <% if (view === "practice") { %>
+      <!-- Practise View -->
+      <div id="viewPractice" style="display:none">
+        <% include ./partials/viewPractice %>
+      </div>
+    <% } %>
 
-    <!--
-    =====================
-    === Practise View ===
-    =====================
-    -->
-    <div id="viewPractice" style="display:none">
-      <% include ./partials/viewPractice %>
-    </div>
-
-    <!--
-    ====================
-    === Adviser View ===
-    ====================
-    -->
-    <div id="viewAdviser" style="display:none">
-      <% include ./partials/viewAdviser %>
-    </div>
+    <% if (view === "adviser") { %>
+      <!-- Adviser View -->
+      <div id="viewAdviser" style="display:none">
+        <% include ./partials/viewAdviser %>
+      </div>
+    <% } %>
 
 	</section>
 
 	<footer>
-		Copyright © J. van Schalkwyk (nimbledesign.co.za) 2018
+    <% include ./partials/uiFooter %>
 	</footer>
 
 </body>

@@ -1,0 +1,65 @@
+<!-- === Modal based on w3schools example === -->
+<div id="modalBox" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2 id="modal-header-text">XXXXXX</h2>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!--
+        Load form(s) as required by role
+      -->
+
+      <% if (view === "admin") { %>
+        <!-- User Detail View -->
+        <div id="displayUser" style="display:none">
+          <form id="formAddUser">
+            <% include ./modalUser %>
+          </form>
+        </div>
+      <% } %>
+
+      <% if (view === "admin") { %>
+        <!-- Practice Detail View -->
+        <div id="addPractice" style="display:none">
+          <form id="formAddPractice">
+            <% include ./modalPractice %>
+          </form>
+        </div>
+      <% } %>
+
+      <% if (view === "lead" || view === "practice" || view === "adviser") { %>
+        <!-- Lead Detail View -->
+        <div id="displayLead" style="display:none">
+          <form id="formLead">
+            <% include ./modalLead %>
+          </form>
+        </div>
+      <% } %>
+
+      <!--
+        Future development
+      -->
+      <% if (view === "XXXX") { %>
+        <!-- Profile Detail View -->
+        <div id="editProfile" style="display:none">
+          <form id="formProfile">
+            <% include ./modalProfile %>
+          </form>
+        </div>
+      <% } %>
+
+    </div>
+
+    <div class="modal-footer">
+      * = mandatory
+      <p id="errMsg"> </p>
+    </div>
+
+  </div>
+</div>

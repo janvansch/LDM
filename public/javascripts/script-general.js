@@ -4,7 +4,7 @@
 //  Global modal controls (source: w3schools)
 // ==============================================================================
 var modal = document.getElementById('modalBox');
-//var modalPrac = document.getElementById('modalPrac');
+// var modalPrac = document.getElementById('modalPrac');
 
 // Get the button that opens the modal
 // var btn = document.getElementById("myBtn");
@@ -110,15 +110,8 @@ window.onclick = function(event) {
 //  Initiate views
 // ----------------
 window.onload = function() {
-  // document.getElementById('ifPersonal').style.display = 'none';
-  // document.getElementById('ifCommercial').style.display = 'none';
-  // document.getElementById('ifSasria').style.display = 'none';
-  // document.getElementById('ifAgriculture').style.display = 'none';
-  // document.getElementById('ifSpecialist').style.display = 'none';
-  // document.getElementById('ServiceComment').style.display = 'none';
   toggleView("section");
   toggleView("viewLogin");
-  //toggleView("navLogin");
 }
 
 // ---------------------
@@ -146,39 +139,89 @@ function toggleView(viewID){
 //  Validate Login and Open View Required by Role
 // -----------------------------------------------
 
+// function login() {
+//   //
+//   //  Extract login credentials from login form
+//   //
+//   const loginData = document.getElementsByName("logindata");
+
+//   if (loginData[0].value !== '' && loginData[1].value !== '') {
+//     //
+//     // Validate login credentials if provided
+//     //
+//     validate(loginData, (validUser) => {
+//       var user = validUser.body;
+//       var auth = validUser.x-auth;
+//       //
+//       // Close login View
+//       //
+//       toggleView("viewLogin");
+//       //
+//       // Open system
+//       //
+//       toggleView("section");
+//       //toggleView("navLogin");
+//       //
+//       // Display user id in system header
+//       //
+//       document.getElementById("user").innerHTML = "User: " + user.email;
+//       //
+//       // Display Role View
+//       //
+//       openRoleView(user);
+//     });
+//   }
+//   else {
+//     //
+//     // No login credentials provided
+//     //
+//     const prompt = "No login information ... please enter";
+//     document.getElementById("prompt").innerHTML = prompt;
+//   }
+// }
+
 function login() {
   //
-  //  Extract login credentials from login view
+  //  Extract login credentials from login form
   //
-  const loginData = document.getElementsByName("logindata");
+  const login = document.getElementsByName("logindata");
   //
-  // Validate credentials if provided
+  //  If provided, request access from server
   //
-  if (loginData[0].value !== '' && loginData[1].value !== '') {
+  if (login[0].value !== '' && login[1].value !== '') {
     //
-    // Validate login credentials
+    // create login request
     //
-    validate(loginData, (validUser) => {
-      var user = validUser.body;
-      var auth = validUser.x-auth;
-      //
-      // Close login View
-      //
-      toggleView("viewLogin");
-      //
-      // Open system
-      //
-      toggleView("section");
-      //toggleView("navLogin");
-      //
-      // Display user id in system header
-      //
-      document.getElementById("user").innerHTML = "User: " + user.email;
-      //
-      // Display Role View
-      //
-      openRoleView(user);
+    var request = JSON.stringify({
+      email: login[0].value,
+      password: login[1].value
     });
+    var method = "POST";
+    var route = '/users/login';
+    var contentType = 'application/json';
+    //
+    //  Send login request to server
+    //
+    xhrRequest(method, route, contentType, request, (err, result) => {
+      if (!err) {
+        //
+        // Login credentials valid
+        //
+        const resHeader = result.getResponseHeader("x-auth");
+        const resBody = result.responseText;
+        const resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
+        const resObj = JSON.parse(resStr);
+        console.log("===> Server response: ", resObj);
+      }
+      else {
+        //
+        // Login credentials invalid
+        //
+        const prompt = "Login invalid ... re-enter information";
+        document.getElementById("prompt").innerHTML = prompt;
+      }
+    });
+
   }
   else {
     //

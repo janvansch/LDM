@@ -6,6 +6,7 @@ const router = express.Router();
 //const {Lead} = require('../models/lead');
 const {User} = require('../models/user');
 const {authenticate} = require('../middleware/authenticate');
+const {loginUser} = require('../controllers/accessCtrl');
 
 /* GET users listing. */
 
@@ -51,7 +52,7 @@ router.post('/add', async (req, res) => {
 router.post('/user', (req, res) => {
   console.log(">>> Request body and url: ", req.body, req.url);
   User.find(
-    { email: req.body.userId 
+    { email: req.body.userId
     },
     {
       password : 0,
@@ -82,7 +83,7 @@ router.post('/update', (req, res) => {
   ]);
   console.log(">>> Body data: ", body);
   User.findOneAndUpdate(
-    { email: body.email 
+    { email: body.email
     },
     {
       'firstName' : body.firstName,
@@ -103,7 +104,7 @@ router.post('/update', (req, res) => {
     (user) => {
       console.log(">>> Res: ", user);
       res.send(user);
-    }, 
+    },
     (e) => {
       console.log(">>> Res: ", user);
       res.status(400).send(e);
@@ -144,7 +145,7 @@ router.get('/list', async (req, res) => {
 });
 // router.get('/list', (req, res) => {
 //   User.find(
-//     { //_creator: req.user._id 
+//     { //_creator: req.user._id
 //     },
 //     {
 //       services : 0,
@@ -161,8 +162,8 @@ router.get('/list', async (req, res) => {
 // ----------------------------------------
 //  Get all adviser of practice
 //  - Advisers = users with roleCode = C
-//  - The practice is determined from the 
-//    signed in user's practiceCode.   
+//  - The practice is determined from the
+//    signed in user's practiceCode.
 // ----------------------------------------
 router.get('/advisers/:practice', async (req, res) => {
   const practice = req.params.practice;
@@ -207,21 +208,26 @@ router.delete('/users/me/token', authenticate, async (req, res) => {
 //----------------------------------------
 //	User Login
 //----------------------------------------
-router.post('/login', async (req, res) => {
-	console.log(">>> Router - login request received: ", req.body, req.url);
-  try {
-    const body = _.pick(req.body, ['email', 'password']);
-    //console.log(">>> Body: ", body);
-    const user = await User.findByCredentials(body.email, body.password);
-    //console.log("===> User: ", user);
-    const token = await user.generateAuthToken();
-    //console.log("===> token: ", token);
-    //res.header('x-auth', token).send(user);
-    res.header('x-auth', token).send(_.pick(user, ['_id', 'roleCode', 'practiceCode', 'email']));
-  }
-  catch (e) {
-    res.status(400).send();
-  }
+router.post('/login', (req, res) => {
+  loginUser(req, res);
+
+  // console.log(">>> Router - login request received: ", req.body, req.url);
+  // const body = _.pick(req.body, ['email', 'password']);
+  // loginUser(body.email, body.password, res);
+	// // console.log(">>> Router - login request received: ", req.body, req.url);
+  // // try {
+  // //   const body = _.pick(req.body, ['email', 'password']);
+  // //   //console.log(">>> Body: ", body);
+  // //   const user = await User.findByCredentials(body.email, body.password);
+  // //   //console.log("===> User: ", user);
+  // //   const token = await user.generateAuthToken();
+  // //   //console.log("===> token: ", token);
+  // //   //res.header('x-auth', token).send(user);
+  // //   res.header('x-auth', token).send(_.pick(user, ['_id', 'roleCode', 'practiceCode', 'email']));
+  // // }
+  // // catch (e) {
+  // //   res.status(400).send();
+  // // }
 });
 
 // ----------------------------------------
