@@ -6,7 +6,6 @@ const router = express.Router();
 //const {Lead} = require('../models/lead');
 const {User} = require('../models/user');
 const {authenticate} = require('../middleware/authenticate');
-const {loginUser} = require('../controllers/accessCtrl');
 
 /* GET users listing. */
 
@@ -205,30 +204,7 @@ router.delete('/users/me/token', authenticate, async (req, res) => {
   }
 });
 
-//----------------------------------------
-//	User Login
-//----------------------------------------
-router.post('/login', (req, res) => {
-  loginUser(req, res);
 
-  // console.log(">>> Router - login request received: ", req.body, req.url);
-  // const body = _.pick(req.body, ['email', 'password']);
-  // loginUser(body.email, body.password, res);
-	// // console.log(">>> Router - login request received: ", req.body, req.url);
-  // // try {
-  // //   const body = _.pick(req.body, ['email', 'password']);
-  // //   //console.log(">>> Body: ", body);
-  // //   const user = await User.findByCredentials(body.email, body.password);
-  // //   //console.log("===> User: ", user);
-  // //   const token = await user.generateAuthToken();
-  // //   //console.log("===> token: ", token);
-  // //   //res.header('x-auth', token).send(user);
-  // //   res.header('x-auth', token).send(_.pick(user, ['_id', 'roleCode', 'practiceCode', 'email']));
-  // // }
-  // // catch (e) {
-  // //   res.status(400).send();
-  // // }
-});
 
 // ----------------------------------------
 //	Add adviser user test data via Postman

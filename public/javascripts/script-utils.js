@@ -265,7 +265,8 @@ function xhrRequest(method, route, contentType, request, callback) {
 // ------------
 function resetform(form) {
     document.getElementById(form).reset();
-  }
+    console.log("---> Reset Form: ", form);
+}
 
   // -----------------------
   //  disable & enable form
@@ -304,7 +305,9 @@ function resetform(form) {
   //  Test if data item is a string
   // -------------------------------
   function isString(o) {
-    return typeof o == "string" || (typeof o == "object" && o.constructor === String);
+    if (o !== undefined && o !== null) {
+      return typeof o == "string" || (typeof o == "object" && o.constructor === String);
+    }
   }
 
   // -------------------------------

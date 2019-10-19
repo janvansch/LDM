@@ -173,10 +173,9 @@ footer {
   padding-left: 1rem;
 }
 
-#viewName {
+#panelName {
+  clear: right;
   text-align: center;
-  margin: 0rem;
-  padding: 0rem 0rem 0rem;
 }
 
 #user {
@@ -185,8 +184,9 @@ footer {
 }
 
 .closeP {
-  color: rgb(175, 4, 4);
   float: right;
+  line-height: .5;
+  color: rgb(175, 4, 4);
   font-size: 28px;
   font-weight: bold;
   margin-right: 1rem;
@@ -287,6 +287,11 @@ footer {
 
 .nav-menu-item {
   margin: 1rem;
+}
+
+.nav-menu-item:hover {
+  color: #fefefe;
+  background-color: #F7B733;
 }
 
 /* =========================== */
@@ -487,6 +492,10 @@ button {
   padding-right: 20px;
   background-color: green;
   color: white;
+}
+
+#addLeadForm {
+  clear: right;
 }
 
 #addLeadForm input {

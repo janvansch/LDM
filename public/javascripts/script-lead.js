@@ -57,45 +57,75 @@ async function addLeadCtrl() {
   }
 }
 
-// -------------------------------------------
-//  Close section, reset panels and open menu
-// -------------------------------------------
-function openMenu() {
-  resetform("addLeadForm");
-  document.getElementById("tPos5").innerHTML = 'Enter lead selection criteria and click "Find"';
-  toggleView("nav");
-  //toggleView("navLead");
-  toggleView("section");
-  //toggleView("viewLead");
-  toggleView("headerMain");
-  toggleView("headerSub");
-}
+// ----------------------
+//  Close Add Lead Panel
+// ----------------------
+function closeAddLead() {
+  //
+  // Switch menu-view on
+  //
+  openMenu();
+  //
+  // Switch Add Lead display off
+  //
+  viewOff('panelAddLead');
+  //
+  // Set panel title to default
+  //
+  panelTitle("Panel Name");
+  //
+  // Clear previous input
+  //
+  resetform('addLeadForm');
+  //
+  // Set start defaults
+  //
+  viewOff('approval-msg');
+  viewOff('leadAction');
+  viewOff('progress');
+  viewOff('yesForm');
+  viewOff('noForm');
+  viewOff('a-pl-types');
+  viewOff('a-cl-types');
+  viewOff('a-al-types');
+  viewOff('a-sl-types');
+  viewOff('a-xl-types');
+};
 
 // ------------------------
 //  Display Add Lead Panel
 // ------------------------
-function addLead() {
+function openAddLead() {
   //
-  // Setup View
+  // Switch panel-view on
   //
-  toggleView("nav");
-  //toggleView("navLead");
-  toggleView("section");
-  //toggleView("viewLead");
-  toggleView("headerMain");
-  toggleView("headerSub");
+  openPanel();
   //
   // Set panel title
   //
-  document.getElementById('viewName').innerHTML = "Create Lead";
+  panelTitle("Create Lead");
   //
   // Switch Add Lead display on
   //
-  document.getElementById('panelAddLead').style.display = 'block';
+  viewOn('panelAddLead');
   //
   // Switch Leads List display off
   //
-  document.getElementById('panelViewLead').style.display = 'none';
+  viewOff('panelViewLead');
+};
+
+function closeSelectLead() {
+  //
+  // Clear filter selections
+  //
+  document.getElementById("view-lead-ref-no").value = "";
+  document.getElementById("view-lead-con-surname").value = "";
+  document.getElementById("view-lead-con-name").value = "";
+  document.getElementById("view-lead-org-name").value = "";
+  document.getElementById("view-lead-ref-id").value = "";
+  //
+  // Close panel section and display menu
+  openMenu();
 }
 
 // ------------------------------
@@ -103,25 +133,22 @@ function addLead() {
 // ------------------------------
 function selectLead() {
   //
-  // Setup View
+  // Switch panel-view on
   //
-  toggleView("nav");
-  toggleView("section");
-  toggleView("headerMain");
-  toggleView("headerSub");
+  openPanel();
   //
   // Set panel title
   //
-  document.getElementById('viewName').innerHTML = "View Leads";
+  panelTitle("View Leads");
   //
-  // Switch Lead View display on
+  // Switch Leads List Panel on
   //
-  document.getElementById('panelViewLead').style.display = 'block';
+  viewOn('panelViewLead');
   //
   // Switch Adviser display off
   //
-  document.getElementById('panelAddLead').style.display = 'none';
-}
+  viewOff('panelAddLead');
+};
 
 // ----------------------------------------------------------------------
 //  Lead Display Switches for Contact Form and Service Required Selector
@@ -129,83 +156,70 @@ function selectLead() {
 function leadOk() {
   if (document.getElementById('trfYes').checked) {
     // switch Yes on
-    document.getElementById('yesForm').style.display = 'block';
-    //document.getElementById('approval-msg').style.display = 'block';
-    document.getElementById('leadAction').style.display = 'block';
-    // switch No off
-    document.getElementById('noForm').style.display = 'none';
+    viewOn('yesForm');
+    // switch buttons on
+    viewOn('leadAction');
+    // switch No message off
+    viewOff('noForm');
   }
   else if (document.getElementById('trfNo').checked) {
     // switch No on
-    document.getElementById('noForm').style.display = 'block';
+    viewOn('noForm');
     // switch Yes off
-    document.getElementById('yesForm').style.display = 'none';
-    //document.getElementById('approval-msg').style.display = 'block';
-    // switch other off as well
-    // document.getElementById('ifPersonal').style.display = 'none';
-    // document.getElementById('ifCommercial').style.display = 'none';
-    // document.getElementById('ifSasria').style.display = 'none';
-    // document.getElementById('ifAgriculture').style.display = 'none';
-    // document.getElementById('ifSpecialist').style.display = 'none';
-    // document.getElementById('ServiceComment').style.display = 'none';
-  // need to clear previous selections as well
-  //  document.getElementById("myForm").reset();
-  //  document.getElementById('ifPersonal').reset();
-  //  document.getElementById('ifCommercial').reset();
-  //  document.getElementById('ifSasria').reset();
-  //  document.getElementById('ifAgriculture').reset();
-  //  document.getElementById('ifSpecialist').reset();
+    viewOff('yesForm');
+    // switch buttons off
+    viewOff('leadAction');
   }
 }
 
 // --------------------------------------
 //  Display Switches for Lead Cover Form
 // --------------------------------------
-function line() {
-  if (document.getElementById('pInsLine').checked) {
-    // switch on
-    document.getElementById('ifPersonal').style.display = 'block';
-    console.log("*** Personal Insurance Selected ***");
-    // switch rest off
-    document.getElementById('ifCommercial').style.display = 'none';
-    document.getElementById('ifSasria').style.display = 'none';
-    document.getElementById('ifAgriculture').style.display = 'none';
-    document.getElementById('ifSpecialist').style.display = 'none';
-  }
-  else if(document.getElementById('cInsLine').checked) {
-    document.getElementById('ifCommercial').style.display = 'block';
-    console.log("*** Commercial Insurance Selected ***");
-    document.getElementById('ifPersonal').style.display = 'none';
-    document.getElementById('ifSasria').style.display = 'none';
-    document.getElementById('ifAgriculture').style.display = 'none';
-    document.getElementById('ifSpecialist').style.display = 'none';
-  }
-  else if(document.getElementById('sInsLine').checked) {
-    document.getElementById('ifSasria').style.display = 'block';
-    console.log("*** SASRIA Insurance Selected ***");
-    document.getElementById('ifPersonal').style.display = 'none';
-    document.getElementById('ifCommercial').style.display = 'none';
-    document.getElementById('ifAgriculture').style.display = 'none';
-    document.getElementById('ifSpecialist').style.display = 'none';
-  }
-  else if(document.getElementById('aInsLine').checked) {
-    document.getElementById('ifAgriculture').style.display = 'block';
-    console.log("*** Agriculture Insurance Selected ***");
-    document.getElementById('ifPersonal').style.display = 'none';
-    document.getElementById('ifCommercial').style.display = 'none';
-    document.getElementById('ifSasria').style.display = 'none';
-    document.getElementById('ifSpecialist').style.display = 'none';
-  }
-  else if(document.getElementById('xInsLine').checked) {
-    document.getElementById('ifSpecialist').style.display = 'block';
-    console.log("*** Specialist Insurance Selected ***");
-    document.getElementById('ifPersonal').style.display = 'none';
-    document.getElementById('ifCommercial').style.display = 'none';
-    document.getElementById('ifSasria').style.display = 'none';
-    document.getElementById('ifAgriculture').style.display = 'none';
-  }
-  document.getElementById('ServiceComment').style.display = 'block';
-}
+// function line() {
+//   if (document.getElementById('pInsLine').checked) {
+//     // switch on
+//     document.getElementById('ifPersonal').style.display = 'block';
+//     console.log("*** Personal Insurance Selected ***");
+//     // switch rest off
+//     document.getElementById('ifCommercial').style.display = 'none';
+//     document.getElementById('ifSasria').style.display = 'none';
+//     document.getElementById('ifAgriculture').style.display = 'none';
+//     document.getElementById('ifSpecialist').style.display = 'none';
+//   }
+//   else if(document.getElementById('cInsLine').checked) {
+//     document.getElementById('ifCommercial').style.display = 'block';
+//     console.log("*** Commercial Insurance Selected ***");
+//     document.getElementById('ifPersonal').style.display = 'none';
+//     document.getElementById('ifSasria').style.display = 'none';
+//     document.getElementById('ifAgriculture').style.display = 'none';
+//     document.getElementById('ifSpecialist').style.display = 'none';
+//   }
+//   else if(document.getElementById('sInsLine').checked) {
+//     document.getElementById('ifSasria').style.display = 'block';
+//     console.log("*** SASRIA Insurance Selected ***");
+//     document.getElementById('ifPersonal').style.display = 'none';
+//     document.getElementById('ifCommercial').style.display = 'none';
+//     document.getElementById('ifAgriculture').style.display = 'none';
+//     document.getElementById('ifSpecialist').style.display = 'none';
+//   }
+//   else if(document.getElementById('aInsLine').checked) {
+//     document.getElementById('ifAgriculture').style.display = 'block';
+//     console.log("*** Agriculture Insurance Selected ***");
+//     document.getElementById('ifPersonal').style.display = 'none';
+//     document.getElementById('ifCommercial').style.display = 'none';
+//     document.getElementById('ifSasria').style.display = 'none';
+//     document.getElementById('ifSpecialist').style.display = 'none';
+//   }
+//   else if(document.getElementById('xInsLine').checked) {
+//     document.getElementById('ifSpecialist').style.display = 'block';
+//     console.log("*** Specialist Insurance Selected ***");
+//     document.getElementById('ifPersonal').style.display = 'none';
+//     document.getElementById('ifCommercial').style.display = 'none';
+//     document.getElementById('ifSasria').style.display = 'none';
+//     document.getElementById('ifAgriculture').style.display = 'none';
+//   }
+//   document.getElementById('ServiceComment').style.display = 'block';
+// }
 
 // --------------------------------------------------------------
 //  Extract & Display a subset of leads based on search criteria
@@ -251,7 +265,7 @@ function findLead() {
         // load report layout definition
         //
         var layoutId = '5';
-        var prompt = 'Lead Agent View';
+        var prompt = 'Lead Agent View'; // can see all to answer queries
         //
         // Display Leads List
         //
@@ -414,24 +428,12 @@ function displayLead(leadRef, viewID) {
   });
 }
 
-/*
-
-function returnSomething(name) {
-  return new Promise(async (resolve, reject) => { // <--- this line
-    const somethingElse = await returnSomethingElse();
-    return resolve(somethingElse);
-  });
-}
-
-*/
-
 // ------------------------------
 //  Send new lead data to server
 // ------------------------------
 function submitLead() {
   console.log("*** Add Lead ***");
   return new Promise((resolve, reject) => {
-  /* return new Promise(async (resolve, reject) => { */
     //
     // Extract new lead data from DOM
     //
@@ -449,7 +451,6 @@ function submitLead() {
       //  Send Lead POST Request
       //
       xhrRequest(method, route, contentType, dataString, (err, result) => {
-      /* result = await xhrRequest(method, route, contentType, dataString); */
         if (!err) {
           console.log("*** Lead add - success ***");
           var resBody = result.responseText;

@@ -8,8 +8,15 @@
 
 <div id="headerSub" style="display:none">
   <h5 id="subTitle">Signpost Leads Management</h5>
-  <h2 id="viewName">View Name</h2>
-  <span class="closeP" onclick="javascript:openMenu()">&times;</span>
+  <h2 id="panelName">Panel Name</h2>
+  <!--
+    <span class="closeP" onclick="javascript:openMenu()">&times;</span>
+  -->
 </div>
 
-<p id="user">User Authentication Required</p>
+<% if (user !== "") { %>
+  <p id="user"><%= user %></p>
+<% } %>
+<% if (user === "") { %>
+  <p id="user">User Authentication Required</p>
+<% } %>

@@ -4,6 +4,7 @@
 ======================
 -->
 <div id=panelAddLead style="display:none">
+  <span class="closeP" onclick="javascript:closeAddLead()">&times;</span>
   <form id="addLeadForm">
     <% include ./addLead %>
   </form>
@@ -26,6 +27,7 @@
 ========================
 -->
 <div id=panelViewLead style="display:none">
+  <span class="closeP" onclick="javascript:closeSelectLead()">&times;</span>
   <h3 id="title5">Click Find to View leads</h3>
   <hr/>
   <div id="lead-selector">

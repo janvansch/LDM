@@ -1,7 +1,7 @@
 <div class="nav-menu">
   <ul class="nav-menu-list">
     <% menuDef.forEach(function(option){ %>
-      <li class="nav-menu-item" onmouseover="function(){ChangeColor(this,true);}" onmouseout="function(){ChangeColor(this,false);}" onclick="<%= option.func %>">
+      <li class="nav-menu-item" onclick=<%= option.func %>>
         <a href="#"><%= option.text %></a>
       </li>
     <% }) %>

@@ -1,8 +1,8 @@
 "use strict";
 
-// ==============================================================================
-//  Global modal controls (source: w3schools)
-// ==============================================================================
+// ================================================
+//  Global modal controls (adapted from w3schools)
+// ================================================
 var modal = document.getElementById('modalBox');
 // var modalPrac = document.getElementById('modalPrac');
 
@@ -13,9 +13,9 @@ var modal = document.getElementById('modalBox');
 var xButton = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
-//btn.onclick = function() {
+// btn.onclick = function() {
 //    modal.style.display = "block";
-//}
+// }
 
 // ---------------------------------------------------
 //  When close button (x) is clicked, close the modal
@@ -24,28 +24,28 @@ xButton.onclick = function() {
   //
   // Clear Add User Form
   //
-  resetform("formAddUser");
-  document.getElementById('displayUser').style.display = 'none';
-  document.getElementById('s-ins-lines').style.display = 'none';
-  document.getElementById('s-pl-types').style.display = 'none';
-  document.getElementById('s-cl-types').style.display = 'none';
-  document.getElementById('s-sl-types').style.display = 'none';
-  document.getElementById('s-al-types').style.display = 'none';
-  document.getElementById('s-xl-types').style.display = 'none';
+  ////resetform("formAddUser");
+  ////document.getElementById('displayUser').style.display = 'none';
+  ////document.getElementById('s-ins-lines').style.display = 'none';
+  ////document.getElementById('s-pl-types').style.display = 'none';
+  ////document.getElementById('s-cl-types').style.display = 'none';
+  ////document.getElementById('s-sl-types').style.display = 'none';
+  ////document.getElementById('s-al-types').style.display = 'none';
+  ////document.getElementById('s-xl-types').style.display = 'none';
   //
   // Clear Add Practice Form
   //
-  resetform("formAddPractice");
-  document.getElementById("addPractice").style.display = 'none';
+  ////resetform("formAddPractice");
+  ////document.getElementById("addPractice").style.display = 'none';
   //
   // clear postal code table
   //
-  var table = document.getElementById("tablePCode");
-  table.innerHTML = "<tr> </tr>";
+  ////var table = document.getElementById("tablePCode");
+  ////table.innerHTML = "<tr> </tr>";
   //
   // Clear lead View Form
   //
-  resetform("formLead");
+  ////resetform("formLead");
   document.getElementById('displayLead').style.display = 'none';
   document.getElementById('v-ins-lines').style.display = 'none';
   document.getElementById('v-pl-types').style.display = 'none';
@@ -67,28 +67,28 @@ window.onclick = function(event) {
     //
     // Clear Add User Form
     //
-    resetform("formAddUser");
-    document.getElementById('displayUser').style.display = 'none';
-    document.getElementById('s-ins-lines').style.display = 'none';
-    document.getElementById('s-pl-types').style.display = 'none';
-    document.getElementById('s-cl-types').style.display = 'none';
-    document.getElementById('s-sl-types').style.display = 'none';
-    document.getElementById('s-al-types').style.display = 'none';
-    document.getElementById('s-xl-types').style.display = 'none';
+    ////resetform("formAddUser");
+    ////document.getElementById('displayUser').style.display = 'none';
+    ////document.getElementById('s-ins-lines').style.display = 'none';
+    ////document.getElementById('s-pl-types').style.display = 'none';
+    ////document.getElementById('s-cl-types').style.display = 'none';
+    ////document.getElementById('s-sl-types').style.display = 'none';
+    ////document.getElementById('s-al-types').style.display = 'none';
+    ////document.getElementById('s-xl-types').style.display = 'none';
     //
     // Clear Add Practice Form
     //
-    resetform("formAddPractice");
-    document.getElementById("addPractice").style.display = 'none';
+    ////resetform("formAddPractice");
+    ////document.getElementById("addPractice").style.display = 'none';
     //
     // clear postal code table
     //
-    var table = document.getElementById("tablePCode");
-    table.innerHTML = "<tr> </tr>";
+    ////var table = document.getElementById("tablePCode");
+    ////table.innerHTML = "<tr> </tr>";
     //
     // Clear lead View Form
     //
-    resetform("formLead");
+    ////resetform("formLead");
     document.getElementById('displayLead').style.display = 'none';
     document.getElementById('v-ins-lines').style.display = 'none';
     document.getElementById('v-pl-types').style.display = 'none';
@@ -104,14 +104,32 @@ window.onclick = function(event) {
 }
 
 // ==============================================================================
-//  Initiate views
+//  View Control
 // ==============================================================================
-// ----------------
-//  Initiate views
-// ----------------
+// -------------------
+//  Select start view
+// -------------------
 window.onload = function() {
-  toggleView("section");
-  toggleView("viewLogin");
+  if (document.getElementById("viewLogin")){
+    toggleView("section");
+  }
+  else {
+    toggleView("nav");
+  }
+}
+
+function viewOn(viewID) {
+  //
+  // Switch view display on
+  //
+  document.getElementById(viewID).style.display = 'block';
+}
+
+function viewOff(viewID) {
+  //
+  // Switch view display off
+  //
+  document.getElementById(viewID).style.display = 'none';
 }
 
 // ---------------------
@@ -129,6 +147,37 @@ function toggleView(viewID){
       state = "ON";
   }
   console.log(`---> ${viewID} is ${state}`);
+}
+
+// -------------------------------------------------
+//  Reset form, close panel view and open menu view
+// -------------------------------------------------
+function openMenu() {
+  toggleView("nav");
+  toggleView("section");
+  toggleView("headerMain");
+  toggleView("headerSub");
+
+  // what does the line below do here??????????
+  document.getElementById("tPos5").innerHTML = 'Enter lead selection criteria and click "Find"';
+
+}
+
+// -------------------------------------
+//  Close menu view and open panel view
+// -------------------------------------
+function openPanel() {
+  toggleView("nav");
+  toggleView("section");
+  toggleView("headerMain");
+  toggleView("headerSub");
+}
+
+// -----------------
+//  Set panel title
+// -----------------
+function panelTitle(title) {
+  document.getElementById('panelName').innerHTML = title;
 }
 
 // ==============================================================================
@@ -180,199 +229,219 @@ function toggleView(viewID){
 //   }
 // }
 
-function login() {
-  //
-  //  Extract login credentials from login form
-  //
-  const login = document.getElementsByName("logindata");
-  //
-  //  If provided, request access from server
-  //
-  if (login[0].value !== '' && login[1].value !== '') {
-    //
-    // create login request
-    //
-    var request = JSON.stringify({
-      email: login[0].value,
-      password: login[1].value
-    });
-    var method = "POST";
-    var route = '/users/login';
-    var contentType = 'application/json';
-    //
-    //  Send login request to server
-    //
-    xhrRequest(method, route, contentType, request, (err, result) => {
-      if (!err) {
-        //
-        // Login credentials valid
-        //
-        const resHeader = result.getResponseHeader("x-auth");
-        const resBody = result.responseText;
-        const resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
-        const resObj = JSON.parse(resStr);
-        console.log("===> Server response: ", resObj);
-      }
-      else {
-        //
-        // Login credentials invalid
-        //
-        const prompt = "Login invalid ... re-enter information";
-        document.getElementById("prompt").innerHTML = prompt;
-      }
-    });
+// function login() {
+//   //
+//   //  Extract login credentials from login form
+//   //
+//   const login = document.getElementsByName("logindata");
+//   //
+//   //  If provided, request access from server
+//   //
+//   if (login[0].value !== '' && login[1].value !== '') {
+//     //
+//     // create login request
+//     //
+//     var request = JSON.stringify({
+//       email: login[0].value,
+//       password: login[1].value
+//     });
+//     var method = "POST";
+//     var route = '/users/login';
+//     var contentType = 'application/json';
+//     //
+//     //  Send login request to server
+//     //
+//     xhrRequest(method, route, contentType, request, (err, result) => {
+//       if (!err) {
+//         //
+//         // Login credentials valid
+//         //
+//         const resHeader = result.getResponseHeader("x-auth");
+//         const resBody = result.responseText;
+//         console.log("===> Server response: ", result);
+//         // const resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
+//         // const resObj = JSON.parse(resStr);
+//         // console.log("===> Server response: ", resObj);
+//         //var user = validUser.body;
+//         //var auth = validUser.x-auth;
+//         //
+//         // Close login View
+//         //
+//         toggleView("viewLogin");
+//         //
+//         // Open system
+//         //
+//         toggleView("section");
+//         //toggleView("navLogin");
+//         //
+//         // Display user id in system header
+//         //
+//         //document.getElementById("user").innerHTML = "User: " + user.email;
+//         //
+//         // Display Role View
+//         //
+//         openRoleView(user);
+//       }
+//       else {
+//         //
+//         // Login credentials invalid
+//         //
+//         const prompt = "Login invalid ... re-enter information";
+//         document.getElementById("prompt").innerHTML = prompt;
+//       }
+//     });
 
-  }
-  else {
-    //
-    // No login credentials provided
-    //
-    const prompt = "No login information ... please enter";
-    document.getElementById("prompt").innerHTML = prompt;
-  }
-}
+//   }
+//   else {
+//     //
+//     // No login credentials provided
+//     //
+//     const prompt = "No login information ... please enter";
+//     document.getElementById("prompt").innerHTML = prompt;
+//   }
+// }
 
 // ----------------------------
 //  Validate login credentials
 // ----------------------------
-function validate(login, callback) {
-  //
-  // create server login request
-  //
-	var request = JSON.stringify({
-	    email: login[0].value,
-			password: login[1].value
-	});
-  var method = "POST";
-	var route = '/users/login';
-  var contentType = 'application/json';
-  //
-  //  Send login request to server
-  //
-  xhrRequest(method, route, contentType, request, (err, result) => {
-    if (!err) {
-      //
-      // Login credentials valid
-      //
-      const resHeader = result.getResponseHeader("x-auth");
-      const resBody = result.responseText;
-      const resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
-      const resObj = JSON.parse(resStr);
-      callback(resObj);
-    }
-    else {
-      //
-      // Login credentials invalid
-      //
-      const prompt = "Login invalid ... re-enter information";
-      document.getElementById("prompt").innerHTML = prompt;
-    }
-  });
-}
+// function validate(login, callback) {
+//   //
+//   // create server login request
+//   //
+// 	var request = JSON.stringify({
+// 	    email: login[0].value,
+// 			password: login[1].value
+// 	});
+//   var method = "POST";
+// 	var route = '/users/login';
+//   var contentType = 'application/json';
+//   //
+//   //  Send login request to server
+//   //
+//   xhrRequest(method, route, contentType, request, (err, result) => {
+//     if (!err) {
+//       //
+//       // Login credentials valid
+//       //
+//       const resHeader = result.getResponseHeader("x-auth");
+//       const resBody = result.responseText;
+//       const resStr = '{"x-auth":"' + resHeader + '","body":' + resBody + '}';
+//       const resObj = JSON.parse(resStr);
+//       callback(resObj);
+//     }
+//     else {
+//       //
+//       // Login credentials invalid
+//       //
+//       const prompt = "Login invalid ... re-enter information";
+//       document.getElementById("prompt").innerHTML = prompt;
+//     }
+//   });
+// }
 
 // ----------------
 //  Open role view
 // ----------------
-function openRoleView(user) {
-  const userId = user._id;
-  const userEmail = user.email;
-  const userRole = user.roleCode;
-  const userPracCode = user.practiceCode;
-  console.log(`>>> User Id: ${userId}, User eMail: ${userEmail}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
-  if (userRole==="A") {
-    toggleView("viewAdmin");
-    toggleView("navAdmin");
-    navSetup("A");
-  }
-  else if (userRole==="B") {
-    toggleView("viewPractice");
-    toggleView("navPractice");
-    navSetup("B", userEmail, userPracCode);
-  }
-  else if (userRole==="C") {
-    toggleView("viewAdviser");
-    toggleView("navAdviser");
-    //showLeads(userID, userPracCode );
-    //listAdvLeads();
-    navSetup("C", userEmail, userEmail);
-  }
-  else if (userRole==="D"){
-    toggleView("viewLead");
-    toggleView("nav");
-    toggleView("navLead");
-    navSetup("D", userId, userId);
-  }
-  else {
-    console.log(`>>> Error - No role defined!
-      User ID: ${userId},
-      User Role: ${userRole},
-      Practice Code: ${userPracCode}`);
-  }
-}
+// function openRoleView(user) {
+//   const userId = user._id;
+//   const userEmail = user.email;
+//   const userRole = user.roleCode;
+//   const userPracCode = user.practiceCode;
+//   console.log(`>>> User Id: ${userId}, User eMail: ${userEmail}, User Role: ${userRole}, Practice Code: ${userPracCode}`);
+//   if (userRole==="A") {
+//     toggleView("viewAdmin");
+//     toggleView("navAdmin");
+//     navSetup("A");
+//   }
+//   else if (userRole==="B") {
+//     toggleView("viewPractice");
+//     toggleView("navPractice");
+//     navSetup("B", userEmail, userPracCode);
+//   }
+//   else if (userRole==="C") {
+//     toggleView("viewAdviser");
+//     toggleView("navAdviser");
+//     //showLeads(userID, userPracCode );
+//     //listAdvLeads();
+//     navSetup("C", userEmail, userEmail);
+//   }
+//   else if (userRole==="D"){
+//     toggleView("viewLead");
+//     toggleView("nav");
+//     toggleView("navLead");
+//     navSetup("D", userId, userId);
+//   }
+//   else {
+//     console.log(`>>> Error - No role defined!
+//       User ID: ${userId},
+//       User Role: ${userRole},
+//       Practice Code: ${userPracCode}`);
+//   }
+// }
 
 // -------------------------------
 //  Setup view navigation options
 // -------------------------------
-function navSetup(menuType, user, data) {
-  //
-  // Functions for view navigation options
-  //
-  if (menuType === "A") {
-    //
-    // Functions for Admin view options
-    //
-    var menuName = ".navOptAdmin"; // user outside the block
-    const opt0Func = function(){ profile(user); }; // has block scope
-    const opt1Func = function(){ listPractices(); }; // has block scope
-    const opt2Func = function(){ listUsers(); }; // has block scope
-    var optFunc = [opt0Func, opt1Func, opt2Func]; // user outside the block
-  }
-  if (menuType === "B") {
-    //
-    // Functions for Practice view options
-    //
-    var menuName = ".navOptPrac";
-    const opt0Func = function(){ profile(user); };
-    const opt1Func = function(){ listPracLeads(data); };
-    const opt2Func = function(){ listAdvisers(data); };
-    var optFunc = [opt0Func, opt1Func, opt2Func];
-  }
-  if (menuType === "C") {
-    //
-    // Functions for Adviser view options
-    //
-    var menuName = ".navOptAdviser";
-    const opt0Func = function(){ profile(user); };
-    const opt1Func = function(){ listAdvLeads(data); };
-    const opt2Func = function(){ listAdvClients(data); };
-    var optFunc = [opt0Func, opt1Func, opt2Func];
-  }
-  if (menuType === "D") {
-    //
-    // Functions for Lead view options
-    //
-    var menuName = ".navOptLead";
-    const opt0Func = function(){ profile(user); };
-    const opt1Func = function(){ addLead(); };
-    const opt2Func = function(){ selectLead(); };
-    var optFunc = [opt0Func, opt1Func, opt2Func];
-  }
-  //
-  // Select view navigation options from DOM
-  //
-  const menuOptions=document.querySelectorAll(menuName);
-  console.log("Menu Options: ", menuOptions);
-  //
-  // Link required functions to navigation options
-  //
-  for(var i=0;i<menuOptions.length;i++) {
-    console.log("---> Option Func: ", optFunc[i]);
-    menuOptions[i].onclick = optFunc[i];
-    menuOptions[i].onmouseover = function(){ ChangeColor(this, true); };
-    menuOptions[i].onmouseout = function(){ ChangeColor(this, false); };
-  }
-  console.log("---> Menu Options", menuOptions);
-}
+// function navSetup(menuType, user, data) {
+//   //
+//   // Functions for view navigation options
+//   //
+//   if (menuType === "A") {
+//     //
+//     // Functions for Admin view options
+//     //
+//     var menuName = ".navOptAdmin"; // user outside the block
+//     const opt0Func = function(){ profile(user); }; // has block scope
+//     const opt1Func = function(){ listPractices(); }; // has block scope
+//     const opt2Func = function(){ listUsers(); }; // has block scope
+//     var optFunc = [opt0Func, opt1Func, opt2Func]; // user outside the block
+//   }
+//   if (menuType === "B") {
+//     //
+//     // Functions for Practice view options
+//     //
+//     var menuName = ".navOptPrac";
+//     const opt0Func = function(){ profile(user); };
+//     const opt1Func = function(){ listPracLeads(data); };
+//     const opt2Func = function(){ listAdvisers(data); };
+//     var optFunc = [opt0Func, opt1Func, opt2Func];
+//   }
+//   if (menuType === "C") {
+//     //
+//     // Functions for Adviser view options
+//     //
+//     var menuName = ".navOptAdviser";
+//     const opt0Func = function(){ profile(user); };
+//     const opt1Func = function(){ listAdvLeads(data); };
+//     const opt2Func = function(){ listAdvClients(data); };
+//     var optFunc = [opt0Func, opt1Func, opt2Func];
+//   }
+//   if (menuType === "D") {
+//     //
+//     // Functions for Lead view options
+//     //
+//     var menuName = ".navOptLead";
+//     const opt0Func = function(){ profile(user); };
+//     const opt1Func = function(){ addLead(); };
+//     const opt2Func = function(){ selectLead(); };
+//     var optFunc = [opt0Func, opt1Func, opt2Func];
+//   }
+//   //
+//   // Select view navigation options from DOM
+//   //
+//   const menuOptions=document.querySelectorAll(menuName);
+//   console.log("Menu Options: ", menuOptions);
+//   //
+//   // Link required functions to navigation options
+//   //
+//   for(var i=0;i<menuOptions.length;i++) {
+//     console.log("---> Option Func: ", optFunc[i]);
+//     menuOptions[i].onclick = optFunc[i];
+//     menuOptions[i].onmouseover = function(){ ChangeColor(this, true); };
+//     menuOptions[i].onmouseout = function(){ ChangeColor(this, false); };
+//   }
+//   console.log("---> Menu Options", menuOptions);
+// }
 
 // // ====================================
 // //  Filter table rows by column values

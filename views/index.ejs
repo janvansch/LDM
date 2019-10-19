@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="utf-8">
   <title>LDM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  <!--
+  <script src="/javascripts/script-start.js" defer></script>
+  -->
+  <script src="/javascripts/script-general.js" defer></script>
+  <script src="/javascripts/script-utils.js" defer></script>
+  <script src="/javascripts/script-admin.js" defer></script>
+  <script src="/javascripts/script-lead.js" defer></script>
+  <script src="/javascripts/script-practice.js" defer></script>
+  <script src="/javascripts/script-adviser.js" defer></script>
 
-  <script src="javascripts/script-general.js" defer></script>
-  <script src="javascripts/script-utils.js" defer></script>
-  <script src="javascripts/script-admin.js" defer></script>
-  <script src="javascripts/script-lead.js" defer></script>
-  <script src="javascripts/script-practice.js" defer></script>
-  <script src="javascripts/script-adviser.js" defer></script>
 </head>
 
 <body>
@@ -27,43 +31,46 @@
   </nav>
 
   <!-- Role Function Content -->
-	<section id="section" style="display:none">
+  <section id="section" style="display:none">
+
     <!-- Modal View Placeholder -->
-    <% include ./partials/modal %>
+    <% if (modal === "yes") { %>
+      <% include ./partials/modal %>
+    <% } %>
 
     <!-- Display Required View -->
 
     <% if (view === "login") { %>
       <!-- Login View -->
-      <div id="viewLogin" style="display:none">
+      <div id="viewLogin" style="display:block">
         <% include ./partials/viewLogin %>
       </div>
     <% } %>
 
     <% if (view === "admin") { %>
       <!-- Admin Maintenence View -->
-      <div id="viewAdmin" style="display:none">
+      <div id="viewAdmin" style="display:block">
         <% include ./partials/viewAdmin %>
       </div>
     <% } %>
 
     <% if (view === "lead") { %>
       <!-- Leads Agent View -->
-      <div id="viewLead" style="display:none">
+      <div id="viewLead" style="display:block">
         <% include ./partials/viewLead %>
       </div>
     <% } %>
 
     <% if (view === "practice") { %>
       <!-- Practise View -->
-      <div id="viewPractice" style="display:none">
+      <div id="viewPractice" style="display:block">
         <% include ./partials/viewPractice %>
       </div>
     <% } %>
 
     <% if (view === "adviser") { %>
       <!-- Adviser View -->
-      <div id="viewAdviser" style="display:none">
+      <div id="viewAdviser" style="display:block">
         <% include ./partials/viewAdviser %>
       </div>
     <% } %>

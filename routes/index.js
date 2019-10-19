@@ -5,13 +5,14 @@ const router = express.Router();
 // import { Router } from "express"
 const fs = require('fs');
 const {Product} = require('../models/product');
+const {loginPage, loginUser} = require('../controllers/accessCtrl');
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 const {myCache} = require('../middleware/cache');
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-//==========================================================
+// --------------------------
 // Log Requests (middleware)
-//==========================================================
+// --------------------------
 router.use((req, res, next) => {
  let now = new Date().toString();
  let log = `${now}: ${req.method} ${req.url}`;
@@ -23,72 +24,47 @@ router.use((req, res, next) => {
  next();
 });
 
-// -------------
-//  GET UI page
-// -------------
-router.get('/', async function(req, res, next) {
-  try {
-    //
-    // Product Structure Definition
-    //
-    // Retrieve product definitions from DB
-    //
-    console.log("Start Product data load");
-    const product = await Product.find(
-      {},
-      {
-        _id : 0,
+// --------------------
+//  Provide login page
+// --------------------
+router.get('/', (req, res, next) => {
+  // xxxxxxxxxxxxxxxxxxxxxxxx
+  //  Investigate node-cache
+  // xxxxxxxxxxxxxxxxxxxxxxxx
+  myCache.get( "myKey", function( err, value ){
+    if( !err ){
+      if(value == undefined){
+        // key not found
       }
-    );
-    console.log("Product data loaded");
-    // xxxxxxxxxxxxxxxxxxxxxxxx
-    //  Investigate node-cache
-    // xxxxxxxxxxxxxxxxxxxxxxxx
-    myCache.get( "myKey", function( err, value ){
-      if( !err ){
-          if(value == undefined){
-          // key not found
-          }
-          else{
-          console.log( "INDEX - Cached Data: ", value );
-          //{ my: "Special", variable: 42 }
-          // ... do something ...
-          }
+      else{
+        console.log( "INDEX - Cached Data: ", value );
+        //{ my: "Special", variable: 42 }
+        // ... do something ...
       }
-    });
-    //
-    // Leads Menu Definition
-    //
-    const options = [
-      {func:'profile(user)',text:'Edit Profile'},
-      {func:'addLead()',text:'Add Lead'},
-      {func:'selectLead()',text:'View Leads'}
-    ]
-    // Modal definition for Login
-    //
-    const modal = "";
-    //
-    // Render App UI page with definition data
-    //
-    res.render('index', {
-      productDef: product,
-      menuDef: options,
-      modalDef: modal,
-      view: "login",
-      title: 'LDM - Login'
-    });
-  }
+    }
+  });
+  // xxxxxxxxxxxxxxxxxxxxxxxx
 
-  catch (e) {
-    console.log(">>> Error: ", e);
-    res.render('error', { message: 'Failed to load product definitions', error: e });
-  }
+  loginPage(req, res);
 
 });
 
-// ------------------------------------
-//	Add a new product definition to DB
-// ------------------------------------
+//----------------------------------------
+//	Process login request
+//----------------------------------------
+router.post('/', (req, res) => {
+  loginUser(req, res);
+});
+//window.location.href = "/";
+
+
+
+// -------------------------------------------------
+//	Utility route to add a product definition to DB
+//  Route accessed with Postman
+//  This will have to become an admin function
+//  Or maybe a setup script?
+// -------------------------------------------------
 router.post('/addProduct', async (req, res) => {
   try {
     //

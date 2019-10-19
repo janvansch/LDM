@@ -1,11 +1,14 @@
+
 <h2>Login:</h2>
 <p> Please provide your credentials </p>
-<p id="prompt"> </p>
-<p>
-  User Id: <input type="text" name="logindata" value="lead@example.com"/>
+<p id="prompt"><%= prompt %></p>
 
-  <br/>
-  Password: <input type="password" name="logindata" value="abc123!"/>
-</p>
+<form id="login" action="/" method="POST">
+  <p>
+    User Id: <input type="text" name="logindata" value="lead@example.com" required/>
+    <br/>
+    Password: <input type="password" name="logindata" value="abc123!" required/>
+  </p>
+  <input type="submit" value="Login">
 
-<input type="button" value="Submit" onclick="login()"/>
+</form>

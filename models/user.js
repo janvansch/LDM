@@ -99,16 +99,13 @@ UserSchema.methods.toJSON = function () {
 };
 
 UserSchema.methods.generateAuthToken = function () {
-  // console.log("---> Start Generating Auth Token: ");
   var user = this;
-  // console.log("---> This User: ", user);
   var access = 'auth';
   var token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET).toString();
-  // console.log("---> This Token: ", token);
+
   user.tokens.push({access, token});
-  // console.log("---> This User's Tokens: ", user.tokens);
+
   return user.save().then(() => {
-    // console.log("---> Auth Token Generated : ", token);
     return token;
   });
 };
