@@ -22,9 +22,10 @@ var loginPage = (req, res, promptText) => {
     modal: "yes",
     view: "login",
     user: "",
-    title: 'LDM - Login'
+    title: 'Login:'
   });
 }
+
 // ----------------------------------------
 //	Process access request - Login User
 // ----------------------------------------
@@ -106,7 +107,7 @@ var loginUser = async (req, res) => {
         modal: "yes",
         view: "admin",
         user: userEmail,
-        title: 'LDM - Login'
+        title: 'Options:'
       };
     }
     //
@@ -131,7 +132,7 @@ var loginUser = async (req, res) => {
         modal: "yes",
         view: "practice",
         user: userEmail,
-        title: 'LDM - Login'
+        title: 'Options:'
       };
     }
     //
@@ -156,7 +157,7 @@ var loginUser = async (req, res) => {
         modal: "yes",
         view: "adviser",
         user: userEmail,
-        title: 'LDM - Login'
+        title: 'Options:'
       };
     }
     //
@@ -168,20 +169,20 @@ var loginUser = async (req, res) => {
       //
       const options = [
         {func:'profile(user)',text:'Edit Profile'},
-        {func:'openAddLead()',text:'Add Lead'},
-        {func:'selectLead()',text:'View Leads'}
+        // {func:'openAddLead()',text:'Add Lead'},
+        {func:'openLeadsView()',text:'Leads'}
       ];
       //
-      // View definition
+      // View definition for index.ejs
       //
       viewObj = {
-        prompt: " ",
-        productDef: product,
-        menuDef: options,
-        modal: "yes",
-        view: "lead",
-        user: userEmail,
-        title: 'LDM - Login'
+        prompt: " ", // not used?
+        productDef: product, // the cover options
+        menuDef: options, // the menu options
+        modal: "yes", // if yes include modal place holder in view
+        view: "lead", // which view to display
+        user: userEmail, // the user's id
+        title: 'Leads Options:' // use or not?
       };
     }
     // ------------------------------------------------
@@ -204,4 +205,3 @@ var loginUser = async (req, res) => {
 }
 
 module.exports = {loginPage, loginUser};
-

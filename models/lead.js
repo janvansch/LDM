@@ -180,12 +180,15 @@ var LeadSchema = new mongoose.Schema({
       }
     }]
   },
+  // Routing information
   servicerType: {
     type: String,
+    enum: ['agent', 'adviser'],
     required: true
   },
   trfApproval: {
     type: String,
+    enum: ['yes', 'no'],
     required: true
   },
   allocatedPractice: {
@@ -196,11 +199,60 @@ var LeadSchema = new mongoose.Schema({
     type: String,
     //default: null
   },
+  // Progress information
+  accepted: {
+    type: String,
+    default: null
+  },
+  rejectReason: {
+    type: String
+  },
+  contactDate: {
+    type: Date
+  },
+  viable: {
+    type: String
+  },
+  notViableReason: {
+    type: String
+  },
+  quoteDate: {
+    type: Date
+  },
+  quoteNum: {
+    type: String
+  },
+  quoteState: {
+    type: String
+  },
+  quoteStateDate: {
+    type: Date
+  },
+  quoteDeclineReason: {
+    type: String
+  },
+  pendDate: {
+    type: Date
+  },
+  policyIssueDate: {
+    type: Date
+  },
+  policyNumber: {
+    type: String
+  },
+  policyPremium: {
+    type: Number
+  },
+  policyPremiumFrequency: {
+    type: String,
+    enum: ['annually', 'monthly'],
+  },
+
+  // Processing state information
   statusHistory: [{
     status: {
       type: String,
-      enum: ['open', 'allocated', 'assigned', 'in contact', 'docs', 'quote', 'issue', 'closed'],
-      // Should lead and process status be in one?
+      enum: ['open', 'allocated', 'assigned', 'closed'],
       default: "open"
     },
     statusDate: {
@@ -208,26 +260,17 @@ var LeadSchema = new mongoose.Schema({
       default: Date.now
     }
   }],
-  // stateHistory: [{
-  //   state: {
-  //     // pending, contacted, docs, quote, issue
-  //     type: String,
-  //     default: "pending"
-  //   },
-  //   stateDate: {
-  //     type: Date,
-  //     default: Date.now
-  //   }
-  // }],
-  outcome: {
-    // lost, rejected, accepted
-    type: String,
-    //default: null
-  },
-  policyNumber: {
-    type: String,
-    //default: null
-   },
+  stateHistory: [{
+    state: {
+      type: String,
+      enum: ['none', 'rejected', 'taken', 'no contact', 'contacted', 'viable', 'not viable', 'quoted', 'accepted', 'declined', 'expired', 'issued'],
+      default: "unassigned"
+    },
+    stateDate: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   who: {
     type: String,
     required: false
@@ -252,12 +295,14 @@ LeadSchema.pre('save', function (next) {
     var pr = rdm.toString().padStart(3, '0');
     //this.reference = yr.toString() + pmh.toString() + "-" + psd + pmd + pr;
     this.reference = psd + "-" + pmd + "-" + pr;
-    this.statusHistory.push(
-      {
+    this.statusHistory.push({
         status : "open",
-        statusDate : Date.now
-      }
-    )
+        statusDate : Date.now,
+    });
+    this.stateHistory.push({
+        state : "none",
+        stateDate : Date.now
+    });
     next();
   }
   else {

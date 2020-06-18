@@ -60,7 +60,7 @@ function filterTable(tableId, filterId) {
 // -------------------------------------------------------------
 //  Return values of specified element type from specified form
 // -------------------------------------------------------------
-function extractFormData(form, formElement, inputType) {
+function extractFormData(formContent, formElement, inputType) {
     console.log("===> Extract Form Data for: ", formElement, inputType);
     var selector = "";
     if (formElement === "input" && inputType !== "") {
@@ -73,7 +73,9 @@ function extractFormData(form, formElement, inputType) {
       console.log("===> Selector Error!");
       selector = "";
     }
-    var el = form.querySelectorAll(selector);
+    console.log("===> Extract Form Data Selector: ", selector);
+    //var el = document.getElementById(form).querySelectorAll(selector);
+    var el = formContent.querySelectorAll(selector);
     var myData = {};
     if (formElement === "input" && inputType === "checkbox") {
       // get checked values
@@ -99,9 +101,9 @@ function extractFormData(form, formElement, inputType) {
   // ----------------------------------------------------------
   //  Return the values of the checked checkboxes in the group
   // ----------------------------------------------------------
-  function getCheckedValues(form, checkboxName) {
+  function getCheckedValues(formContent, checkboxName) {
     var selector = 'input[' + 'name="' + checkboxName + '"]';
-    var el = form.querySelectorAll(selector);
+    var el = formContent.querySelectorAll(selector);
     var checked = {};
     var checkedValues = [];
     for (var x = 0; x < el.length; x++) {
@@ -118,10 +120,10 @@ function extractFormData(form, formElement, inputType) {
   // ------------------------------------------------
   //  Return the value of the selected radio buttons
   // ------------------------------------------------
-  function getRadioCheckedValue(form, radioName) {
+  function getRadioCheckedValue(formContent, radioName) {
     var selector = 'input[' + 'name="' + radioName + '"]';
-    var radio = form.querySelectorAll(selector);
-    console.log("===> Radio extracted: ", radio);
+    var radio = formContent.querySelectorAll(selector);
+    //console.log("===> Radio extracted: ", radio);
     var rData = {};
     for (var i = 0; i < radio.length; i++) {
       if(radio[i].checked) {
@@ -137,8 +139,8 @@ function extractFormData(form, formElement, inputType) {
   // --------------------------
   //  Reset the specified form
   // --------------------------
-  function formReset(form) {
-      document.getElementById(form).reset();
+  function formReset(formId) {
+      document.getElementById(formId).reset();
   }
 
 // ============================================

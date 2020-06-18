@@ -1,36 +1,14 @@
 <!--
-======================
-=== Add Lead Panel ===
-======================
--->
-<div id=panelAddLead style="display:none">
-  <span class="closeP" onclick="javascript:closeAddLead()">&times;</span>
-  <form id="addLeadForm">
-    <% include ./addLead %>
-  </form>
-
-  <!-- If assigned to an agent obtain progress feedback from agent -->
-
-  <div id="progress" style="display:none">
-    <form id="leadProgressForm">
-      <% include ./progress %>
-    </form>
-  </div>
-
-  <!-- Place holder for messages -->
-  <div id="leadErr" class="warning"></div>
-</div>
-
-<!--
 ========================
 === View Leads Panel ===
 ========================
 -->
 <div id=panelViewLead style="display:none">
-  <span class="closeP" onclick="javascript:closeSelectLead()">&times;</span>
+  <span class="closeP" onclick="javascript:closeViewLeads()">&times;</span>
   <h3 id="title5">Click Find to View leads</h3>
   <hr/>
   <div id="lead-selector">
+    <!-- Filter for leads list -->
     <b>Selection Criteria:</b>
     <br/>
     Lead Ref No.
@@ -44,16 +22,17 @@
     <input type="text" id="view-lead-org-name" placeholder="Organisation Name" title="Organisation Name">
     ID/Registration Number
     <input type="text" id="view-lead-ref-id" placeholder="ID/Registration No." title="ID/Registration Nunmber">
-
-    <input id="find-lead-btn" type="button" value="Find" onclick="javascript:findLead()"/>
+    <!-- Find button -->
+    <input id="find-lead-btn" type="button" value="Find" onclick="javascript:listLeads()"/>
+    <!-- Add Lead Button -->
+    <input id="add-lead-btn" type="button" value="Add Lead" onclick="javascript:addLead()"/>
   </div>
-
   <b>Find Result:</b>
   <br/>
   <hr/>
+  <!-- Place holder to display a list of Leads -->
   <div id="tPos5">
     Enter lead selection criteria and click "Find"
-    <!-- Place holder to display a list of Leads -->
   </div>
   <hr/>
 </div>

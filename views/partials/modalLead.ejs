@@ -1,80 +1,78 @@
 <fieldset>
-  <legend>Client</legend>
+  <legend>Contact Information</legend>
   <% include ./contact %>
 </fieldset>
+
 <fieldset>
-  <legend>Contact Information:</legend>
+  <legend>Information:</legend>
   <% include ./info %>
 </fieldset>
 
 <fieldset>
-  <legend>Cover Required:</legend>
-  <div id="v-ins-lines" style="display:none">
-    <span id="lead-ins-line">Insurance Line(s) Selected:</span>
-
-    <!-- ============================================================================= -->
-
-    <!--
-    Id prefix definition for insurance product lines and types display":
-      "a" for the add lead functionality
-      "v" for the lead detail modal (view, edit)
-      "s" for the user detail modal (add, view, edit)
-    The prefix is required to make the ids unique to enable the reuse of this code
-    -->
-
-    <!-- Insurance Lines Selection Checkbox -->
-    <% for (var i = 0; i < productDef.length; i++) { %>
-      <input id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
-        type="checkbox"
-        name="viewLine"
-        value="<%= productDef[i].lineValue %>"
-        onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
-      <%= productDef[i].lineLabel %>
-    <% } %>
-
-    <!-- Insurance Line Types Selection Checkbox -->
-    <% for (var i = 0; i < productDef.length; i++) { %>
-      <div id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
-        <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span>
-        <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
-          <input
-            id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>"
-            type="checkbox"
-            name="<%= productDef[i].lineValue %>"
-            value="<%= productDef[i].lineTypes[j].typeValue %>">
-          <%= productDef[i].lineTypes[j].typeLabel %>
-        <% } %>
-      </div>
-    <% } %>
-
-    <!-- ============================================================================= -->
-
-    <div id="comment">
-      <label for="serviceComment">
-        Service Comment:
-        <textarea id="serviceComment" name="comment2"></textarea>
-      </label>
-    </div>
-  </div>
-</fieldset>
-<br/>
-<fieldset>
-  <legend>Lead Progress:</legend>
-  Display the leads progress, allocation, assignment & status
+  <legend>Cover Required*:</legend>
+  <% include ./cover %>
 </fieldset>
 
-<hr/>
+<!-- Assign to Agent or Adviser -->
 
-<div id="updateLeadButtons">
-  <input id="leadModal" type="button" value="Update" onclick="updateLead()"/>
+<div id= "assign-prompt" class="intense" style="display:none">
+  <label>* Assign to: </label>
+
+  <input  id="assign-agent"
+          type="radio"
+          name="servicerType"
+          value="agent"
+          onclick="javascript:assignFork();"
+  />
+  <label for="assign-agent">Me</label>
+
+  <input  id=assign-adviser
+          type="radio"
+          name="servicerType"
+          value="adviser"
+          onclick="javascript:assignFork();"
+  />
+  <label for="assign-adviser">
+    Adviser
+    <span class="spacer">
+      Note: An adviser cannot be assigned to a lead without the contact's concent!
+    </span>
+  </label>
 </div>
 
-<div id="practiceLeadButtons">
-  <input id="leadModal" type="button" value="Assign/Re-assign Lead" onclick="assignLead()"/>
-  <input id="leadModal" type="button" value="Reject Lead" onclick="rejectLead('P')"/>
+<!-- If assigned to adviser confirmation of approval must be obtained -->
+
+<div id="approval-prompt" class="intense" style="display:none">
+  Do you confirm that the contact understands and agrees
+  to follow-up contact from an accredited Tied Adviser?
+  <label for="trfYes">
+    <input id="trfYes" type="radio" name="trfApproval" onclick="javascript:leadOk();"/>
+    Yes
+  </label>
+  <label for="trfNo">
+    <input id="trfNo" type="radio" name="trfApproval" onclick="javascript:leadOk();"/>
+    No
+  </label>
 </div>
 
-<div id="adviserLeadButtons">
-  <input id="leadModal" type="button" value="Update Lead" onclick="updateLead()"/>
-  <input id="leadModal" type="button" value="Reject Lead" onclick="rejectLead('A')"/>
+<!-- Approval not given -->
+
+<div id="noForm" style="display:none">
+  <p class="warning">
+    You must have the contact's approval to assign a lead to an adviser!
+  </p>
+</div>
+
+<!-- Approval given -->
+
+<div id="yesForm" style="display:none">
+  <fieldset>
+    <legend>Contact's Location & Postal Information:</legend>
+    <% include ./location %>
+  </fieldset>
+
+  <fieldset>
+    <legend>Contact's Preferred Contact Times:</legend>
+    <% include ./time %>
+  </fieldset>
 </div>

@@ -1,6 +1,11 @@
+<!--
+  ====================
+  The model view setup
+  ====================
+-->
 <!-- === Modal based on w3schools example === -->
 <div id="modalBox" class="modal">
-  <!-- Modal content -->
+
   <div class="modal-content">
 
     <!-- Header -->
@@ -12,34 +17,61 @@
     <!-- Body -->
     <div class="modal-body">
       <!--
-        Load form(s) as required by role
+        Place holders for loading forms into the modal view as required
       -->
 
       <% if (view === "admin") { %>
+
         <!-- User Detail View -->
         <div id="displayUser" style="display:none">
           <form id="formAddUser">
             <% include ./modalUser %>
           </form>
         </div>
+
       <% } %>
 
       <% if (view === "admin") { %>
+
         <!-- Practice Detail View -->
         <div id="addPractice" style="display:none">
           <form id="formAddPractice">
             <% include ./modalPractice %>
           </form>
         </div>
+
       <% } %>
 
       <% if (view === "lead" || view === "practice" || view === "adviser") { %>
-        <!-- Lead Detail View -->
-        <div id="displayLead" style="display:none">
-          <form id="formLead">
+
+        <!-- Lead form for viewing and adding a lead -->
+        <div id="lead-view" style="display:none">
+          <form id="lead-form">
             <% include ./modalLead %>
           </form>
         </div>
+
+        <!-- Lead form for viewing and updating a lead's progress -->
+        <div id="lead-progress" style="display:none">
+          <!--
+            When adding a lead and the agent selects -
+              to fulfil the request display to obtain progress from agent
+              that an adviser must fulfil the request this is not displayed
+            When viewing a lead this is always displayed to update the progress of the lead
+          -->
+          <form id="leadProgressForm">
+            <% include ./progress %>
+          </form>
+        </div>
+
+        <!-- Lead action buttons -->
+        <div id="lead-action-buttons">
+          <% include ./leadButtons %>
+        </div>
+
+        <!-- Place holder for messages -->
+        <div id="leadErr" class="warning"></div>
+
       <% } %>
 
       <!--
@@ -56,10 +88,16 @@
 
     </div>
 
+      <!-- Footer -->
     <div class="modal-footer">
       * = mandatory
       <p id="errMsg"> </p>
     </div>
 
+
+
+
+
   </div>
+
 </div>

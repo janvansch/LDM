@@ -46,18 +46,25 @@ xButton.onclick = function() {
   // Clear lead View Form
   //
   ////resetform("formLead");
-  document.getElementById('displayLead').style.display = 'none';
-  document.getElementById('v-ins-lines').style.display = 'none';
+  //resetform("formAddUser");
+  //resetform("formAddPractice");
+  resetform("lead-form");
+  resetform("leadProgressForm");
+
+  document.getElementById('lead-view').style.display = 'none';
+  document.getElementById('lead-progress').style.display = 'none';
+  //document.getElementById('v-ins-line').style.display = 'none';
   document.getElementById('v-pl-types').style.display = 'none';
   document.getElementById('v-cl-types').style.display = 'none';
   document.getElementById('v-sl-types').style.display = 'none';
   document.getElementById('v-al-types').style.display = 'none';
   document.getElementById('v-xl-types').style.display = 'none';
+
   //
   // Close modal display
   //
   modal.style.display = "none";
-}
+};
 
 // --------------------------------------------------------------
 //  When the user clicks anywhere outside of the modal, close it
@@ -89,19 +96,24 @@ window.onclick = function(event) {
     // Clear lead View Form
     //
     ////resetform("formLead");
-    document.getElementById('displayLead').style.display = 'none';
-    document.getElementById('v-ins-lines').style.display = 'none';
+
+    resetform("lead-form");
+    resetform("leadProgressForm");
+    document.getElementById('lead-view').style.display = 'none';
+    document.getElementById('lead-progress').style.display = 'none';
+    //document.getElementById('v-ins-lines').style.display = 'none';
     document.getElementById('v-pl-types').style.display = 'none';
     document.getElementById('v-cl-types').style.display = 'none';
     document.getElementById('v-sl-types').style.display = 'none';
     document.getElementById('v-al-types').style.display = 'none';
     document.getElementById('v-xl-types').style.display = 'none';
+
     //
     // Close modal display
     //
     modal.style.display = "none";
   }
-}
+};
 
 // ==============================================================================
 //  View Control
@@ -116,21 +128,21 @@ window.onload = function() {
   else {
     toggleView("nav");
   }
-}
+};
 
 function viewOn(viewID) {
   //
   // Switch view display on
   //
   document.getElementById(viewID).style.display = 'block';
-}
+};
 
 function viewOff(viewID) {
   //
   // Switch view display off
   //
   document.getElementById(viewID).style.display = 'none';
-}
+};
 
 // ---------------------
 //  View display toggle
@@ -147,7 +159,7 @@ function toggleView(viewID){
       state = "ON";
   }
   console.log(`---> ${viewID} is ${state}`);
-}
+};
 
 // -------------------------------------------------
 //  Reset form, close panel view and open menu view
@@ -161,7 +173,7 @@ function openMenu() {
   // what does the line below do here??????????
   document.getElementById("tPos5").innerHTML = 'Enter lead selection criteria and click "Find"';
 
-}
+};
 
 // -------------------------------------
 //  Close menu view and open panel view
@@ -171,14 +183,14 @@ function openPanel() {
   toggleView("section");
   toggleView("headerMain");
   toggleView("headerSub");
-}
+};
 
 // -----------------
 //  Set panel title
 // -----------------
 function panelTitle(title) {
   document.getElementById('panelName').innerHTML = title;
-}
+};
 
 // ==============================================================================
 //  Login
@@ -486,14 +498,14 @@ function panelTitle(title) {
 //  Utilities - Reusable Data Display Functions
 // =============================================================================
 //
-// -------------------------------------------------------------
-//  Set the line and type check boxes to true for the data view
-// -------------------------------------------------------------
-function showServices(services, prefix) {
+// ------------------------------------------------------------
+//  Set the line and type check boxes for the Lead detail view
+// ------------------------------------------------------------
+function setServicesView(services, prefix) {
 
-  console.log(">>> Param value: ", services);
+  //console.log(">>> Services view: ", services);
   for (var i = 0, j = services.length; i < j; i++) {
-    console.log(">>> Services Line: ", i, services[i].line);
+    //console.log(">>> Services Line: ", i, services[i].line);
     //
     // Set insurance line selector to selected
     //
@@ -506,11 +518,11 @@ function showServices(services, prefix) {
     // For the insurance types found set the selector tickbox to selected
     //
     for (var x = 0, z = services[i].types.length; x < z; x++) {
-      console.log(">>> Services Detail: ", x, services[i].types[x]);
+      //console.log(">>> Services Detail: ", x, services[i].types[x]);
       document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-" + services[i].types[x].toLocaleLowerCase().replace(/\s/g, '-')).checked = true;
     }
   }
-}
+};
 
 // -----------------------------------------------------
 //  Open or close the display of a line's service types
@@ -524,7 +536,8 @@ function typeSwitch(el) {
     // if not selected switch off
     document.getElementById(el + "-types").style.display = 'none';
   }
-}
+};
+
 //
 // The functions below can be removed once user skill and add lead
 // functions has been converted to use the new data driven product structure
@@ -707,7 +720,8 @@ function displayData(content, title, layoutId) {
     document.getElementById(elementId).innerHTML = title;
   }
   console.log("<<< Data list display updated >>>");
-}
+};
+
 // -----------------------------
 //  Add table row functionality
 // -----------------------------
@@ -724,22 +738,32 @@ function addRowHandlers(id) {
   // Add row function as required for dtype of list
   //
   if (id === "0"){
-    // user list
+    // users list
     var rowFunc = function(){ displayUser(this.cells[4].innerHTML); };
     // cells[4] = user email
   }
   if (id === "1"){
-    // practice lead list
+    // practice leads list
     var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
     // cells[0] = lead reference
   }
   if (id === "2"){
-    // practice list
+    // practices list
     var rowFunc = function(){ displayPractice(this.cells[0].innerHTML); };
     // cells[0] = practice code
   }
+  if (id === "3"){
+    // advisers list
+    var rowFunc = function(){ displayAdvisers(this.cells[0].innerHTML); };
+    // cells[0] = adviser code
+  }
+  if (id === "4"){
+    // adviser leads list
+    var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
+    // cells[0] = lead reference
+  }
   if (id === "5"){
-    // lead list
+    // leads list
     var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
     // cells[0] = lead reference
   }
@@ -750,7 +774,8 @@ function addRowHandlers(id) {
       rows[i].onmouseout = function(){ ChangeColor(this, false); };
   }
   console.log("<<< Row Handlers Added >>>");
-}
+};
+
 // --------------------------
 //  Table layout definitions
 // --------------------------
@@ -876,7 +901,7 @@ function readLayout(definitionId) {
   var layout = JSON.parse(layoutDef); // convert JSON text into JS object
   // console.log("JSON Definition: ", layout);
   return layout;
-}
+};
 
 // --------------------------
 //  Table Filter definitions
@@ -911,4 +936,4 @@ function filterDef(filterId) {
   var filter = JSON.parse(filterDef); // convert JSON text into JS object
   console.log("JSON Definition: ", filter);
   return filter;
-}
+};

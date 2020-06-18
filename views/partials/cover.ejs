@@ -10,13 +10,13 @@
 
   <% for (var i = 0; i < productDef.length; i++) { %>
     <span class="spacer">
-    <input
-      id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
-      type="checkbox"
-      name="addLine"
-      value="<%= productDef[i].lineValue %>"
-      onclick="javascript:typeSwitch('a-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
-    <%= productDef[i].lineLabel %>
+      <input
+        id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
+        type="checkbox"
+        name="prodLine"
+        value="<%= productDef[i].lineValue %>"
+        onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
+      <%= productDef[i].lineLabel %>
     </span>
   <% } %>
 
@@ -24,30 +24,31 @@
 
   <!-- For each of the Insurance Lines create fieldset -->
   <% for (var i = 0; i < productDef.length; i++) { %>
-    <div id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
+    <div id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
       <fieldset>
         <legend><%= productDef[i].lineLabel %> Types</legend>
         <!-- <span id="lead-ins-type"><%= productDef[i].lineValue %> Type(s) Selected:</span> -->
 
         <div class="cover-flex-container">
 
-        <!-- For each of the Types of the Insurance Line create a checkbox -->
-        <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
+          <!-- For each of the Types of the Insurance Line create a checkbox -->
+          <% for (var j = 0; j < productDef[i].lineTypes.length; j++) { %>
 
-          <div class="cover-flex-item">
+            <div class="cover-flex-item">
 
-          <input
-            id="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>"
-            type="checkbox"
-            name="<%= productDef[i].lineValue %>"
-            value="<%= productDef[i].lineTypes[j].typeValue %>">
-          <label for="a-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>">
-          <%= productDef[i].lineTypes[j].typeLabel %>
-          </label>
+              <input
+                id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>"
+                type="checkbox"
+                name="<%= productDef[i].lineValue %>"
+                value="<%= productDef[i].lineTypes[j].typeValue %>">
 
-          </div>
+              <label for="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-<%= productDef[i].lineTypes[j].typeValue.toLocaleLowerCase().replace(/\s/g, '-') %>">
+                <%= productDef[i].lineTypes[j].typeLabel %>
+              </label>
 
-        <% } %>
+            </div>
+
+          <% } %>
 
         </div>
 

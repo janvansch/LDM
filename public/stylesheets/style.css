@@ -5,35 +5,42 @@
   box-sizing: inherit;
 }
 
+/* Debugging tool
+* {
+  background-color: rgba(0,255,0,0.1);
+}
+*/
+
 /* Set root element font size for rem */
 html {
   font-size: 62.5%;
+  /*
+    As the default browser font size is 16px the above sets the root element's font size equal to 10px.
+    This will make 1rem = 10px which makes the conversion from px to rem easier.
+    The advantage of doing this is that when the default font size of the browser is changed
+    the font sizes of the site will change accordingly.
+  */
 }
 
-/*
-  The above sets the root element's font size equal to 10px.
-  The default browser font size is 16px.
-  This will make 1rem = 10px which makes the conversion from px to rem easier.
-  If the user changes the default everything will change accordingly.
-*/
-
+/* Set padding to use space inside the box */
 body {
-  box-sizing: border-box; }
+  box-sizing: border-box;
   /*
-    Set padding to use space inside the box, i.e. the content space
-    instead of making the box bigger and consume more screen space.
+    Padding consumes the content space inside the box, i.e. the content space is
+    reduced, instead of making the box bigger and consuming extra screen space.
   */
+}
 
 /* =========================== */
 /*     General UI elements     */
 /* =========================== */
 
 body {
-  width: 120rem;
+  width: 130rem;
   padding: 1rem;
   font: 1.6rem "Lucida Grande", Helvetica, Arial, sans-serif;
   line-height: 1.6;
-
+  margin: auto;
   /*
   ----------------------------------------------
    Background image from www.subtlepatterns.com
@@ -65,6 +72,12 @@ a:active {
   /* color: #cf6317; */
   color: #fdfcfb;
   /* border-bottom: 1px solid transparent; */
+}
+
+/* Clear floats */
+.clear {
+  overflow: auto;
+  /* Some browsers may also want a width or height specified and a percentage can be used */
 }
 
 .clearfix::after {
@@ -206,17 +219,35 @@ footer {
   /* display: -webkit-flex; */
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-around;
-  /* height: 50px; */
+  /*justify-content: space-between;*/
+  /*justify-content: flex-start;*/
+  /*align-items: baseline;*/
+}
+
+.flex-container-progress {
+  /* display: -webkit-flex; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /*justify-content: center;*/
+}
+.flex-container-sub {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /*align-items: baseline;*/
 }
 
 .flex-item {
   flex-grow: 0;
   /*margin: auto;*/
-  margin-left: 1rem;
+  margin-left: 1.2rem;
 }
 
-/* select input inside item */
+/* Format input element inside flex item */
 .flex-item input {
   margin-top: 3px;
   margin-bottom: 5px;
@@ -239,7 +270,7 @@ footer {
   margin: auto;
 }
 
-/* select input inside item */
+/* Format input element inside flex item */
 .location-flex-item input {
   margin-top: 3px;
   margin-bottom: 5px;
@@ -262,7 +293,7 @@ footer {
   margin: auto;
 }
 
-/* select input inside item */
+/* Format input element inside flex item */
 .cover-flex-item input {
   margin-top: 3px;
   margin-bottom: 3px;
@@ -299,7 +330,7 @@ footer {
 /* =========================== */
 
 fieldset {
-  margin-top: 5px;
+  margin-top: 4px;
   display: block;
   font-size: 100%;
   margin-left: 2px;
@@ -460,19 +491,19 @@ button {
 
 #contactComment {
   width: 88%;
-  height: 30px;
+  height: 2rem;
   text-align: left;
   font-size: 100%;
 }
 
 #serviceComment {
   width: 85%;
-  height: 30px;
+  height: 2rem;
   text-align: left;
   font-size: 100%;
 }
 
-#formLead {
+#lead-form {
   text-align: center;
 }
 
@@ -494,11 +525,13 @@ button {
   color: white;
 }
 
-#addLeadForm {
+/* Lead Form */
+
+#lead-form {
   clear: right;
 }
 
-#addLeadForm input {
+#lead-form input {
   font-size: 1.4rem;
   font-family: inherit;
   color: inherit;
@@ -512,16 +545,59 @@ button {
   transition: all .3s;
 }
 
-#addLeadForm input:focus {
+#lead-form textarea {
+  margin-top: .5rem;
+  font-size: 1.4rem;
+  font-family: inherit;
+  color: inherit;
+  /* padding: 1.5rem 2rem; */
+  border-radius: 3px;
+  background-color: rbga(#fff, 0.5);
+  border: none;
+  border-bottom: 2px solid transparent;
+  /*width: 90%;*/
+  /* display: block;*/
+  transition: all .3s;
+}
+
+#lead-form input:focus {
     outline: none;
     box-shadow: 0 .1rem .5rem rgba(0, 0, 0, 0.1);
     border-bottom: 2px solid #55c57a;
 }
 
-#addLeadForm input:focus:invalid {
+#lead-form textarea:focus {
+  outline: none;
+  box-shadow: 0 .1rem .5rem rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #55c57a;
+}
+
+#lead-form input:focus:invalid {
     border-bottom: 2px solid #e7ad3f;
 }
 
+/* leadProgressForm */
+
+#leadProgressForm input {
+  font-size: 1.4rem;
+  font-family: inherit;
+  color: inherit;
+  border-radius: 3px;
+  background-color: rbga(#fff, 0.5);
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: all .3s;
+}
+
+#leadProgressForm input:focus {
+  outline: none;
+  box-shadow: 0 .1rem .5rem rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #55c57a;
+}
+
+#lead-action-buttons {
+  text-align: center;
+}
 /*
 #addLeadForm input::-webkit-input-placeholder {
     color: #999;
@@ -561,6 +637,7 @@ button {
   display: none;
   width: 99%;
 }
+
 #viewAdviser {
   display: none;
   width: 99%;
@@ -574,22 +651,26 @@ table.tableSection {
   display: table;
   width: 100%;
 }
+
 table.tableSection thead, table.tableSection tbody {
   float: left;
   width: 100%;
 }
+
 table.tableSection tbody {
   overflow: auto;
   /* Giving height to make the tbody scroll */
   /* Giving height dynamically is recommended */
   height: 75px;
 }
+
 table.tableSection tr {
   width: 100%;
   display: table;
   /* Keeping the texts of both thead and tbody in same alignment */
   text-align: left;
 }
+
 table.tableSection td {
   width: 10px;
 }
@@ -620,71 +701,74 @@ tr:nth-child(even) {
 === Modal Box Styles (source: w3schools) ===
 ============================================
 */
-
 /* === The Modal (background) === */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 90px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 30px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* === Modal Content === */
 .modal-content {
-    position: relative;
-    background-color: #fefefe;
-    margin: auto;
-    padding: 0;
-    border: 1px solid #888;
-    width: 85%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
+  position: relative;
+  background-color: #98c9c6;
+  margin: auto;
+  padding: 0;
+  border: 1px solid rgb(156, 156, 156);
+  /*width: 90%;*/
+  width: 125rem;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
 }
 
 /* === Add Animation === */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
 }
 
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
 }
 
 /* === The Close Button === */
 .close {
-    color: white;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: rgb(119, 11, 11);
+  float: right;
+  font-size: 3rem;
+  font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+  color: red;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .modal-header {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    font-size: 80%;
-    color: white;
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  font-size: 80%;
+  color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+  padding: .1rem 1rem;
+  font-size: 80%;
+}
 
 .modal-footer {
     padding: 2px 16px;

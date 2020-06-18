@@ -1,47 +1,54 @@
-<label>Cover for self or for legal entity?*:</label>
+<div class="flex-container">
 
-<label for="person">
-  <input id="person" type="radio" name="entity" value="Person"/> Self
-</label>
+  <div class="flex-item">
+    <label>Cover for self or for legal entity?*:</label>
 
-<label for="legal">
-  <input id="legal" type="radio" name="entity" value="Legal"/> Entity
-</label>
+    <label for="person">
+      <input id="person" type="radio" name="entity" value="Person"/> Self
+    </label>
 
-<span class="spacer">
-  <label>Previously insurred by us? *: </label>
-</span>
-<label for="insYes">
-  <input id="insYes" type="radio" name="prevIns" value="Yes"/> Yes
-</label>
-<label for="insNo">
-  <input id="insNo" type="radio" name="prevIns" value="No"/> No
-</label>
-<span class="spacer">
-  <label>Preferred Language*:</label>
-</span>
-<label for="afr">
-  <input id="afr" type="radio" name="langPref" value="Afrikaans"/> Afrikaans
-</label>
-<label for="eng">
-  <input id="eng" type="radio" name="langPref" value="English"/> English
-</label>
+    <label for="legal">
+      <input id="legal" type="radio" name="entity" value="Legal"/> Entity
+    </label>
+  </div>
 
-<br/>
+  <div class="flex-item">
+    <label>Previously insurred by us? *: </label>
+    <label for="insYes">
+      <input id="insYes" type="radio" name="prevIns" value="Yes"/> Yes
+    </label>
+    <label for="insNo">
+      <input id="insNo" type="radio" name="prevIns" value="No"/> No
+    </label>
+  </div>
 
-<label for="entityRefNum"> ID/Registration Number: </label>
-<input id="entityRefNum" type="text" name="entityRefNum" size="15"/>
-
-<label>
-  Entity Name:
-  <input id="entityName" type="text" name="entityName" size="50"/>
-</label>
-
-<label for="currInsurer" > Current Insurer*: </label>
-<input id="currInsurer" type="text" list="providers" name="currInsurer" size="20" required/>
-<datalist id="providers">
-  <option value="none">
-  <option value="Santam">
-  <option value="Mutual and Federal">
-  <option value="Discovery">
-</datalist>
+  <div class="flex-item">
+    <label>Preferred Language*:</label>
+    <label for="afr">
+      <input id="afr" type="radio" name="langPref" value="Afrikaans"/> Afrikaans
+    </label>
+    <label for="eng">
+      <input id="eng" type="radio" name="langPref" value="English"/> English
+    </label>
+  </div>
+  <div class="flex-item">
+    <label for="entityRefNum"> ID/Registration Number: </label>
+    <input id="entityRefNum" type="text" name="entityRefNum" size="15"/>
+  </div>
+  <div class="flex-item">
+    <label>
+      Entity Name:
+      <input id="entityName" type="text" name="entityName" size="50"/>
+    </label>
+  </div>
+  <div class="flex-item">
+    <label for="currInsurer" > Current Insurer*: </label>
+    <input id="currInsurer" type="text" list="providers" name="currInsurer" size="20" required/>
+    <datalist id="providers">
+      <option value="none">
+      <option value="Santam">
+      <option value="Mutual and Federal">
+      <option value="Discovery">
+    </datalist>
+  </div>
+</div>

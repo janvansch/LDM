@@ -6,3 +6,7 @@ config/config.json
 *-bak*.*
 package-lock.json
 *.log
+*.pdf
+*.docx
+*.xlsx
+

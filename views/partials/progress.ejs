@@ -1,107 +1,180 @@
 <fieldset>
-  <legend>Progress Feedback2:</legend>
-  <!--
-    Quote and Callback
-  -->
-  <div class="flex-container">
-    <div class="flex-item">
-      <label for="quoteDate"> Quote Issue Date </label>
-      <input id="quoteDate" type="date" name="quoteDate" size="10" required/>
-    </div>
-    <div class="flex-item">
-      <label for="quoteNum"> Quote Number </label>
-      <input id="quoteNum" type="text" name="quoteNum" size="15"/>
-    </div>
-      <div class="flex-item">
-      <input id="callBack" type="checkbox" name="callBack" value="call"/>
-      <label for="callBack"> Call Back </label>
-    </div>
-      <div class="flex-item">
-      <label for="callDate"> Date </label>
-      <input id="callDate" type="date" name="callDate" size="10" required/>
-    </div>
-      <div class="flex-item">
-      <label for="callTime" class="spacer-small"> Time </label>
-      <input id="callTime" type="time" name="callTime" size="5"/>
-    </div>
-      <div class="flex-item">
-      <input id="callBefore" type="radio" name="callBA" value="before"/>
-      <label for="callBefore"> Before </label>
-    </div>
-      <div class="flex-item">
-      <input id="callAfter" type="radio" name="callBA" value="after"/>
-      <label for="callAfter"> After </label>
-    </div>
-  </div>
+  <legend>Progress Feedback:</legend>
+  <div class="flex-container-progress">
 
-  <div class="flex-container">
-    <!--
-      Acceptance
-    -->
+    <!-- Acceptance & make contact -->
     <div class="flex-item">
       <fieldset>
-        <legend>Acceptance</legend>
-        <div class="flex-container">
+        <legend>Accept Lead & Make Contact</legend>
+
+        <div class="flex-container-sub">
+
           <div class="flex-item">
-            <input id="quoteAccepted" type="radio" name="acceptance" value="accepted"/>
-            <label for="quoteAccepted"> Quote accepted </label>
-          </div>
-          <div class="flex-item">
-            <input id="quoteDeclined" type="radio" name="acceptance" value="declined"/>
-            <label for="quoteDeclined"> Quote declined </label>
-          </div>
-          <div class="flex-item">
-            <input id="quoteExpired" type="radio" name="acceptance" value="expired"/>
-            <label for="quoteExpired"> Quote expired </label>
-          </div>
-          <div class="flex-item">
-            <label for="acceptDate"></label>
-            <input id="acceptDate" type="date" name="acceptDate" size="10" required/>
-          </div>
-        </div>
-          <div class="flex-item">
-            <label for="declineReason"> Quote decline reason </label>
-            <input id="declineReason" type="text" name="declineReason" size="50"/>
+            Accept Assignment:
+            <input id="lead-accept" type="radio" name="leadAccept" value="yes"/>
+            <label for="lead-accept"> Yes </label>
+            <input id="lead-reject" type="radio" name="leadAccept" value="no"/>
+            <label for="lead-reject"> No </label>
           </div>
 
+          <div class="flex-item">
+            <input id="rejectReason"
+                    type="text"
+                    placeholder="Reject Reason"
+                    list="rejectReasons"
+                    name="rejectReason"
+                    size="15"
+                    disabled
+            />
+            <datalist id="rejectReasons">
+              <option value="Off Duty">
+              <option value="On Leave">
+              <option value="No capacity">
+              <option value="No experience">
+              <option value="Not accredited">
+              <option value="Not in my area">
+              <option value="Not well">
+            </datalist>
+          </div>
+
+          <div class="flex-item">
+            <label for="contactDate"> Contacted </label>
+            <input id="contactDate" class="accept-yes" type="date" name="contactDate" disabled />
+
+            <input id="noContact" class="accept-yes" type="checkbox" name="noContact" value="yes" disabled />
+            <label for="noContact"> No Contact </label>
+          </div>
+
+          <div class="flex-item">
+            Viable lead?:
+            <input id="viable" class="accept-yes" type="radio" name="viability" value="yes" disabled />
+            <label for="viable"> Yes </label>
+            <input id="not-viable" class="accept-yes" type="radio" name="viability" value="no" disabled />
+            <label for="not-viable"> No </label>
+          </div>
+
+          <div class="flex-item">
+            <input id="not-viable-reason" type="text" placeholder="No Reason" list="reasons" name="notViableReason" size="18" disabled />
+            <datalist id="reasons">
+              <option value="Claims history">
+              <option value="Unacceptable risk">
+              <option value="No cover for risk">
+            </datalist>
+          </div>
+          <!--
+          <div class="flex-item">
+            <input id="callBack" type="checkbox" name="callBack" value="call"/>
+            <label for="callBack"> Call Back </label>
+          </div>
+          <div class="flex-item">
+            <label for="callDate"> Date </label>
+            <input id="callDate" type="date" name="callDate" size="10" required/>
+          </div>
+          <div class="flex-item">
+            <label for="callTime" class="spacer-small"> Time </label>
+            <input id="callTime" type="time" name="callTime" size="5"/>
+          </div>
+          <div class="flex-item">
+            <input id="callBefore" type="radio" name="callBA" value="before"/>
+            <label for="callBefore"> Before </label>
+          </div>
+          <div class="flex-item">
+            <input id="callAfter" type="radio" name="callBA" value="after"/>
+            <label for="callAfter"> After </label>
+          </div>
+          -->
+        </div>
       </fieldset>
     </div>
-    <!--
-      Issue Policy
-    -->
+
+    <!-- Quoting -->
+
+    <div class="flex-item">
+      <fieldset>
+        <legend>Quoting and Acceptance</legend>
+
+        <div class="flex-container-sub">
+
+          <div class="flex-item">
+            <label for="quoteDate"> Issue Date </label>
+            <input id="quoteDate" class="accept-yes" type="date" name="quoteDate" disabled />
+
+            <label for="quoteNum"> Number </label>
+            <input id="quoteNum" class="accept-yes" type="text" name="quoteNum" size="15" disabled />
+          </div>
+
+          <div class="flex-item">
+            <input id="quoteAccepted" class="accept-yes" type="radio" name="acceptance" value="accepted" disabled />
+            <label for="quoteAccepted"> Accepted </label>
+            <input id="quoteDeclined" class="accept-yes" type="radio" name="acceptance" value="declined" disabled />
+            <label for="quoteDeclined"> Declined </label>
+            <input id="quoteExpired" class="accept-yes" type="radio" name="acceptance" value="expired" disabled />
+            <label for="quoteExpired"> Expired </label>
+          </div>
+
+          <div class="flex-item">
+            <label for="eventDate"> Date </label>
+            <input id="eventDate" type="date" name="eventDate" disabled />
+          </div>
+
+          <div class="flex-item">
+            <input id="declineReason"
+                    type="text"
+                    list="decline-reasons"
+                    placeholder="Decline Reason"
+                    name="declineReason"
+                    size="20"
+                    disabled
+            />
+            <datalist id="decline-reasons">
+              <option value="Cannot afford">
+              <option value="To expensive">
+              <option value="Another provider">
+              <option value="Excess to high">
+              <option value="No response">
+            </datalist>
+          </div>
+          <div class="flex-item">
+            <input id="pend" class="accept-yes" type="checkbox" name="pend" value="yes" disabled />
+            <label for="pend"> follow-up </label>
+            <label for="pendDate"> </label>
+            <input id="pendDate" type="date" name="pendDate" disabled />
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Issue Policy -->
     <div class="flex-item">
       <fieldset>
         <legend>Policy Issuance</legend>
-        <div class="flex-container">
+
+        <div class="flex-container-sub">
+
           <div class="flex-item">
             <label for="issueDate">Issue Date</label>
-            <input id="issueDate" type="date" name="issueDate" size="10" required/>
+            <input id="issueDate" class="accept-yes" type="date" name="issueDate" disabled />
           </div>
           <div class="flex-item">
             <label for="polNum"> Policy Number </label>
-            <input id="polNum3" type="text" name="polNum" size="15"/>
+            <input id="polNum" class="accept-yes" type="text" name="polNum" size="15" disabled />
           </div>
-        </div>
-        <div class="flex-container">
           <div class="flex-item">
             <label for="premium"> Premium * </label>
-            <input id="premium" type="text" name="premium" size="10"/>
+            <input id="premium" class="accept-yes" type="text" name="premium" size="10" disabled />
           </div>
           <div class="flex-item">
-            <input id="annually" type="radio" name="frequency" value="annually"/>
+            <input id="annually" class="accept-yes" type="radio" name="frequency" value="annually" disabled />
             <label for="annually"> annually </label>
-          </div>
-          <div class="flex-item">
-            <input id="monthly" type="radio" name="frequency" value="monthly"/>
+            <input id="monthly" class="accept-yes" type="radio" name="frequency" value="monthly" disabled />
             <label for="monthly"> monthly </label>
           </div>
         </div>
       </fieldset>
     </div>
   </div>
-  <div id="leadUpdateAction" style="display:block">
-    <button type="button" onclick="updateLeadProgress()">Update Lead Progress</button>
-    <button type="button" onclick="resetLeadProgressForm()">Cancel</button>
-  </div>
 </fieldset>
-
+<div id="lead-progress-buttons" style="display:none">
+  <button type="button" onclick="updateLeadProgress()">Update Lead Progress</button>
+  <button type="button" onclick="resetLeadProgressForm()">Cancel</button>
+</div>

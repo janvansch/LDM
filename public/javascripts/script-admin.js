@@ -18,11 +18,11 @@ function listUsers() {
   //
   // Switch User Maintenance Display on
   //
-  document.getElementById('panelAdminUser').style.display = 'block';
+  viewOn('panelAdminUser');
   //
   // Switch Practise Maintenance Display off
   //
-  // document.getElementById('panelAdminPrac').style.display = 'none';
+  viewOff('panelAdminPrac');
   //
   // Create User Data request
   //
@@ -360,11 +360,11 @@ function listPractices() {
   //
   // Switch Practice Maintenance Display on
   //
-  document.getElementById('panelAdminPrac').style.display = 'block';
+  viewOn('panelAdminPrac');
   //
   // Switch User Maintenance Display off
   //
-  document.getElementById('panelAdminUser').style.display = 'none';
+  viewOff('panelAdminUser');
   //
   // Create Practise Data request
   //
