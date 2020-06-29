@@ -1,8 +1,32 @@
 "use strict";
-// ===========================================
-//  Click Event Orchestration for UI controls
-// ===========================================
+
+// ================================================
+//  Click Event Orchestration for Lead UI controls
+// ================================================
 //
+// the preferred way: element.addEventListener('click', myFunctionReference , false);
+//
+// --------------------------------
+//  Information popup open & close
+// --------------------------------
+document.getElementById("infoIcon").addEventListener("click", function() {
+  viewOn("infoPopup");
+});
+document.getElementById("infoClose").addEventListener("click", function() {
+  viewOff("infoPopup");
+});
+// -------------------------------
+//  Lead UI button events control
+// -------------------------------
+document.getElementById("btn-add-lead").addEventListener("click", function() {
+  addLeadCtrl();
+});
+document.getElementById("btn-clear-form").addEventListener("click", function() {
+  resetForm('lead-form');
+});
+document.getElementById("updateLead").addEventListener("click", function() {
+  updateLead();
+});
 // -------------------------------
 //  Lead accept click event setup
 // -------------------------------
@@ -72,6 +96,7 @@ document.getElementById("not-viable").onclick = function() {
     accept[i].disabled = true;
   }
   document.getElementById("viable").disabled = false;
+  document.getElementById("not-viable").disabled = false;
   document.getElementById("lead-accept").disabled = true;
   document.getElementById("lead-reject").disabled = true;
 }
@@ -121,214 +146,22 @@ document.getElementById('pend').onclick = function() {
 // - When decline is clicked the date and and decline reason becomes available
 // - When expired is clicked the date becomes available
 
-// ========================
-//  Add Lead Orchestration
-// ========================
-//
-// --------------------
-//  Open Add Lead Form
-// --------------------
-function addLead() {
-  console.log("---> Add lead started");
-  //
-  // open modal window
-  //
-  modal.style.display = "block";
-  // Setup add lead form
-  document.getElementById("lead-view").style.display = 'block';
-  document.getElementById("assign-prompt").style.display = 'block';
-  document.getElementById("yesForm").style.display = 'none';
-  // Set buttons display state
-  document.getElementById("updateLeadButtons").style.display = 'none';
-  document.getElementById("practiceLeadButtons").style.display = 'none';
-  document.getElementById("adviserLeadButtons").style.display = 'none';
-};
+// ===================================
+// --- Leads Display Orchestration ---
+// ===================================
 
-// ----------------------
-//  Close Add Lead Panel
-// ----------------------
-function closeAddLead() {
+// ---------------------------------------
+//  Display lead selection criteria panel
+// ---------------------------------------
+function openLeadsView(title) {
   //
-  // Switch menu-view on
-  //
-  openMenu();
-  //
-  // Switch Add Lead display off
-  //
-  viewOff('panelAddLead');
-  //
-  // Set panel title to default
-  //
-  panelTitle("Panel Name");
-  //
-  // Clear previous input
-  //
-  resetform('addLeadForm');
-  //
-  // Set start defaults
-  //
-  viewOff('approval-prompt');
-  viewOff('leadAction');
-  viewOff('lead-progress');
-  viewOff('yesForm');
-  viewOff('noForm');
-  viewOff('a-pl-types');
-  viewOff('a-cl-types');
-  viewOff('a-al-types');
-  viewOff('a-sl-types');
-  viewOff('a-xl-types');
-};
-
-// ---------------------------------------------------
-//  Set view for selected servicer - Agent or Adviser
-// ---------------------------------------------------
-function assignFork() {
-  //  If Adviser is selected display approval confirmation message
-  if (document.getElementById('assign-adviser').checked) {
-    // switch on
-    document.getElementById('approval-prompt').style.display = 'block';
-    // switch off
-    document.getElementById('lead-progress').style.display = 'none';
-    document.getElementById('addLeadButtons').style.display = 'none';
-    document.getElementById("leadErr").innerHTML = "";
-  }
-  //  If Agent is selected display buttons to create a lead
-  else if (document.getElementById('assign-agent').checked) {
-    // switch off
-    document.getElementById('approval-prompt').style.display = 'none';
-    document.getElementById('noForm').style.display = 'none';
-    document.getElementById('yesForm').style.display = 'none';
-    document.getElementById("trfYes").checked = false;
-    document.getElementById("leadErr").innerHTML = "";
-    // switch on
-    document.getElementById('addLeadButtons').style.display = 'block';
-  }
-};
-
-// -------------------------------------------
-//  Set view view for selected approval state
-// -------------------------------------------
-function leadOk() {
-  if (document.getElementById('trfYes').checked) {
-    // switch preferred contact times and location input on
-    viewOn('yesForm');
-    // switch buttons on
-    viewOn('addLeadButtons');
-    // switch no approval message off
-    viewOff('noForm');
-  }
-  else if (document.getElementById('trfNo').checked) {
-    // switch no approval message on
-    viewOn('noForm');
-    // switch Yes off
-    viewOff('yesForm');
-    // switch buttons off
-    viewOff('addLeadButtons');
-  }
-};
-
-// --------------------------
-//  Create new lead document
-// --------------------------
-async function addLeadCtrl() {
-  try {
-    let result = await submitLead();
-    console.log("---> Result", result);
-    let prompt;
-    if (result === "ok") {
-      //
-      // New lead created - note new lead has no progress data
-      //
-      prompt = "Lead created";
-      document.getElementById("leadErr").innerHTML = prompt;
-      //
-      // Adviser selected - lead capture complete, reset lead add form
-      //
-      if (document.getElementById('assign-adviser').checked){
-        document.getElementById("lead-form").reset();
-        //document.getElementById("coverForm").reset();
-      }
-      //
-      // Agent selected - lead created, record progress of fulfilment
-      //
-      else {
-        document.getElementById('addLeadButtons').style.display = 'none';
-        document.getElementById('lead-progress').style.display = 'block';
-        document.getElementById('updateLeadButtons').style.display = 'block';
-
-      }
-    }
-  }
-  catch(err) {
-    //
-    // lead creation failed
-    //
-    document.getElementById("leadErr").innerHTML = err;
-    alert(err);
-  }
-};
-
-// ------------------------------
-//  Send new lead data to server
-// ------------------------------
-function submitLead() {
-  console.log("*** Add Lead ***");
-  return new Promise((resolve, reject) => {
-    //
-    // Extract new lead's data from DOM
-    //
-    var leadData = getLeadData("ADD");
-    //
-    // If data found send to server
-    //
-    if (leadData !== "error") {
-      //
-      // Set save request parameters
-      //
-      var dataString = JSON.stringify(leadData);
-      console.log("---> Data String: ", dataString);
-      var method = "POST";
-      var route = "/leads/add";
-      var contentType = "application/json";
-      //
-      //  Send Lead POST Request to server
-      //
-      xhrRequest(method, route, contentType, dataString, (err, result) => {
-        if (!err) {
-          console.log("*** Lead add - success ***");
-          var resBody = result.responseText;
-          console.log("---> Result response text: ", resBody);
-          resolve("ok");
-        }
-        else {
-          console.log("*** Lead add - submit error ***");
-          reject("Lead submit error!");
-        }
-      });
-    }
-    else {
-      console.log("*** Lead add - no data ***");
-      reject("no-data");
-    }
-  });
-};
-
-// ==========================
-//  Leads List Orchestration
-// ==========================
-
-// ------------------------------
-//  Display Lead Selection Panel
-// ------------------------------
-function openLeadsView() {
-  //
-  // Switch panel-view on
+  // Switch panel-view on for Agent
   //
   openPanel();
   //
   // Set panel title
   //
-  panelTitle("View Leads");
+  panelTitle( title + " Leads View");
   //
   // Switch Leads List Panel on
   //
@@ -355,32 +188,82 @@ function closeViewLeads() {
 //  Extract leads based on search criteria & display list
 // -------------------------------------------------------
 //
-// In future this pageing functionality?
+// In future use pageing functionality?
 //
 function listLeads() {
+  console.log("*** List Leads ***");
   //
-  // Extract selection criteria data
+  // User Information
   //
-  var criteria = {
-    refNo : document.getElementById('view-lead-ref-no').value,
-    contactSurname : document.getElementById('view-lead-con-surname').value,
-    contactFirstName : document.getElementById('view-lead-con-name').value,
-    entityName : document.getElementById('view-lead-org-name').value,
-    entityRefNum : document.getElementById('view-lead-ref-id').value
-  };
-  console.log(">>> Criteria values: ",
-    criteria.refNo,
-    criteria.contactSurname,
-    criteria.contactFirstName,
-    criteria.entityName,
-    criteria.entityRefNum
-  );
+  var userId = sessionStorage.getItem('userId');
+  var userRole = sessionStorage.getItem('userRole');
+  var userPracticeId = sessionStorage.getItem('userPracticeId');
+
+  // var str = document.getElementById("user").innerHTML;
+  // var start = str.indexOf('(') + 1;
+  // if (str.indexOf(':') !== -1){
+  //   var end = str.indexOf(':') - 1;
+  // }
+  // else {
+  //   var end = str.length - 1;
+  // }
+  // var role = str.substring(start, end);
+  // console.log("​---> User Role: ", role);
+
+  //
+  // Set selection criteria, list column layout and list header based on role
+  //
+  switch (userRole) {
+    case 'practice':
+      var criteria = {
+        refNo : document.getElementById('view-lead-ref-no').value,
+        contactSurname : document.getElementById('view-lead-con-surname').value,
+        contactFirstName : document.getElementById('view-lead-con-name').value,
+        entityName : document.getElementById('view-lead-org-name').value,
+        entityRefNum : document.getElementById('view-lead-ref-id').value,
+        assignedAdviser : "",
+        allocatedPractice : userPracticeId
+      };
+      var layoutId = '1';
+      var title = "Practice Leads View";
+      break;
+    case 'adviser':
+      var criteria = {
+        refNo : document.getElementById('view-lead-ref-no').value,
+        contactSurname : document.getElementById('view-lead-con-surname').value,
+        contactFirstName : document.getElementById('view-lead-con-name').value,
+        entityName : document.getElementById('view-lead-org-name').value,
+        entityRefNum : document.getElementById('view-lead-ref-id').value,
+        assignedAdviser : userId,
+        allocatedPractice : ""
+      };
+      var layoutId = '4';
+      var title = "Adviser Leads View";
+      break;
+    case 'agent':
+      var criteria = {
+        refNo : document.getElementById('view-lead-ref-no').value,
+        contactSurname : document.getElementById('view-lead-con-surname').value,
+        contactFirstName : document.getElementById('view-lead-con-name').value,
+        entityName : document.getElementById('view-lead-org-name').value,
+        entityRefNum : document.getElementById('view-lead-ref-id').value,
+        assignedAdviser : "",
+        allocatedPractice : ""
+      };
+      var layoutId = '5';
+      var title = "Agent Leads View";
+      break;
+    default:
+    var layoutId = '5';
+    var title = "List of Leads";
+    console.log("*** ERROR: Default, role not found", userRole)
+  }
   //
   // Create data request
   //
   var request = JSON.stringify(criteria);
   //var request = criteria.refNo;
-	console.log("​findLead -> request", request)
+	console.log("​---> Request filter: ", request)
   //var method = "GET";
   var method = "POST";
   //var route = "/leads/search/";
@@ -395,22 +278,18 @@ function listLeads() {
       console.log("---> Leads list: ", data);
       if (data.length !== 0) {
         //
-        // load report layout definition
-        //
-        var layoutId = '5';
-        var prompt = 'Lead Agent View'; // can see all to answer queries
-        //
         // Display Leads List
         //
-        console.log("---> Leads list: ", data);
-        displayData(data, prompt, layoutId);
+        console.log("---> Title: ", title);
+        console.log("---> Layout: ", layoutId);
+        displayData(data, title, layoutId);
         //
         // Add row select handlers to enable editing of rows
         //
         addRowHandlers(layoutId);
       }
       else {
-        document.getElementById("tPos5").innerHTML = "None found";
+        document.getElementById("tPos").innerHTML = "None found";
       }
     }
     else {
@@ -420,15 +299,15 @@ function listLeads() {
   });
 };
 
-// ================================
-//  Lead Display and Orchestration
-// ================================
-
 // ---------------------------------------------
 //  Display selected lead's detail in modal box
 // ---------------------------------------------
-function displayLead(leadRef, viewID) {
-  console.log("---> Lead selected (this): ", leadRef);
+function displayLead(leadRef, viewId) {
+  console.log("---> Lead selected (this): ", leadRef, "View Id: ", viewId);
+  //
+  // Set lead reference in session storage
+  //
+  sessionStorage.setItem('reference', leadRef);
   //
   // open modal window
   //
@@ -450,22 +329,32 @@ function displayLead(leadRef, viewID) {
   document.getElementById("lead-view").style.display = 'block';
   // show contact times and location
   document.getElementById("yesForm").style.display = 'block';
-  // Show lead progress form
-  document.getElementById('lead-progress').style.display = 'block';
   // Don't show
   document.getElementById("assign-prompt").style.display = 'none';
+  document.getElementById("addLeadButtons").style.display = "none";
   document.getElementById("updateLeadButtons").style.display = "none";
   document.getElementById("practiceLeadButtons").style.display = "none";
   document.getElementById("adviserLeadButtons").style.display = "none";
   document.getElementById("lead-progress-buttons").style.display = "none";
-  // Show required button group
-  if (viewID === "1") {
-  document.getElementById("practiceLeadButtons").style.display = "block";
+  //
+  // Set view specific elements
+  //
+  if (viewId === "1") {
+    // Don't show lead progress form
+    // Show required button group
+    document.getElementById("practiceLeadButtons").style.display = "block";
   }
-  if (viewID === "4") {
-  document.getElementById("adviserLeadButtons").style.display = "block";
+  if (viewId === "4") {
+    // Show lead progress form
+    document.getElementById('lead-progress').style.display = 'block';
+    // Show required button group
+    document.getElementById("adviserLeadButtons").style.display = "block";
+
   }
-  if (viewID === "5") {
+  if (viewId === "5") {
+    // Show lead progress form
+    document.getElementById('lead-progress').style.display = 'block';
+    // Show required button group
     document.getElementById("updateLeadButtons").style.display = "block";
   }
   //
@@ -481,68 +370,89 @@ function displayLead(leadRef, viewID) {
   console.log(">>> Request: ", request);
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
+      //
+      // Request successful load lead data into modal display
+      //
       var lead = JSON.parse(res.responseText);
-      console.log("---> Data returned for selected lead: ", lead);
+      console.log("*** SUCCESS: Data returned for selected lead ***");
+      console.log("---> Data returned for selected lead: ", lead[0]);
       //
-      // Load lead data into UI display form
+      // Extract data for modal header
       //
-      // Insert leads reference dataumber
+      var len = lead[0].statusHistory.length;
+      var status = lead[0].statusHistory[len - 1].status;
+      var servicerType = lead[0].servicerType;
+      var trfApproval = lead[0].trfApproval;
+      var practice = lead[0].allocatedPractice;
+      var adviser = lead[0].assignedAdviser;
       //
-      // Lead Reference number
-      document.getElementById("modal-header-text").innerHTML = "Detail for lead: " + leadRef + " Practice: " + "XYZ " + "Adviser: " + "123";
+      // Store non-form items for use by update
       //
-      // Set language option
+      sessionStorage.setItem('reference', leadRef)
+      sessionStorage.setItem('servicerType', servicerType);
+      sessionStorage.setItem('trfApproval', trfApproval);
+      sessionStorage.setItem('allocatedPractice', practice);
+      sessionStorage.setItem('assignedAdviser', adviser);
+      // Display stored values
+      for(let i=0; i<sessionStorage.length; i++) {
+        let key = sessionStorage.key(i);
+        console.log(`${key}: ${sessionStorage.getItem(key)}`);
+      }
       //
+      // Set modal header
+      //
+      if (status === "open"){document.getElementById("modal-header-text").innerHTML =
+          `Detail for lead: ${leadRef},
+          Status: ${status},
+          Transfer: ${trfApproval},
+          Servicer: ${servicerType}`;
+      }
+      else if (status === "allocated") {document.getElementById("modal-header-text").innerHTML =
+          `Detail for lead: ${leadRef},
+          Status: ${status},
+          Transfer: ${trfApproval},
+          Servicer: ${servicerType},
+          Practice: ${practice}`;
+      }
+      else if (status === "assigned") {document.getElementById("modal-header-text").innerHTML =
+          `Detail for lead: ${leadRef},
+          Status: ${status},
+          Transfer: ${trfApproval},
+          Servicer: ${servicerType}: ${adviser},
+          Practice: ${practice}`;
+      }
+      else {document.getElementById("modal-header-text").innerHTML =
+          `Detail for lead: ${leadRef},
+          Status: ${status},
+          Transfer: ${trfApproval},
+          Servicer: ${servicerType}: ${adviser},
+          Practice: ${practice}`;
+    }
+      //
+      // Set state of radio & checkbox elements
+      //
+      // Set language radio buttons
       if (lead[0].langPref === "English") {
         document.getElementById("eng").checked = true;
       }
       else {
         document.getElementById("afr").checked = true;
       }
-      //
-      // Set entity type option in lead form
-      //
+      // Set entity type radio buttons
       if (lead[0].entity.entType === "Person") {
         document.getElementById("person").checked = true;
       }
       else {
         document.getElementById("legal").checked = true;
       }
-      //
-      // Set previously insured option in lead form
-      //
+      // Set previously insured radio buttons
       if (lead[0].previousInsured === "Yes") {
         document.getElementById("insYes").checked = true;
       }
       else {
         document.getElementById("insNo").checked = true;
       }
-      //
-      // Load text fields of leads form with selected lead's data
-      //
-      document.getElementById("entityName").value = lead[0].entityName;
-      document.getElementById("entityRefNum").value = lead[0].entity.entRefNum;
-      document.getElementById("conFirstName").value = lead[0].firstName;
-      document.getElementById("conSurname").value = lead[0].surname;
-      //document.getElementById("u2").value = lead[0].initials;
-      document.getElementById("conTelNum").value = lead[0].contactNum;
-      document.getElementById("conAltNum").value = lead[0].altNumber;
-      document.getElementById("conCellNum").value = lead[0].cellNumber;
-      document.getElementById("conEMail").value = lead[0].eMail;
-      document.getElementById("currInsurer").value = lead[0].currentInsurer;
-      //document.getElementById("u6").value = lead[0].lineOfBusiness;
-      document.getElementById("conPostCode").value = lead[0].contactLocation.postal;
-      document.getElementById("conSuburb").value = lead[0].contactLocation.suburb;
-      document.getElementById("conStreetNum").value = lead[0].contactLocation.streetNum;
-      document.getElementById("conStreetName").value = lead[0].contactLocation.streetName;
-      document.getElementById("conBuildName").value = lead[0].contactLocation.buildingName;
-      document.getElementById("conBuildFloor").value = lead[0].contactLocation.floor;
-      document.getElementById("conBuildRoom").value = lead[0].contactLocation.room;
-      document.getElementById("conBoxPostCode").value = lead[0].postBox.postalCode;
-      document.getElementById("conBoxNum").value = lead[0].postBox.boxNumber;
-      //
-      // Set selected contact days in lead form
-      //
+      // Set contact days checkboxes
       for (var x = 0, z = lead[0].contactPref.contactDay.length; x < z; x++) {
         //console.log(">>> Contact day: ", x, lead[0].contactPref.contactDay[x]);
         if (lead[0].contactPref.contactDay[x] === "Monday") {
@@ -564,32 +474,109 @@ function displayLead(leadRef, viewID) {
           document.getElementById("saturday").checked = true;
         }
       }
-      //
-      // Load lead form with contact time data of selected lead
-      //
-      document.getElementById("time").value = lead[0].contactPref.time;
-      //
-      // Set before or after time option in lead form
-      //
+      // Set before or after radio buttons
+      if (lead[0].contactPref.timeBA === "at") {
+        document.getElementById("at").checked = true;
+      }
       if (lead[0].contactPref.timeBA === "before") {
         document.getElementById("before").checked = true;
       }
       if (lead[0].contactPref.timeBA === "after") {
         document.getElementById("after").checked = true;
       }
-      //
-      // Load lead form with the services data of the selected lead
-      //
+      // Set service checkboxes for services requires
       var services = lead[0].services;
-      console.log("---> Service of selected lead: ", services);
       setServicesView(services, 'v');
       //
-      // Load lead form with comment data of selected lead
+      // fill text elements
       //
+      document.getElementById("conTitle").value = lead[0].title;
+      document.getElementById("conFirstName").value = lead[0].firstName;
+      document.getElementById("conSurname").value = lead[0].surname;
+      document.getElementById("conTelNum").value = lead[0].contactNum;
+      document.getElementById("conAltNum").value = lead[0].altNumber;
+      document.getElementById("conCellNum").value = lead[0].cellNumber;
+      document.getElementById("conEMail").value = lead[0].eMail;
+      document.getElementById("currInsurer").value = lead[0].currentInsurer;
+      document.getElementById("entityRefNum").value = lead[0].entity.entRefNum;
+      document.getElementById("entityName").value = lead[0].entityName;
+      document.getElementById("business").value = lead[0].lineOfBusiness;
+      document.getElementById("conPostCode").value = lead[0].contactLocation.postal;
+      document.getElementById("conSuburb").value = lead[0].contactLocation.suburb;
+      document.getElementById("conStreetNum").value = lead[0].contactLocation.streetNum;
+      document.getElementById("conStreetName").value = lead[0].contactLocation.streetName;
+      document.getElementById("conBuildName").value = lead[0].contactLocation.buildingName;
+      document.getElementById("conBuildFloor").value = lead[0].contactLocation.floor;
+      document.getElementById("conBuildRoom").value = lead[0].contactLocation.room;
+      document.getElementById("conBoxPostCode").value = lead[0].postBox.postalCode;
+      document.getElementById("conBoxNum").value = lead[0].postBox.boxNumber;
+      document.getElementById("time").value = lead[0].contactPref.time;
       document.getElementById("contactComment").value = lead[0].comments.comment1;
       document.getElementById("serviceComment").value = lead[0].comments.comment2;
-      //document.getElementById("u6").value = lead[0].comments.comment3;
-      //document.getElementById("u6").value = lead[0].comments.comment4;
+      //
+      // Set progress radio & checkbox elements
+      //
+      // Set accepted radio buttons
+      if (lead[0].accepted === "yes") {
+        document.getElementById("lead-accept").checked = true;
+        //
+        // if accepted enable progress fields
+        //
+        var accept = document.getElementsByClassName("accept-yes");
+        for (var i = 0; i < accept.length; i++) {
+          accept[i].disabled = false;
+        }
+      }
+      if (lead[0].accepted === "no") {
+        document.getElementById("lead-rejected").checked = true;
+      }
+      // Set no contact checkbox
+      if (lead[0].noContact === true) {
+        document.getElementById("noContact").checked = true;
+      }
+      // Set viable radio buttons
+      if (lead[0].viable === "yes") {
+        document.getElementById("viable").checked = true;
+      }
+      if (lead[0].viable === "no") {
+        document.getElementById("not-viable").checked = true;
+      }
+      // Set quote state radio buttons
+      if (lead[0].quoteState === "accepted") {
+        document.getElementById("quoteAccepted").checked = true;
+      }
+      if (lead[0].quoteState === "declined") {
+        document.getElementById("quoteDeclined").checked = true;
+      }
+      if (lead[0].quoteState === "expired") {
+        document.getElementById("quoteExpired").checked = true;
+      }
+      // Set pend checkbox
+      console.log("---> Pend date: ", lead[0].pendDate);
+      if (lead[0].pendDate !== undefined && lead[0].pendDate !== null && lead[0].pendDate !== "") {
+        document.getElementById("pend").checked = true;
+      }
+      // Set premium frequency
+      if (lead[0].policyPremiumFrequency === "annually") {
+        document.getElementById("annually").checked = true;
+      }
+      if (lead[0].policyPremiumFrequency === "monthly") {
+        document.getElementById("monthly").checked = true;
+      }
+      //
+      // fill progress data field elements var leadRef = header.substr(17, 10);
+      //
+      document.getElementById("rejectReason").value = lead[0].rejectReason !== undefined ? lead[0].rejectReason : null;
+      document.getElementById("contactDate").value = lead[0].contactDate !== undefined && lead[0].contactDate !== null ? lead[0].contactDate.substr(0, 10) : null;
+      document.getElementById("not-viable-reason").value = lead[0].notViableReason !== undefined ? lead[0].notViableReason : null;
+      document.getElementById("quoteDate").value = lead[0].quoteDate !== undefined && lead[0].quoteDate !== null ? lead[0].quoteDate.substr(0, 10) : null;
+      document.getElementById("quoteNum").value = lead[0].quoteNumber !== undefined ? lead[0].quoteNumber : null;;
+      document.getElementById("eventDate").value = lead[0].quoteStateDate !== undefined && lead[0].quoteStateDate !== null ? lead[0].quoteStateDate.substr(0, 10) : null;;
+      document.getElementById("declineReason").value = lead[0].quoteDeclineReason !== undefined ? lead[0].quoteDeclineReason : null;
+      document.getElementById("pendDate").value = lead[0].pendDate !== undefined ? lead[0].pendDate : null;
+      document.getElementById("issueDate").value = lead[0].policyIssueDate !== undefined && lead[0].policyIssueDate !== null ? lead[0].policyIssueDate.substr(0, 10) : null;
+      document.getElementById("polNum").value = lead[0].policyNumber !== undefined ? lead[0].policyNumber : null;
+      document.getElementById("premium").value = lead[0].policyPremium !== undefined ? lead[0].policyPremium : null;
     }
     else {
       var prompt = "User detail request error";
@@ -598,11 +585,258 @@ function displayLead(leadRef, viewID) {
   });
 };
 
+// ========================
+//  Add Lead Orchestration
+// ========================
+//
+// --------------------
+//  Open Add Lead Form
+// --------------------
+function addLead() {
+  console.log("---> Add lead started");
+  //
+  // Set modal Header
+  //
+  // document.getElementById("modal-header-text").innerHTML =
+  //   `Detail for lead: XX-XXX-XXX,
+  //   Status:  - ,
+  //   Transfer: - ,
+  //   Servicer: - ,
+  //   Practice: - `;
+  document.getElementById("modal-header-text").innerHTML =
+    `Detail for lead: XX-XXX-XXX`;
+  //
+  // Clear lead form
+  //
+    resetForm('lead-form');
+    document.getElementById("leadMsg").innerHTML = "";
+  //
+  // open modal window
+  //
+  modal.style.display = "block";
+  // Setup form to capture new lead
+  document.getElementById("lead-view").style.display = 'block';
+  document.getElementById("assign-prompt").style.display = 'block';
+  document.getElementById("approval-prompt").style.display = 'none';
+  document.getElementById("noForm").style.display = 'none';
+  document.getElementById("yesForm").style.display = 'none';
+  // Set buttons display state
+  document.getElementById("addLeadButtons").style.display = 'none';
+  document.getElementById("updateLeadButtons").style.display = 'none';
+  document.getElementById("practiceLeadButtons").style.display = 'none';
+  document.getElementById("adviserLeadButtons").style.display = 'none';
+};
+// ---------------------------------------------
+//  Create new lead document from data captured
+// ---------------------------------------------
+async function addLeadCtrl() {
+  try {
+    let result = await submitLead();
+    console.log('---> Lead submit result', result);
+    if (result === "ok") {
+      //
+      // New lead created - note new lead has no progress data
+      //
+      prompt('leadMsg', "Lead created");
+      //
+      // Adviser selected - lead capture complete, reset lead add form
+      //
+      if (checked('assign-adviser')) {
+        viewOff('addLeadButtons');
+        viewOff("approval-prompt");
+        viewOff("noForm");
+        viewOff('yesForm');
+        viewOff('v-pl-types');
+        viewOff('v-cl-types');
+        viewOff('v-al-types');
+        viewOff('v-sl-types');
+        viewOff('v-xl-types');
+        resetForm('lead-form');
+      }
+      //
+      // Agent selected - lead created, record progress of fulfilment
+      //
+      else {
+        //
+        // Enhancement: the reference of lead created must be return so that it can be displayed
+        //
+        console.log("*** Agent assigned get fulfilment progress ***");
+        viewOff('addLeadButtons');
+        viewOn('lead-progress');
+        viewOn('updateLeadButtons');
+        // Set accepted option to true because agent selected to fulfill the lead
+        document.getElementById("lead-accept").checked = true;
+        // Set progress form to accepted state
+        var accept = document.getElementsByClassName("accept-yes");
+        for (var i = 0; i < accept.length; i++) {
+          accept[i].disabled = false;
+        }
+      }
+    }
+  }
+  catch(err) {
+    //
+    // lead creation failed
+    //
+    prompt('leadMsg', err);
+    alert(err);
+  }
+};
+// ------------------------------
+//  Send new lead data to server
+// ------------------------------
+function submitLead() {
+  console.log("*** Add Lead ***");
+  return new Promise((resolve, reject) => {
+    //
+    // Extract new lead's data from DOM
+    //
+    var leadData = getLeadData("ADD");
+    //
+    // If data found send to server
+    //
+    if (leadData !== "error") {
+      //
+      // If servicer is agent then assign lead to agent and dummy practice
+      //
+      if (checked('assign-agent')) {
+        leadData.accepted = "yes";
+        leadData.allocatedPractice = "Agents";
+        leadData.assignedAdviser = sessionStorage.getItem('userId');
+      }
+      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      //  When a new lead is assigned to an agent is starts a two step process:
+      //    1. Capture detail and create the lead
+      //    2. Fulfill the request and update the lead document with the progress
+      //  At the end of step 1 when the "Create Lead" button is clicked the captured
+      //  content is used to create a new lead document in the DB and then step 2 the
+      //  fulfilment process is started. To enable the agent to record the progress
+      //  of the fulfilment process the progress form is displayed with the detail of
+      //  the lead. Step 2 ends when the "Update" button is clicked.
+      //  When moving from step 1 to step 2 the UI is updated, which could result in
+      //  certain data items required for the update not being available anymore. To
+      //  prevent this the items required for the update is stored locally:
+      //    sessionStorage.setItem('reference', resBody.reference); // returned by step 1
+      //    sessionStorage.setItem('servicerType', "agent"); - selected
+      //    sessionStorage.setItem('trfApproval', "no"); - by default
+      //    sessionStorage.setItem('accepted', "yes"); - by default
+      //    sessionStorage.setItem('allocatedPractice', "Agents"); - by default
+      //    sessionStorage.setItem('assignedAdviser', adviser); - read
+      //
+      //  Note: this may all be because of the way I do the update,
+      //  need to investigate this
+      //
+      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      //
+      // Set add lead request parameters
+      //
+      var dataString = JSON.stringify(leadData);
+      console.log("---> New Lead Data String: ", dataString);
+      var method = "POST";
+      var route = "/leads/add";
+      var contentType = "application/json";
+      //
+      //  Send Lead POST Request to server with callback
+      //
+      console.log("*** Submitting data for new lead ***");
+      xhrRequest(method, route, contentType, dataString, (err, result) => {
+        if (!err) {
+          console.log("*** SUCCESS: Lead created ***");
+          var resBody = result.responseText;
+          console.log("===> Result response text: ", resBody);
+          resolve("ok");
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  This needs to be enhanced to return the lead number
+          //  This is so that it can be displayed to the Agent
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //
+          // Store non-form items for the update of the new lead during step 2.
+          //
+          sessionStorage.setItem('reference', resBody);
+          sessionStorage.setItem('servicerType', leadData.servicerType);
+          sessionStorage.setItem('trfApproval', leadData.trfApproval);
+          sessionStorage.setItem('accepted', leadData.accepted);
+          sessionStorage.setItem('allocatedPractice', leadData.allocatedPractice);
+          sessionStorage.setItem('assignedAdviser', leadData.assignedAdviser);
+          // Display stored values
+          for(let i=0; i<sessionStorage.length; i++) {
+            let key = sessionStorage.key(i);
+            console.log(`${key}: ${sessionStorage.getItem(key)}`);
+          }
+          document.getElementById("modal-header-text").innerHTML =
+            `Detail for lead: ${resBody},
+            Status: ${leadData.status},
+            Transfer: ${leadData.trfApproval},
+            Servicer: ${leadData.servicerType}: ${leadData.assignedAdviser},
+            Practice: ${leadData.allocatedPractice}`;
+        }
+        else {
+          console.log("*** ERROR: Lead not created ***");
+          reject("Lead submit error!");
+        }
+      });
+    }
+    else {
+      console.log("*** Lead add - no data ***");
+      reject("no-data");
+    }
+  });
+};
+// ---------------------------------------------------
+//  Set view for selected servicer - Agent or Adviser
+// ---------------------------------------------------
+function assignFork() {
+  //  If Adviser is selected display approval confirmation message
+  if (document.getElementById('assign-adviser').checked) {
+    // switch on
+    document.getElementById('approval-prompt').style.display = 'block';
+    // switch off
+    document.getElementById('lead-progress').style.display = 'none';
+    document.getElementById('addLeadButtons').style.display = 'none';
+    document.getElementById("leadMsg").innerHTML = "";
+  }
+  //  If Agent is selected display buttons to create a lead
+  else if (document.getElementById('assign-agent').checked) {
+    // switch off
+    document.getElementById('approval-prompt').style.display = 'none';
+    document.getElementById('noForm').style.display = 'none';
+    document.getElementById('yesForm').style.display = 'none';
+    document.getElementById("trfYes").checked = false;
+    // switch on
+    document.getElementById('addLeadButtons').style.display = 'block';
+  }
+};
+// -------------------------------------------
+//  Set view view for selected approval state
+// -------------------------------------------
+function leadOk() {
+  if (document.getElementById('trfYes').checked) {
+    // switch preferred contact times and location input on
+    viewOn('yesForm');
+    // switch buttons on
+    viewOn('addLeadButtons');
+    // switch no approval message off
+    viewOff('noForm');
+  }
+  else if (document.getElementById('trfNo').checked) {
+    // switch no approval message on
+    viewOn('noForm');
+    // switch Yes off
+    viewOff('yesForm');
+    // switch buttons off
+    viewOff('addLeadButtons');
+  }
+};
+
+// ===========================
+//  Lead Update Orchestration
+// ===========================
+
 // ---------------------------------
 //  Send lead update data to server
 // ---------------------------------
 function updateLead() {
-  console.log("*** Update Lead ***");
+  console.log("*** Update Lead Started ***");
   //
   // Extract lead update data from DOM
   //
@@ -614,7 +848,7 @@ function updateLead() {
     alert(leadData);
   }
   //
-  // Data extracted successfully
+  // Data extracted
   //
   if (leadData !== "error") {
     //
@@ -631,50 +865,63 @@ function updateLead() {
     //
     //  Submit lead update request to
     //
-    console.log("===> Ready to update Lead: ", method, route, contentType, dataString);
-    // xhrRequest(method, route, contentType, dataString, (err, result) => {
-    //   if (!err) {
-    //     //
-    //     // Clear form
-    //     //
-    //     document.getElementById("lead-form").reset();
-    //     //
-    //     // Close form and modal
-    //     //
-    //     document.getElementById("lead-view").style.display = 'none';
-    //     document.getElementById("lead-progress").style.display = 'none';
-    //     document.getElementById("lead-action-buttons").style.display = 'none';
-    //     document.getElementById('v-ins-lines').style.display = 'none';
-    //     document.getElementById('v-pl-types').style.display = 'none';
-    //     document.getElementById('v-cl-types').style.display = 'none';
-    //     document.getElementById('v-sl-types').style.display = 'none';
-    //     document.getElementById('v-al-types').style.display = 'none';
-    //     document.getElementById('v-xl-types').style.display = 'none';
-    //     modal.style.display = "none";
-    //     //
-    //     // Update lead list
-    //     //
-    //     listLeads();
-    //   }
-    //   else {
-    //     var prompt = "Lead update submit error";
-    //     document.getElementById("leadErr").innerHTML = prompt;
-    //   }
-    // });
+    console.log("*** Update server commit Started ***");
+    xhrRequest(method, route, contentType, dataString, (err, result) => {
+      if (!err) {
+        console.log("*** SUCCESS: Commit Completed ***");
+        //
+        // Clear form
+        //
+        //document.getElementById("lead-form").reset();
+        resetForm('lead-form');
+        //
+        // Close form and modal
+        //
+        document.getElementById("lead-view").style.display = 'none';
+        document.getElementById("lead-progress").style.display = 'none';
+        document.getElementById("updateLeadButtons").style.display = 'none';
+        document.getElementById("practiceLeadButtons").style.display = 'none';
+        document.getElementById("adviserLeadButtons").style.display = 'none';
+
+        viewOff('v-pl-types');
+        viewOff('v-cl-types');
+        viewOff('v-al-types');
+        viewOff('v-sl-types');
+        viewOff('v-xl-types');
+
+        modal.style.display = 'none';
+        //
+        // Clear modal Header
+        //
+        document.getElementById("modal-header-text").innerHTML =
+          `Detail for lead: new,
+          Status:  - ,
+          Transfer: - ,
+          Servicer: - ,
+          Practice: - `;
+        //
+        // Update lead list
+        //
+        listLeads();
+      }
+      else {
+        console.log("*** ERROR: Commit Failed ***");
+        var prompt = "Lead update submit error";
+        document.getElementById("leadMsg").innerHTML = prompt;
+      }
+    });
   }
   //
   // Data extract failed
   //
   else {
-    console.log("*** Lead update failed - no data ***");
+    console.log("*** ERROR: Lead update failed - no data ***");
   }
 };
 
-
 // ==========================================
-//  Lead Data Extract from DOM Orchestration
+//  Extract Lead Data from DOM Orchestration
 // ==========================================
-
 
 // ---------------------------------------------
 //  Extract lead data & return lead data object
@@ -698,20 +945,88 @@ function getLeadData(action){
     var leadContentData = extractLeadContent("lead-form");
     console.log("===> Lead content returned: ", leadContentData);
     //
-    // Set state if new lead
+    // Detemine and set value for a new lead
     //
     if (action === "ADD") {
-      var leadStateData = {
-        progress: 'none',
-        status: 'open',
-        error: ''
+      console.log("*** Set New Lead Control Content ***");
+      //
+      // Determine seleceted servicer from new lead form
+      //
+      if (checked('assign-agent')) {
+        leadContentData.servicerType = "agent";
+        // For an Agent certain properties are set to default values
+        leadContentData.contactLocation = {postal: "n/a", suburb: "n/a"};
+        leadContentData.trfApproval = "no";
+        //
+        // Set new lead Status and Progress State
+        //
+        var leadStateData = {
+          progress: 'taken',
+          status: 'assigned',
+          error: ''
+        }
       }
+      else if (checked('assign-adviser')) {
+        leadContentData.servicerType = "adviser";
+        //
+        // if adviser is selected extract transfer approval state
+        //
+        if (document.getElementById('trfYes').checked) {
+          leadContentData.trfApproval = "yes";
+        }
+        else {
+          leadContentData.trfApproval = "no";
+          // should actually never occur
+        }
+        //
+        // Set new lead Status and Progress State
+        //
+        var leadStateData = {
+          progress: 'none',
+          status: 'open',
+          error: ''
+        }
+      }
+      else {
+        console.log("*** ERROR: Could not determine servicer ***");
+      }
+
       //
-      // new lead has no progress data
+      // New lead has no reference id nor progress data
       //
+      var leadRef = {};
       var leadProgressData = {};
+
+      console.log("*** New Lead Control Content Set ***");
     }
+
     if (action === "UPDATE") {
+      //
+      // Get lead reference number from session storage
+      //
+      var leadRef = {reference : sessionStorage.getItem('reference')};
+      console.log("---> Lead Reference: ", leadRef);
+      //
+      // Get servicerType from local session
+      //
+      leadContentData.servicerType = sessionStorage.getItem('servicerType')
+      //
+      // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      //  When adding a lead this is selected in the form and can be read from there, but
+      //  when a lead is updated it is not an option. It is displayed in the modal header.
+      //  When viewing a lead document this value will be retrieved from the DB with the
+      //  rest of the lead's data from and stored locally as a key value pair:
+      //          sessionStorage.setItem('servicerType', data);
+      //  If the lead being viewed is updated this key value pair will be retrieved from
+      //  the local storage:
+      //          sessionStorage.getItem('servicerType')
+      //  The value is required to create the updated lead document. If the value is not set
+      //  the update will over write the value in the DB. This is because the data extract
+      //  function is used by both the add lead and update lead functionality.
+      //
+      //  In future when other roles, practice & adviser, then this will have to be considered.
+      // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      //
       //
       // Determine lead state
       //
@@ -726,7 +1041,7 @@ function getLeadData(action){
         var leadData = "Problem: " + leadStateData.error;
         return leadData;
       }
-      else {
+      else if (leadStateData.progress !== "none") {
         //
         // Extract progress data
         //
@@ -736,33 +1051,36 @@ function getLeadData(action){
       }
     }
     //
-    // Combine data into one lead object
+    // Combine data into a single lead object and return
     //
     console.log("---> Form data extracted: ", leadContentData);
     console.log("---> Progress data extracted: ", leadProgressData);
     console.log("---> State data extracted: ", leadStateData);
-    var leadData = Object.assign(leadContentData, leadProgressData, leadStateData);
+    var leadData = Object.assign(leadRef, leadContentData, leadProgressData, leadStateData);
     console.log("---> Combined lead document data: ", leadData);
+    console.log("*** Lead Document Created ***");
     return leadData;
   }
+
   else {
     //
     // Error - The action parameter does not contain a valid value
     //
-    console.log("*** ERROR: Invalid parameter value ***");
+    console.log("*** ERROR: Invalid action parameter value ***");
     var leadData = "error";
     return leadData;
   }
 }
 
-// --------------------------------------------
-//  Extract lead Content data from form in DOM
-// --------------------------------------------
+// -----------------------------------------
+//  Extract lead content data from DOM form
+// -----------------------------------------
 function extractLeadContent(formId){
   console.log("*** Started extracting lead content ***");
   console.log("---> Lead State Form: ", formId);
   //
   // Extract form data
+  //
   var formData = document.getElementById(formId);
   console.log("---> Form Content Data: ", formData);
   //
@@ -771,12 +1089,6 @@ function extractLeadContent(formId){
   var radioName = "";
   var formElement = "";
   var inputType = "";
-  //
-  // extract servicer type, i.e. agent or adviser
-  //
-  radioName = "servicerType";
-  var servType = getRadioCheckedValue(formData, radioName);
-  console.log("---> Servicer Type: ", servType);
   //
   // extract language preference
   //
@@ -801,13 +1113,6 @@ function extractLeadContent(formId){
   formElement = "input";
   inputType = "text";
   var textInfo = extractFormData(formData, formElement, inputType);
-  //
-  // Certain fields are required for an Adviser but not for an Agent
-  //
-  if (servType.servicerType === "agent") {
-    textInfo.suburb = "n/a";
-    textInfo.postalCode = "n/a";
-  }
   console.log("---> Text Input: ", textInfo);
   //
   // extract email data from contact form
@@ -853,15 +1158,6 @@ function extractLeadContent(formId){
   var formElement = "textarea";
   var contactComment = extractFormData(formData, formElement);
   console.log("---> Contact Comment: ", contactComment);
-
-  //
-  // extract postal codes
-  //
-  // formElement = "input";
-  // inputType = "number";
-  // var contactPostalCode = extractFormData(leadData, formElement, inputType);
-  // console.log("---> Postal Codes: ", contactPostalCode);
-
   //
   // Extract cover required - insurance lines
   //
@@ -913,40 +1209,11 @@ function extractLeadContent(formId){
   var coverComment = extractFormData(formData, formElement);
   console.log("---> Cover Comment: ", coverComment);
   //
-  // Extract transfer approval for servicer "adviser" but not for "agent"
-  //
-  if (servType.servicerType === "agent") {
-    //
-    // For "agent" default transfer approval to "No"
-    //
-    var trfAppr = {};
-    trfAppr = "No";
-  }
-  else {
-    //
-    // Extract value
-    //
-    if (document.getElementById('trfYes').checked) {
-      var trfAppr = "yes";
-    }
-    else {
-      var trfAppr = "no";
-    }
-  }
-  console.log("---> Transfer Approval: ", trfAppr);
-
-  //
-  // Read reference number of lead to update from modal header
-  //
-  var header = document.getElementById("modal-header-text").innerHTML;
-  var leadRef = header.substr(17, 10);
-  console.log("Lead Reference: ", leadRef);
-
-  //
   //  Create Lead data object
   //
   var leadData = {
-    reference : leadRef,
+    //servicerType: servicerType, -- new leads only
+    //trfApproval: trfApproval,  -- new leads only
     langPref: contactLanguage.langPref,
     entity: {
       entType: entType.entity,
@@ -960,11 +1227,10 @@ function extractLeadContent(formId){
     altNumber: textInfo.altNumber,
     cellNumber: textInfo.cellNumber,
     eMail: contactEmail.eMail,
-    servicerType: servType.servicerType,
-    trfApproval: trfAppr,
     currentInsurer: textInfo.currInsurer,
     previousInsured: previousInsured.prevIns,
-    lineOfBusiness: "not in use",
+    lineOfBusiness: textInfo.business,
+    services: leadServices,
     contactLocation: {
       postal: textInfo.postalCode,
       suburb: textInfo.suburb,
@@ -983,15 +1249,12 @@ function extractLeadContent(formId){
       time: contactTime.time,
       timeBA: contactTimeBA.timeBA
     },
-    //service: coverInfo.service,
-    services: leadServices,
     comments: {
       comment1: contactComment.comment1,
       comment2: coverComment.comment2
       //comment3: "",
       //comment4: ""
     }
-    //status: "Open"
   };
   return leadData;
 };
@@ -1028,21 +1291,23 @@ function extractLeadProgress(formId){
   //
   if (acceptance.leadAccept === "no"){
     console.log("---> Lead rejected");
+    var rejectReason = document.getElementById('rejectReason').value
     return {
-      acceptance: acceptance.leadAccept
+      acceptance: acceptance.leadAccept,
+      rejectReason: rejectReason
     };
   }
   //
   // Has contact mode with prospect, if not record and end
   //
   var noContact = document.getElementById('noContact').checked
-  if (noContact === "yes") {
+  if (noContact) {
     console.log("---> No contact made, end");
     //
     // Create no contact progress object and return
     //
     var progressData = {
-      accepted: acceptance,
+      accepted: "yes",
       noContact: noContact
     }
     return progressData;
@@ -1061,6 +1326,7 @@ function extractLeadProgress(formId){
   inputType = "date";
   var progressDates = extractFormData(formData, formElement, inputType);
   console.log("---> Date Input: ", progressDates);
+
   //
   // Get viability data
   //
@@ -1087,8 +1353,9 @@ function extractLeadProgress(formId){
   //
   var progressData = {
     accepted: acceptance.leadAccept,
-    rejectReason: progressText.rejectReason,
+    // rejectReason: only updated when accept=no, lead rejected nothing else is updated - handled above
     contactDate: progressDates.contactDate,
+    noContact: noContact,
     viable: viable,
     notViableReason: progressText.notViableReason,
     quoteDate: progressDates.quoteDate,
@@ -1403,19 +1670,19 @@ function determineLeadState(formId){
     };
     return leadState;
   }
-  // //
-  // // No progress set default state ???????????????????????????????????????????????? remove?
-  // //
-  // //
-  // // Determine lead's current state from module header
-  // //
-  // var currentStatus = document.getElementById('current-lead-status').value
-  // var leadState = {
-  //   progress: 'none',
-  //   status: currentStatus,
-  //   error: ''
-  // }
-  // return leadState;
+  //
+  // No progress set default state
+  //
+  //
+  // Determine lead's current state from module header
+  //
+  //var currentStatus = document.getElementById('current-lead-status').value
+  var leadState = {
+    progress: 'none',
+    status: '',
+    error: ''
+  }
+  return leadState;
 };
 
 

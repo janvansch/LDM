@@ -42,6 +42,7 @@ var UserSchema = new mongoose.Schema({
   },
   roleCode: {
     type: String,
+    enum: ['A', 'B', 'C', 'D'],
     trim: true,
     required: true
   },

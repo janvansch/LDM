@@ -27,12 +27,14 @@ router.post('/add', async (req, res) => {
     //
     // Extract POST Data
     var body = req.body;
-    console.log("===> Lead body: ", body);
+    console.log("---> Lead body: ", body);
     const lead = new Lead(body);
-    await lead.save();
+    let newLead = await lead.save();
+    console.log("===> New Lead: ", newLead);
     //var message = "Lead allocated to practise";
     //sendSMS(message);
-    res.status(200).send("ok");
+    console.log("---> New Lead Reference: ", newLead.reference);
+    res.status(200).send(newLead.reference);
   }
   catch (e) {
     console.log("===> ERROR - Add Lead: ", e);
@@ -44,27 +46,6 @@ router.post('/add', async (req, res) => {
 // ----------------------------------------
 //  Get lead detail
 // ----------------------------------------
-/*
-router.post('/lead', (req, res) => {
-  console.log(">>> Request body and url: ", req.body, req.url);
-  User.find(
-    { reference : req.body.reference
-    },
-    {
-      _id : 0,
-      //  who : 0,
-      //  createdAt : 0,
-      //  updatedAt : 0
-    }
-    ).then((lead) => {
-      console.log(">>> Res - Lead data: ", user);
-      res.send(lead);
-    }, (e) => {
-      res.status(400).send(e);
-    });
-});
-*/
-
 router.post('/lead', async (req, res) => {
   try {
     const body = _.pick(req.body, ['reference']);
@@ -90,18 +71,22 @@ router.post('/lead', async (req, res) => {
 // -----------------------------------
 //router.get('/search/:key', async (req, res) => {
 router.post('/search', async (req, res) => {
+  console.log("*** Get Leads for Query Started ***");
+
+  console.log("---> Request: ", req.body);
   //
   // Extract parameters and create query for find request
   // Query allows for partial case insentive parameters
   //
   var query = {};
   var p = 0;
-  var param = ["reference", "surname", "firstName", "entityName", "entity.entRefNum"];
+  var param = ["reference","surname","firstName","entityName","entity.entRefNum","assignedAdviser","allocatedPractice"];
+
   for(var key in req.body){ //could also be req.query and req.params
     req.body[key] !== "" ? query[param[p]] = {$regex: req.body[key], $options: 'i' }: null;
     p++;
   }
-  console.log("===> Search Query: ", query);
+  console.log("---> Query: ", query);
   //
   // Find Documents
   //
@@ -116,22 +101,22 @@ router.post('/search', async (req, res) => {
       }
     ).sort({surname: 1});
 
-    console.log(">>> Data Returned: ", leads);
+    console.log("*** Data Returned ***");
     //
     // Create data set for client
     //
     var listData = [];
     for (var i = 0, j = leads.length; i < j; i++) {
-      console.log(">>> counter: ", i);
-      console.log("--->>> processing lead: ", leads[i].reference);
+      //console.log(">>> counter: ", i);
+      //console.log("--->>> processing lead: ", leads[i].reference);
       //
       // Extract service lines
       //
       var lines = "";
       for (var x = 0, y = leads[i].services.length; x < y; x++) {
-        console.log(">>> lines count: ", x, " of ", y);
+        //console.log(">>> lines count: ", x, " of ", y);
         lines = lines + leads[i].services[x].line + " ";
-        console.log(">>> lines: ", lines);
+        //console.log(">>> lines: ", lines);
       }
       //
       // Create data set array
@@ -142,31 +127,37 @@ router.post('/search', async (req, res) => {
           status : (leads[i].statusHistory.length === 0) ? (" - ") : (leads[i].statusHistory[leads[i].statusHistory.length-1].status),
           //status : (typeof leads[i].statusHistory === 'undefined') ? (" - ") : (leads[i].statusHistory[leads[i].statusHistory.length-1].status),
           // status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
+          state : (leads[i].stateHistory.length === 0) ? (" - ") : (leads[i].stateHistory[leads[i].stateHistory.length-1].state),
           firstName : leads[i].firstName,
           surname : leads[i].surname,
           // langPref : leads[i].langPref,
           contactNum : leads[i].contactNum,
           // altNumber : leads[i].altNumber,
-          cellNumber : leads[i].cellNumber,
+          //cellNumber : leads[i].cellNumber,
           // eMail : leads[i].eMail,
           enityType : leads[i].entity.entType,
           entityRefNum : leads[i].entity.entRefNum,
           entityName : leads[i].entityName,
           postal : leads[i].contactLocation.postal,
           suburb : leads[i].contactLocation.suburb,
-          service : lines
+          service : lines,
+          lineOfBusiness: leads[i].lineOfBusiness,
           //comment1 : leads[i].comments.comment1,
           //comment2 : leads[i].comments.comment2,
+          servicerType : leads[i].servicerType,
           //assignedAdviser : leads[i].assignedAdviser
         }
       );
-      console.log(">>> Data List row: ", listData[i]);
+      //console.log(">>> Data List row: ", listData[i]);
     }
-    console.log(">>> Data list: ", listData);
+    //console.log(">>> Data list: ", listData);
+    console.log("*** Data List Created ***");
     res.send(listData);
     // res.send(leads);
+    console.log("*** Data List Sent ***");
   }
   catch (e) {
+    console.log("*** Data Extract Failed ***");
     res.status(400).send(e);
   }
 });
@@ -271,7 +262,7 @@ router.get('/list/:practice', async (req, res) => {
 // ----------------------------------
 router.get('/list/:adviser', async (req, res) => {
   // extract GET parameters
-  const adviser = req.params.practice;
+  const adviser = req.params.adviser;
   console.log("---> GET parameter and url: ", adviser, req.url);
   const query = {assignedAdviser: adviser};
   //const query = {};

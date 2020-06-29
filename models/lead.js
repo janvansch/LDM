@@ -3,37 +3,15 @@ var mongoose = require('mongoose');
 var saveEvent = require('../middleware/emitter');
 
 var LeadSchema = new mongoose.Schema({
-  reference: {
-    type: String,
-    required: false,
-    unique: true,
-  },
-  langPref: {
-    type: String,
-    required: true,
-    trim: true
-  },
+  reference: {type: String, required: false, unique: true},
+  langPref: {type: String, required: true, trim: true},
   entity: {
-    entType: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    entRefNum: {
-      type: String,
-      required: false,
-      trim: true
-    },
+    entType: {type: String, required: true, trim: true},
+    entRefNum: {type: String, required: false, trim: true},
   },
-  entityName: {
-    type: String,
-    required: false,
-    //default: null,
-    trim: true
-  },
+  entityName: {type: String, required: false, trim: true},
   lineOfBusiness: {
     type: String,
-    //default: null,
     trim: true
   },
   title: {
@@ -72,13 +50,10 @@ var LeadSchema = new mongoose.Schema({
     trim: true
   },
   currentInsurer: {
-    type: String,
-    //default: null
+    type: String
   },
-  previousInsured: {
-    // returning customer
+  previousInsured: { // returning customer
     type: String,
-    //default: null,
     trim: true
   },
   contactLocation: {
@@ -94,27 +69,22 @@ var LeadSchema = new mongoose.Schema({
     },
     streetNum: {
       type: String,
-      //default: null,
       trim: true
     },
     streetName: {
       type: String,
-      //default: null,
       trim: true
     },
     buildingName: {
-      type:String,
-      //default: null,
+      type: String,
       trim: true
     },
     floor: {
-      type:String,
-      //default: null,
+      type: String,
       trim: true
     },
     room: {
       type:String,
-      //default: null,
       trim: true
     }
   },
@@ -155,17 +125,14 @@ var LeadSchema = new mongoose.Schema({
   comments: {
     comment1: {
       type: String,
-      //default: null,
       trim: true
     },
     comment2: {
       type: String,
-      //default: null,
       trim: true
     },
     comment3: {
       type: String,
-      //default: null,
       trim: true
     },
     comment4: [{
@@ -175,7 +142,6 @@ var LeadSchema = new mongoose.Schema({
       },
       body: {
         type: String,
-        //default: null,
         trim: true
       }
     }]
@@ -193,11 +159,13 @@ var LeadSchema = new mongoose.Schema({
   },
   allocatedPractice: {
     type: String,
-    //default: null
+    trim: true,
+    default: 'none'
   },
   assignedAdviser: {
     type: String,
-    //default: null
+    trim: true,
+    default: 'none'
   },
   // Progress information
   accepted: {
@@ -209,6 +177,10 @@ var LeadSchema = new mongoose.Schema({
   },
   contactDate: {
     type: Date
+  },
+  noContact: {
+    type: Boolean,
+    default: false
   },
   viable: {
     type: String
@@ -264,7 +236,7 @@ var LeadSchema = new mongoose.Schema({
     state: {
       type: String,
       enum: ['none', 'rejected', 'taken', 'no contact', 'contacted', 'viable', 'not viable', 'quoted', 'accepted', 'declined', 'expired', 'issued'],
-      default: "unassigned"
+      default: "none"
     },
     stateDate: {
       type: Date,
@@ -297,7 +269,7 @@ LeadSchema.pre('save', function (next) {
     this.reference = psd + "-" + pmd + "-" + pr;
     this.statusHistory.push({
         status : "open",
-        statusDate : Date.now,
+        statusDate : Date.now
     });
     this.stateHistory.push({
         state : "none",
@@ -315,7 +287,13 @@ LeadSchema.pre('save', function (next) {
 // ===============================================
 LeadSchema.post('save', function () {
   var lead = this;
-  saveEvent.emit('newLead', lead);
+  if (lead.servicerType !== "agent") {
+    saveEvent.emit('newLead', lead);
+  }
+  else {
+    console.log("---> Agent, no allocation required");
+  }
+
 });
 
 // =============================

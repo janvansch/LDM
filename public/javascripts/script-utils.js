@@ -61,306 +61,249 @@ function filterTable(tableId, filterId) {
 //  Return values of specified element type from specified form
 // -------------------------------------------------------------
 function extractFormData(formContent, formElement, inputType) {
-    console.log("===> Extract Form Data for: ", formElement, inputType);
-    var selector = "";
-    if (formElement === "input" && inputType !== "") {
-      selector = 'input[' + 'type="' + inputType + '"]';
-    }
-    else if (formElement !== "input" && inputType === undefined) {
-      selector = formElement;
-    }
-    else {
-      console.log("===> Selector Error!");
-      selector = "";
-    }
-    console.log("===> Extract Form Data Selector: ", selector);
-    //var el = document.getElementById(form).querySelectorAll(selector);
-    var el = formContent.querySelectorAll(selector);
-    var myData = {};
-    if (formElement === "input" && inputType === "checkbox") {
-      // get checked values
-      for (var x = 0; x < el.length; x++) {
-        if (el[x].checked) {
-          var name = el[x].name;
-          var value = el[x].value;
-          myData[name] = value;
-        }
-      }
-      return myData;
-    }
-    else {
-      for (var x = 0; x < el.length; x++) {
+  console.log("===> Extract Form Data for: ", formElement, inputType);
+  var selector = "";
+  if (formElement === "input" && inputType !== "") {
+    selector = 'input[' + 'type="' + inputType + '"]';
+  }
+  else if (formElement !== "input" && inputType === undefined) {
+    selector = formElement;
+  }
+  else {
+    console.log("===> Selector Error!");
+    selector = "";
+  }
+  console.log("===> Extract Form Data Selector: ", selector);
+  //var el = document.getElementById(form).querySelectorAll(selector);
+  var el = formContent.querySelectorAll(selector);
+  var myData = {};
+  if (formElement === "input" && inputType === "checkbox") {
+    // get checked values
+    for (var x = 0; x < el.length; x++) {
+      if (el[x].checked) {
         var name = el[x].name;
         var value = el[x].value;
         myData[name] = value;
       }
-      return myData;
     }
+    return myData;
   }
-
-  // ----------------------------------------------------------
-  //  Return the values of the checked checkboxes in the group
-  // ----------------------------------------------------------
-  function getCheckedValues(formContent, checkboxName) {
-    var selector = 'input[' + 'name="' + checkboxName + '"]';
-    var el = formContent.querySelectorAll(selector);
-    var checked = {};
-    var checkedValues = [];
+  else {
     for (var x = 0; x < el.length; x++) {
-      if (el[x].checked) {
-        checkedValues.push(el[x].value);
-      }
+      var name = el[x].name;
+      var value = el[x].value;
+      myData[name] = value;
     }
-    if (checkedValues.length !== 0) {
-      checked[checkboxName] = checkedValues;
-    }
-    return checked;
+    return myData;
   }
+}
 
-  // ------------------------------------------------
-  //  Return the value of the selected radio buttons
-  // ------------------------------------------------
-  function getRadioCheckedValue(formContent, radioName) {
-    var selector = 'input[' + 'name="' + radioName + '"]';
-    var radio = formContent.querySelectorAll(selector);
-    //console.log("===> Radio extracted: ", radio);
-    var rData = {};
-    for (var i = 0; i < radio.length; i++) {
-      if(radio[i].checked) {
-        var name = radio[i].name;
-        var value = radio[i].value;
-        rData[name] = value;
-        return rData;
-      }
+// ----------------------------------------------------------
+//  Return the values of the checked checkboxes in the group
+// ----------------------------------------------------------
+function getCheckedValues(formContent, checkboxName) {
+  var selector = 'input[' + 'name="' + checkboxName + '"]';
+  var el = formContent.querySelectorAll(selector);
+  var checked = {};
+  var checkedValues = [];
+  for (var x = 0; x < el.length; x++) {
+    if (el[x].checked) {
+      checkedValues.push(el[x].value);
     }
-    return rData;
   }
+  if (checkedValues.length !== 0) {
+    checked[checkboxName] = checkedValues;
+  }
+  return checked;
+}
 
-  // --------------------------
-  //  Reset the specified form
-  // --------------------------
-  function formReset(formId) {
-      document.getElementById(formId).reset();
+// ------------------------------------------------
+//  Return the value of the selected radio buttons
+// ------------------------------------------------
+function getRadioCheckedValue(formContent, radioName) {
+  var selector = 'input[' + 'name="' + radioName + '"]';
+  var radio = formContent.querySelectorAll(selector);
+  //console.log("===> Radio extracted: ", radio);
+  var rData = {};
+  for (var i = 0; i < radio.length; i++) {
+    if(radio[i].checked) {
+      var name = radio[i].name;
+      var value = radio[i].value;
+      rData[name] = value;
+      return rData;
+    }
   }
+  return rData;
+}
 
 // ============================================
 //  Utilities - Generic XMLHttpRequest handler
 // ============================================
-// servReq serverRequest
-// serverAPI serverConnect servComs
-// serverCall
-// dataService
-//
-// Turn this into a promise
-//
-// Call with await from async function
-//
-/*
-Promisifying XMLHttpRequest
-Let's write a simple function to make a GET request:
-	function get(url) {
-    // Return a new promise.
-    return new Promise(function(resolve, reject) {
-      // Do the usual XHR stuff
-      var req = new XMLHttpRequest();
-      req.open('GET', url);
-
-      req.onload = function() {
-        // This is called even on 404 etc
-        // so check the status
-        if (req.status == 200) {
-          // Resolve the promise with the response text
-          resolve(req.response);
+function xhrRequest(method, route, contentType, request, callback) {
+  //Validate params - if params not valid end immediately
+  if (request == null || route == null || contentType == null) {
+    console.log("<<< ERROR - required parameters not provided >>>");
+  }
+  else if (typeof callback !== "function"){
+    console.log("<<< ERROR - the callback is not a function >>>");
+  }
+  else {
+    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    xhr.onreadystatechange = function() {
+      // Monitor request progress
+      console.log("Ready state:", xhr.readyState);
+      if (xhr.readyState == 4) {
+        // Request complete
+        if (xhr.status == 200) {
+          // status 200 - success
+          var err = false;
+          //console.log(">>> Success result: ", xhr);
+          callback(err, xhr);
         }
         else {
-          // Otherwise reject with the status text
-          // which will hopefully be a meaningful error
-          reject(Error(req.statusText));
-        }
-      };
-
-      // Handle network errors
-      req.onerror = function() {
-        reject(Error("Network Error"));
-      };
-
-      // Make the request
-      req.send();
-    });
-  }
-Now let's use it:
-  get('story.json').then(
-    function(response) {
-      console.log("Success!", response);
-    },
-    function(error) {
-      console.error("Failed!", error);
-    }
-  )
-
-*/
-function xhrRequest(method, route, contentType, request, callback) {
-    //Validate params - if params not valid end immediately
-    if (request == null || route == null || contentType == null) {
-      console.log("<<< ERROR - required parameters not provided >>>");
-    }
-    else if (typeof callback !== "function"){
-      console.log("<<< ERROR - the callback is not a function >>>");
-    }
-    else {
-      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-      // if (window.XMLHttpRequest) {
-      //   var xhr = new XMLHttpRequest();
-      // }
-      // else {
-      //   // code for IE6, IE5
-      //   var xhr = new ActiveXObject("Microsoft.XMLHTTP");
-      // }
-      xhr.onreadystatechange = function() {
-        // Monitor request progress
-        console.log("Ready state:", xhr.readyState);
-        if (xhr.readyState == 4) {
-          // Request complete
-          if (xhr.status == 200) {
-            // status 200 - success
-            var err = false;
-            //console.log(">>> Success result: ", xhr);
-            callback(err, xhr);
-          }
-          else {
-            // Request failed
-            var err = true;
-            console.log(`*** XHR request failure ***`);
-            console.log(`   >>> status = ${xhr.status}`);
-            console.log(`   >>> status msg = ${xhr.statusText}`);
-            console.log(`   >>> from = ${xhr.responseURL}`);
-            //console.log(">>> Error result: ", xhr);
-            callback(err, '');
-          }
+          // Request failed
+          var err = true;
+          console.log(`*** XHR request failure ***`);
+          console.log(`   >>> status = ${xhr.status}`);
+          console.log(`   >>> status msg = ${xhr.statusText}`);
+          console.log(`   >>> from = ${xhr.responseURL}`);
+          //console.log(">>> Error result: ", xhr);
+          callback(err, '');
         }
       }
-      // Make request to server API
-      method === "GET" ? xhr.open(method, route + request) : xhr.open(method, route);
-      // if (method === "GET") {
-      //   xhr.open(method, route + request);
-      // }
-      // else {
-      //   xhr.open(method, route);
-      // }
-      xhr.setRequestHeader("Content-type", contentType);
-      method === "GET" ? xhr.send() : xhr.send(request);
-      // if (method === "GET") {
-      //   xhr.send();
-      // }
-      // else {
-      //   xhr.send(request);
-      // }
     }
+    // Make request to server API
+    method === "GET" ? xhr.open(method, route + request) : xhr.open(method, route);
+    xhr.setRequestHeader("Content-type", contentType);
+    method === "GET" ? xhr.send() : xhr.send(request);
   }
+}
 
 // =====================
 //  Utilities - General
 // =====================
 
+// --------------------------
+//  Reset the specified form
+// --------------------------
+function formReset(formId) {
+  document.getElementById(formId).reset();
+}
+
 // ------------
 //  Clear form
 // ------------
-function resetform(form) {
-    document.getElementById(form).reset();
-    console.log("---> Reset Form: ", form);
+function resetForm(formId) {
+  document.getElementById(formId).reset();
+  console.log("---> Reset Form: ", formId);
 }
 
-  // -----------------------
-  //  disable & enable form
-  // -----------------------
-  function formDisable() {
-      // Call to disable -> document.getElementById("btnPlaceOrder").disabled = true;
-      var limit = document.forms[0].elements.length;
-      for (var i=0; i < limit; i++) {
-         document.forms[0].elements[i].disabled = true;
-      }
-  }
-  function formEnable() {
-      // Call to enable  -> document.getElementById("btnPlaceOrder").disabled = false;
-      var limit = document.forms[0].elements.length;
-      for (var i=0; i < limit; i++) {
-         document.forms[0].elements[i].disabled = false;
-      }
-  }
+// --------------------
+//  Is element checked
+// --------------------
+function checked(elementId) {
+  return document.getElementById(elementId).checked;
+}
 
-  // ---------------------------------
-  //  Highlight a row/cell in a table
-  // ---------------------------------
-  function ChangeColor(tableRow, highLight) {
-      if (highLight) {
-          // tableRow.style.backgroundColor = '#dcfac9';
-          tableRow.style.backgroundColor = '#F7B733';
-      }
-      else {
-          //tableRow.style.backgroundColor = 'rgb(244, 244, 248';
-          tableRow.style.backgroundColor = 'transparent';
-          // tableRow.style.backgroundColor = 'white';
-      }
-  }
+// -------------
+//  Prompt text
+// -------------
+function prompt(id, msg) {
+  document.getElementById(id).innerHTML = msg;
+}
 
-  // -------------------------------
-  //  Test if data item is a string
-  // -------------------------------
-  function isString(o) {
-    if (o !== undefined && o !== null) {
-      return typeof o == "string" || (typeof o == "object" && o.constructor === String);
-    }
+// -----------------------
+//  disable & enable form
+// -----------------------
+function formDisable() {
+  // Call to disable -> document.getElementById("btnPlaceOrder").disabled = true;
+  var limit = document.forms[0].elements.length;
+  for (var i=0; i < limit; i++) {
+    document.forms[0].elements[i].disabled = true;
   }
+}
 
-  // -------------------------------
-  //  Test if data item is a string
-  // -------------------------------
-  function isNumber(o) {
-    return typeof o == "number" || (typeof o == "object" && o.constructor === Number);
+function formEnable() {
+  // Call to enable  -> document.getElementById("btnPlaceOrder").disabled = false;
+  var limit = document.forms[0].elements.length;
+  for (var i=0; i < limit; i++) {
+    document.forms[0].elements[i].disabled = false;
   }
+}
 
-  // // ===========================================
-  // //  Functions to add elements and text to DOM
-  // // ===========================================
-  // /*******************************************************************************************
-  //  * By https://www.scribd.com/document/2279811/DOM-Append-Text-and-Elements-With-Javascript *
-  //  *******************************************************************************************/
-  // // ------------------------------
-  // //  add text to existing element
-  // // ------------------------------
-  // /**************************************************************
-  //  * Add test:                                                  *
-  //  * node: The element/node that the text is to be appended to. *
-  //  * txt: The text to append to the node.                       *
-  //  **************************************************************/
-  // function appendText(node,txt) {
-  //     node.appendChild(document.createTextNode(txt));
-  // }
-  // // --------------------
-  // //  add element to DOM
-  // // --------------------
-  // /********************************************************
-  //  * Add new element:                                     *
-  //  *      node = element where to add new element         *
-  //  *      tag = the type of element to add                *
-  //  *      id = optional id for element                    *
-  //  *      htm = optional internal html text for element   *
-  //  ********************************************************/
-  // function appendElement(node,tag,id,htm) {
-  //     var ne = document.createElement(tag);
-  //     if(id) ne.id = id;
-  //     if(htm) ne.innerHTML = htm;
-  //     node.appendChild(ne);
-  // }
-  // function addElementBefore(node,tag,id,htm) {
-  //     var ne = document.createElement(tag);
-  //     if(id) ne.id = id;
-  //     if(htm) ne.innerHTML = htm;
-  //     node.parentNode.insertBefore(ne,node);
-  // }
-  // function addElementAfter(node,tag,id,htm) {
-  //     var ne = document.createElement(tag);
-  //     if(id) ne.id = id;
-  //     if(htm) ne.innerHTML = htm;
-  //     node.parentNode.insertBefore(ne,node.nextSibling);
-  // }
+// ---------------------------------
+//  Highlight a row/cell in a table
+// ---------------------------------
+function ChangeColor(tableRow, highLight) {
+  if (highLight) {
+    // tableRow.style.backgroundColor = '#dcfac9';
+    tableRow.style.backgroundColor = '#F7B733';
+  }
+  else {
+    //tableRow.style.backgroundColor = 'rgb(244, 244, 248';
+    tableRow.style.backgroundColor = 'transparent';
+    // tableRow.style.backgroundColor = 'white';
+  }
+}
+
+// -------------------------------
+//  Test if data item is a string
+// -------------------------------
+function isString(o) {
+  if (o !== undefined && o !== null) {
+    return typeof o == "string" || (typeof o == "object" && o.constructor === String);
+  }
+}
+
+// -------------------------------
+//  Test if data item is a string
+// -------------------------------
+function isNumber(o) {
+  return typeof o == "number" || (typeof o == "object" && o.constructor === Number);
+}
+
+// // ===========================================
+// //  Functions to add elements and text to DOM
+// // ===========================================
+// /*******************************************************************************************
+//  * By https://www.scribd.com/document/2279811/DOM-Append-Text-and-Elements-With-Javascript *
+//  *******************************************************************************************/
+// // ------------------------------
+// //  add text to existing element
+// // ------------------------------
+// /**************************************************************
+//  * Add test:                                                  *
+//  * node: The element/node that the text is to be appended to. *
+//  * txt: The text to append to the node.                       *
+//  **************************************************************/
+// function appendText(node,txt) {
+//     node.appendChild(document.createTextNode(txt));
+// }
+// // --------------------
+// //  add element to DOM
+// // --------------------
+// /********************************************************
+//  * Add new element:                                     *
+//  *      node = element where to add new element         *
+//  *      tag = the type of element to add                *
+//  *      id = optional id for element                    *
+//  *      htm = optional internal html text for element   *
+//  ********************************************************/
+// function appendElement(node,tag,id,htm) {
+//     var ne = document.createElement(tag);
+//     if(id) ne.id = id;
+//     if(htm) ne.innerHTML = htm;
+//     node.appendChild(ne);
+// }
+// function addElementBefore(node,tag,id,htm) {
+//     var ne = document.createElement(tag);
+//     if(id) ne.id = id;
+//     if(htm) ne.innerHTML = htm;
+//     node.parentNode.insertBefore(ne,node);
+// }
+// function addElementAfter(node,tag,id,htm) {
+//     var ne = document.createElement(tag);
+//     if(id) ne.id = id;
+//     if(htm) ne.innerHTML = htm;
+//     node.parentNode.insertBefore(ne,node.nextSibling);
+// }

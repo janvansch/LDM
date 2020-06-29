@@ -81,9 +81,9 @@ var loginUser = async (req, res) => {
     );
     console.log("Product data loaded");
 
-    // -------------------------------------
-    //  Setup view according to user's role
-    // -------------------------------------
+    // ----------------------------------------------------
+    //  Setup user view in accordance with the user's role
+    // ----------------------------------------------------
     let viewObj;
     //
     // Admin role view
@@ -104,10 +104,11 @@ var loginUser = async (req, res) => {
         prompt: " ",
         productDef: product,
         menuDef: options,
+        title: 'Admin Options:',
         modal: "yes",
         view: "admin",
         user: userEmail,
-        title: 'Options:'
+        userPrac: ""
       };
     }
     //
@@ -119,7 +120,7 @@ var loginUser = async (req, res) => {
       //
       const options = [
         {func:'profile(user)',text:'Edit Profile'},
-        {func:'listPracLeads(data)',text:'View Leads'},
+        {func:'openLeadsView("Practice")',text:'View Leads'},
         {func:'listAdvisers(data)',text:'View Advisers'}
       ];
       //
@@ -129,10 +130,11 @@ var loginUser = async (req, res) => {
         prompt: " ",
         productDef: product,
         menuDef: options,
+        title: 'Practice Options:',
         modal: "yes",
         view: "practice",
         user: userEmail,
-        title: 'Options:'
+        userPrac: userPracCode
       };
     }
     //
@@ -144,8 +146,8 @@ var loginUser = async (req, res) => {
       //
       const options = [
         {func:'profile(user)',text:'Edit Profile'},
-        {func:'listAdvLeads(data)',text:'View Leads'},
-        {func:'listAdvClients(data)',text:'View Clients'}
+        {func:'openLeadsView("Adviser")',text:'View Assigned Leads'}
+        //{func:'listAdvClients(user)',text:'View Clients'}
       ];
       //
       // View definition
@@ -154,14 +156,15 @@ var loginUser = async (req, res) => {
         prompt: " ",
         productDef: product,
         menuDef: options,
+        title: 'Adviser Options:',
         modal: "yes",
         view: "adviser",
         user: userEmail,
-        title: 'Options:'
+        userPrac: ""
       };
     }
     //
-    // Agent role view
+    // Leads Agent role view
     //
     if (userRole==="D") {
       //
@@ -170,7 +173,7 @@ var loginUser = async (req, res) => {
       const options = [
         {func:'profile(user)',text:'Edit Profile'},
         // {func:'openAddLead()',text:'Add Lead'},
-        {func:'openLeadsView()',text:'Leads'}
+        {func:'openLeadsView("")',text:'Leads'}
       ];
       //
       // View definition for index.ejs
@@ -179,10 +182,11 @@ var loginUser = async (req, res) => {
         prompt: " ", // not used?
         productDef: product, // the cover options
         menuDef: options, // the menu options
+        title: 'Agent Options:', // menu header
         modal: "yes", // if yes include modal place holder in view
-        view: "lead", // which view to display
+        view: "agent", // which view to display
         user: userEmail, // the user's id
-        title: 'Leads Options:' // use or not?
+        userPrac: ""
       };
     }
     // ------------------------------------------------

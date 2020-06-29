@@ -1,10 +1,11 @@
 <div id="addLeadButtons" style="display:none">
-  <button type="button" onclick="addLeadCtrl()">Create Lead</button>
-  <button type="button" onclick="resetForm()">Clear</button>
+  <button id="btn-add-lead" type="button">Create Lead</button>
+  <button id="btn-clear-form" type="button">Clear</button>
+  <!-- type="button" prevents submitting the form -->
 </div>
 
 <div id="updateLeadButtons" style="display:none">
-  <input id="updateLead" type="button" value="Update" onclick="updateLead()"/>
+  <input id="updateLead" type="button" value="Update"/>
 </div>
 
 <div id="practiceLeadButtons" style="display:none">
@@ -14,5 +15,13 @@
 
 <div id="adviserLeadButtons" style="display:none">
   <input id="adv-updateLead" type="button" value="Update Lead" onclick="updateLead()"/>
-  <input id="rejectLeadA" type="button" value="Reject Lead" onclick="rejectLead('A')"/>
+  <!--<input id="rejectLeadA" type="button" value="Reject Lead" onclick="rejectLead('A')"/>-->
 </div>
+
+<!--
+  Without a type, button by default receives type of submit.
+  There are 3 supported types for a button
+    submit : Submits the form when clicked (default)
+    reset  : Resets the fields in the form when clicked
+    button : Clickable, but without any event handler until one is assigned
+-->

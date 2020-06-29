@@ -48,8 +48,8 @@ xButton.onclick = function() {
   ////resetform("formLead");
   //resetform("formAddUser");
   //resetform("formAddPractice");
-  resetform("lead-form");
-  resetform("leadProgressForm");
+  resetForm("lead-form");
+  resetForm("leadProgressForm");
 
   document.getElementById('lead-view').style.display = 'none';
   document.getElementById('lead-progress').style.display = 'none';
@@ -97,8 +97,8 @@ window.onclick = function(event) {
     //
     ////resetform("formLead");
 
-    resetform("lead-form");
-    resetform("leadProgressForm");
+    resetForm("lead-form");
+    resetForm("leadProgressForm");
     document.getElementById('lead-view').style.display = 'none';
     document.getElementById('lead-progress').style.display = 'none';
     //document.getElementById('v-ins-lines').style.display = 'none';
@@ -127,38 +127,56 @@ window.onload = function() {
   }
   else {
     toggleView("nav");
+    // =======================
+    //  Setup Session Storage
+    // =======================
+    //
+    //  Display old session values
+    //
+    for(let i=0; i<sessionStorage.length; i++) {
+      let key = sessionStorage.key(i);
+      console.log(`---> Current Session Storage: ${key}: ${sessionStorage.getItem(key)}`);
+    }
+    //
+    // Get User Id and set
+    //
+    sessionStorage.clear();
+    var userId = document.getElementById("user").innerHTML;
+    var to = userId.indexOf('(');
+    sessionStorage.setItem('userId', userId.substring(0, to - 1));
+    //
+    // Get User Role and set
+    //
+    var str = document.getElementById("user").innerHTML;
+    var start = str.indexOf('(') + 1;
+    if (str.indexOf(':') !== -1){
+      var end = str.indexOf(':') - 1;
+    }
+    else {
+      var end = str.length - 1;
+    }
+    var role = str.substring(start, end);
+    sessionStorage.setItem('userRole', role);
+    //
+    // Get User Practice Id and set
+    //
+    if (str.indexOf(':') !== -1){
+      var start = str.indexOf(':') + 2;
+      var end = str.length - 1;
+      var practice = str.substring(start, end);
+    }
+    else {
+      var practice = "";
+    }
+    sessionStorage.setItem('userPracticeId', practice);
+    //
+    // Display new session values set
+    //
+    for(let i=0; i<sessionStorage.length; i++) {
+      let key = sessionStorage.key(i);
+      console.log(`---> New Values in Session Storage: ${key}: ${sessionStorage.getItem(key)}`);
+    }
   }
-};
-
-function viewOn(viewID) {
-  //
-  // Switch view display on
-  //
-  document.getElementById(viewID).style.display = 'block';
-};
-
-function viewOff(viewID) {
-  //
-  // Switch view display off
-  //
-  document.getElementById(viewID).style.display = 'none';
-};
-
-// ---------------------
-//  View display toggle
-// ---------------------
-function toggleView(viewID){
-  var state = '';
-  var view = document.getElementById(viewID);
-  if(view.style.display == "block") {
-      view.style.display = "none";
-      state = "OFF";
-  }
-  else {
-      view.style.display = "block";
-      state = "ON";
-  }
-  console.log(`---> ${viewID} is ${state}`);
 };
 
 // -------------------------------------------------
@@ -171,8 +189,7 @@ function openMenu() {
   toggleView("headerSub");
 
   // what does the line below do here??????????
-  document.getElementById("tPos5").innerHTML = 'Enter lead selection criteria and click "Find"';
-
+  document.getElementById("tPos").innerHTML = 'Enter lead selection criteria and click "Find"';
 };
 
 // -------------------------------------
@@ -190,6 +207,37 @@ function openPanel() {
 // -----------------
 function panelTitle(title) {
   document.getElementById('panelName').innerHTML = title;
+};
+
+// ------------------------
+//  Switch view display on
+// ------------------------
+function viewOn(viewId) {
+  document.getElementById(viewId).style.display = 'block';
+};
+
+// -------------------------
+//  Switch view display off
+// -------------------------
+function viewOff(viewId) {
+  document.getElementById(viewId).style.display = 'none';
+};
+
+// ---------------------
+//  Toggle view display
+// ---------------------
+function toggleView(viewId){
+  var state = '';
+  var view = document.getElementById(viewId);
+  if(view.style.display == "block") {
+      view.style.display = "none";
+      state = "OFF";
+  }
+  else {
+      view.style.display = "block";
+      state = "ON";
+  }
+  console.log(`---> ${viewId} is ${state}`);
 };
 
 // ==============================================================================
@@ -455,44 +503,44 @@ function panelTitle(title) {
 //   console.log("---> Menu Options", menuOptions);
 // }
 
-// // ====================================
-// //  Filter table rows by column values
-// // ====================================
-// function pracLeadFilter(tableId, filterId) {
-//   //
-//   //  Read filter definition
-//   //
-//   var filter = filterDef(filterId);
-//   console.log("---> Filter definition: ", filter);
-//   //
-//   // Read filter parameter values entered
-//   //
-//   var filterObj = {};
-//   var cols = [];
-//   var x = 0;
-//   var colFilter = [], criteria = [];
-//   var colCount = filter.definition.length;
-//   console.log("---> Filter Column Count: ", colCount);
-//   for (var i=0; i < colCount; i++) {
-//     console.log("---> Filter ID: ", filter.definition[i].valueId);
-//     colFilter[i] = document.getElementById(filter.definition[i].valueId).value;
-//     if (colFilter[i].length > 0) {
-//       cols[x] = filter.definition[i].tableCol;
-//       criteria[x] = colFilter[i];
-//       console.log("---> Filter values 0:", cols[x], criteria[x]);
-//       x++;
-//     }
-//   }
-//   filterObj = {
-//     cols : cols,
-//     criteria : criteria
-//   }
-//   console.log("---> Filter Obj: ", filterObj);
-//   //
-//   // Apply filter to table rows
-//   //
-//   filterTable(tableId, filterObj);
-// }
+// ====================================
+//  Filter table rows by column values
+// ====================================
+function pracLeadFilter(tableId, filterId) {
+  //
+  //  Read filter definition
+  //
+  var filter = filterDef(filterId);
+  console.log("---> Filter definition: ", filter);
+  //
+  // Read filter parameter values entered
+  //
+  var filterObj = {};
+  var cols = [];
+  var x = 0;
+  var colFilter = [], criteria = [];
+  var colCount = filter.definition.length;
+  console.log("---> Filter Column Count: ", colCount);
+  for (var i=0; i < colCount; i++) {
+    console.log("---> Filter ID: ", filter.definition[i].valueId);
+    colFilter[i] = document.getElementById(filter.definition[i].valueId).value;
+    if (colFilter[i].length > 0) {
+      cols[x] = filter.definition[i].tableCol;
+      criteria[x] = colFilter[i];
+      console.log("---> Filter values 0:", cols[x], criteria[x]);
+      x++;
+    }
+  }
+  filterObj = {
+    cols : cols,
+    criteria : criteria
+  }
+  console.log("---> Filter Obj: ", filterObj);
+  //
+  // Apply filter to table rows
+  //
+  filterTable(tableId, filterObj);
+}
 
 // =============================================================================
 //  Utilities - Reusable Data Display Functions
@@ -502,8 +550,6 @@ function panelTitle(title) {
 //  Set the line and type check boxes for the Lead detail view
 // ------------------------------------------------------------
 function setServicesView(services, prefix) {
-
-  //console.log(">>> Services view: ", services);
   for (var i = 0, j = services.length; i < j; i++) {
     //console.log(">>> Services Line: ", i, services[i].line);
     //
@@ -672,6 +718,7 @@ function displayData(content, title, layoutId) {
   // Create header row
   //
   var headerRow = header.insertRow(0);
+  headerRow.setAttribute('class', "list-head-row");
   //
   // Create cells and insert label content
   //
@@ -691,6 +738,7 @@ function displayData(content, title, layoutId) {
     // Insert a body row for each data row
     //
     var tableRow = body.insertRow(-1);
+    tableRow.setAttribute('class', "list-body-row");
     //
     // Insert a cell for each data column
     //
@@ -706,18 +754,29 @@ function displayData(content, title, layoutId) {
     } // end of column loop
   } // end of row loop
   //
-  // Insert Table into DOM for display
+  // Determine element ids value for data display
   //
-  var elementId = "tPos" + layoutId;
-  var tPosElement = document.getElementById(elementId);
+  if (layoutId !== "1" && layoutId !== "4" && layoutId !== "5") {
+    // for leads display function
+    var listId = "tPos" + layoutId;
+    var titleId = "title" + layoutId;
+  }
+  else {
+    var listId = "tPos";
+    var titleId = "title";
+  }
+  console.log(`---> list Id: ${listId} title: ${titleId}`);
+  //
+  // Insert table into DOM to display
+  //
+  var tPosElement = document.getElementById(listId);
   tPosElement.innerHTML = "";
   tPosElement.appendChild(table); // add child element to document
   //
-  // Update list section heading
+  // Insert list heading for list display
   //
   if (title !== null) {
-    var elementId = "title" + layoutId;
-    document.getElementById(elementId).innerHTML = title;
+    document.getElementById(titleId).innerHTML = title;
   }
   console.log("<<< Data list display updated >>>");
 };
@@ -808,7 +867,7 @@ function readLayout(definitionId) {
         //'{ "fname" : "eMail" , "label" : "eMail" },' +
         '{ "fname" : "postal" , "label" : "Postal" },' +
         '{ "fname" : "suburb" , "label" : "Suburb" },' +
-        '{ "fname" : "service" , "label" : "Service Required" },' +
+        '{ "fname" : "service" , "label" : "Service(s)" },' +
         '{ "fname" : "comment1" , "label" : "Comment" },' +
         '{ "fname" : "comment2" , "label" : "Service Comment" },' +
         '{ "fname" : "assignedAdviser" , "label" : "Adviser" }' +
@@ -854,23 +913,22 @@ function readLayout(definitionId) {
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "reference" , "label" : "Ref No." },' +
         '{ "fname" : "status" , "label" : "Status" },' +
+        '{ "fname" : "state" , "label" : "Progress" },' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
-        '{ "fname" : "langPref" , "label" : "Language" },' +
+        '{ "fname" : "entityRefNum" , "label" : "ID/Reg Num" },' +
+        '{ "fname" : "entityName" , "label" : "Org Name" },' +
+        //'{ "fname" : "langPref" , "label" : "Language" },' +
         //'{ "fname" : "contactNum" , "label" : "Contact #" },' +
         //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
         //'{ "fname" : "cellNumber" , "label" : "Cell #" },' +
         //'{ "fname" : "eMail" , "label" : "eMail" },' +
         '{ "fname" : "postal" , "label" : "Postal" },' +
         '{ "fname" : "suburb" , "label" : "Suburb" },' +
-        '{ "fname" : "service" , "label" : "Service Required" },' +
-        '{ "fname" : "comment1" , "label" : "Comment" },' +
-        '{ "fname" : "comment2" , "label" : "Service Comment" }' +
-        //
-        // Change:
-        //    Remove comments. Create function to only display
-        //    last comment made by adviser on the lead.
-        //
+        '{ "fname" : "service" , "label" : "Service(s)" },' +
+        '{ "fname" : "lineOfBusiness" , "label" : "Business" }' +
+        //'{ "fname" : "comment1" , "label" : "Comment" },' +
+        //'{ "fname" : "comment2" , "label" : "Service Comment" }' +
         ']}'
       ;
     break;
@@ -878,7 +936,9 @@ function readLayout(definitionId) {
       console.log("List Layout: 5 (Leads)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "reference" , "label" : "Ref No." },' +
+        '{ "fname" : "servicerType" , "label" : "Servicer" },' +
         '{ "fname" : "status" , "label" : "Status" },' +
+        '{ "fname" : "state" , "label" : "Progress" },' +
         '{ "fname" : "firstName" , "label" : "First Name" },' +
         '{ "fname" : "surname" , "label" : "Surname" },' +
         '{ "fname" : "entityRefNum" , "label" : "ID/Reg Num" },' +
@@ -886,11 +946,12 @@ function readLayout(definitionId) {
         //'{ "fname" : "langPref" , "label" : "Language" },' +
         '{ "fname" : "contactNum" , "label" : "Contact #" },' +
         //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
-        '{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        //'{ "fname" : "cellNumber" , "label" : "Cell #" },' +
         //'{ "fname" : "eMail" , "label" : "eMail" },' +
         '{ "fname" : "postal" , "label" : "Postal" },' +
         '{ "fname" : "suburb" , "label" : "Suburb" },' +
-        '{ "fname" : "service" , "label" : "Service Required" }' +
+        '{ "fname" : "service" , "label" : "Service(s)" },' +
+        '{ "fname" : "lineOfBusiness" , "label" : "Business" }' +
         //'{ "fname" : "comment1" , "label" : "Comment" },' +
         //'{ "fname" : "comment2" , "label" : "Service Comment" }' +
         ']}'
@@ -920,6 +981,18 @@ function filterDef(filterId) {
     case '2':
       console.log("Filter Definition: 2 (Admin Practices Filter)");
     break;
+    case '4':
+      console.log("Filter Definition: 4 (Adviser Leads View Filter)");
+      var filterDef = '{ "definition" : [' +
+        '{ "tableCol" : 0 , "valueId" : "leads-ref-filter" },' +
+        '{ "tableCol" : 1 , "valueId" : "leads-bussName-filter" },' +
+        '{ "tableCol" : 8 , "valueId" : "leads-contName-filter" }' +
+        '{ "tableCol" : 8 , "valueId" : "leads-contSurname-filter" }' +
+        '{ "tableCol" : 8 , "valueId" : "leads-contNumb-filter" }' +
+        '{ "tableCol" : 8 , "valueId" : "leads-refID-filter" }' +
+        ']}'
+      ;
+    break;
     case '5':
       console.log("Filter Definition: 5 (Leads View Filter)");
       var filterDef = '{ "definition" : [' +
@@ -931,7 +1004,7 @@ function filterDef(filterId) {
         '{ "tableCol" : 8 , "valueId" : "leads-refID-filter" }' +
         ']}'
       ;
-      break;
+    break;
   }
   var filter = JSON.parse(filterDef); // convert JSON text into JS object
   console.log("JSON Definition: ", filter);

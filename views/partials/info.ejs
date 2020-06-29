@@ -1,14 +1,13 @@
 <div class="flex-container">
 
   <div class="flex-item">
-    <label>Cover for self or for legal entity?*:</label>
-
+    <a href="#" id="infoIcon"><img src="images\information-icon.png"/></a>
+    <label>Cover for self or business venture?*:</label>
     <label for="person">
       <input id="person" type="radio" name="entity" value="Person"/> Self
     </label>
-
     <label for="legal">
-      <input id="legal" type="radio" name="entity" value="Legal"/> Entity
+      <input id="legal" type="radio" name="entity" value="Legal"/> Venture
     </label>
   </div>
 
@@ -31,16 +30,7 @@
       <input id="eng" type="radio" name="langPref" value="English"/> English
     </label>
   </div>
-  <div class="flex-item">
-    <label for="entityRefNum"> ID/Registration Number: </label>
-    <input id="entityRefNum" type="text" name="entityRefNum" size="15"/>
-  </div>
-  <div class="flex-item">
-    <label>
-      Entity Name:
-      <input id="entityName" type="text" name="entityName" size="50"/>
-    </label>
-  </div>
+
   <div class="flex-item">
     <label for="currInsurer" > Current Insurer*: </label>
     <input id="currInsurer" type="text" list="providers" name="currInsurer" size="20" required/>
@@ -52,3 +42,61 @@
     </datalist>
   </div>
 </div>
+
+<div class="flex-container">
+  <div class="flex-item">
+    <label for="entityRefNum"> ID/Registration Number: </label>
+    <input id="entityRefNum" type="text" name="entityRefNum" size="15"/>
+  </div>
+
+  <div class="flex-item">
+    <label>
+      Entity Name:
+      <input id="entityName" type="text" name="entityName" size="50"/>
+    </label>
+  </div>
+
+  <div class="flex-item">
+    <label>
+      Line of Business:
+      <input id="business" type="text" name="business" size="30"/>
+    </label>
+  </div>
+
+</div>
+
+<!-- popup content start-->
+<div id="infoPopup" class="popup" style="display:none">
+  <div class="popupWindow">
+    Examples of ventures include:
+    <div class="popup_txt">
+
+      <ul>
+        <li>a home business</li>
+        <li>transporting people for reward</li>
+        <li>transporting good for reward</li>
+        <li>providing services for reward</li>
+        <li>an activity where you have customers</li>
+        <li>any activity for which you are rewarded</li>
+        <li>manufacture</li>
+        <li>selling goods</li>
+        <li>hosting events</li>
+        <li>a closed corporate</li>
+        <li>a company</li>
+        <li>a body corporate</li>
+        <li>a church</li>
+        <li>a school</li>
+        <li>a charity</li>
+        <li>medical and dental services</li>
+        <li>hospitality for reward</li>
+        <li>entertainemt for reward</li>
+        <li>providing food for reward</li>
+      </ul>
+    </div>
+    <div class="popup_img">
+      <button id="infoClose" type="button">Close</button>
+      <!-- type="button" prevents submitting the form -->
+    </div>
+  </div>
+</div>
+<!-- popup content ends -->

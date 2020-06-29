@@ -19,7 +19,7 @@
 </div>
 
 <% if (user !== "") { %>
-  <p id="user"><%= user %></p>
+  <p id="user"><%= user %> (<%= view %><% if (userPrac !== "") { %> : <%= userPrac %><% } %>)</p>
 <% } %>
 <% if (user === "") { %>
   <p id="user">User Authentication Required</p>

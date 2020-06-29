@@ -16,7 +16,7 @@ Practice Description attributes
   <label>
     Practice Email: <input id="pracEmail" type="email" name="pracEmail" size="60" required/>
   </label>
-</fieldset>  
+</fieldset>
 <br/>
 <fieldset>
   <legend>Principle:</legend>
@@ -35,7 +35,7 @@ Practice Description attributes
   <br/>
   <label>
     Email: <input id="prinEmail" type="email" name="prinEmail" size="60"/>
-  </label>    
+  </label>
 </fieldset>
 <br/>
 <fieldset>
@@ -55,19 +55,19 @@ Practice Description attributes
   <br/>
   <label>
     Email: <input id="offEmail" type="email" name="offEmail" size="60" required/>
-  </label>    
+  </label>
 </fieldset>
 <fieldset>
   <legend>Area:</legend>
   <label id="addPostCode" style="display:block">
-    Enter Postal Code to add: 
+    Enter Postal Code to add:
     <input id="pCode" type="text" name="postalCode" size="15"/>
     <button type="button" onclick="addPostCode()">
       Add
     </button>
   </label>
   <label id="editPostCode" style="display:none">
-    Edit selected Postal Code: 
+    Edit selected Postal Code:
     <input id="selectedPCode" type="text" name="postalCode" size="15"/>
     <button type="button" onclick="updatePostCodeList('update')">
       Update
@@ -91,8 +91,8 @@ Practice Description attributes
   <input id="formAddPractice" type="button" value="Add Practice" onclick="submitPractice('add')"/>
 </div>
 <div id="updatePracticeButtons" style="display:none">
-  <input id="formAddPractice updatePractice" type="button" value="Update Practice" onclick="submitPractice('update')"/>
-  <input id="formAddPractice removePractice" type="button" value="Delete Practice" onclick="deletePractice()"/>
+  <input id="formUpdatePractice updatePractice" type="button" value="Update Practice" onclick="submitPractice('update')"/>
+  <input id="formDeletePractice removePractice" type="button" value="Delete Practice" onclick="deletePractice()"/>
 </div>
 
 

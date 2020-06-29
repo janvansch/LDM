@@ -55,7 +55,7 @@
       </div>
     <% } %>
 
-    <% if (view === "lead") { %>
+    <% if (view === "agent") { %>
       <!-- Leads Agent View -->
       <div id="viewLead" style="display:block">
         <% include ./partials/viewLead %>
@@ -66,13 +66,15 @@
       <!-- Practise View -->
       <div id="viewPractice" style="display:block">
         <% include ./partials/viewPractice %>
+        <% include ./partials/viewLead %>
       </div>
     <% } %>
 
     <% if (view === "adviser") { %>
       <!-- Adviser View -->
       <div id="viewAdviser" style="display:block">
-        <% include ./partials/viewAdviser %>
+        <% include ./partials/viewAdviser %> <!-- Remove, not necessary? -->
+        <% include ./partials/viewLead %>
       </div>
     <% } %>
 

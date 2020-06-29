@@ -1,3 +1,8 @@
+/*
+  Stylesheet for LDM System
+  J. van Schalwyk reserves all rights
+*/
+
 /* Reset */
 *, *::before, *::after {
   margin: 0;
@@ -226,6 +231,14 @@ footer {
   /*align-items: baseline;*/
 }
 
+.flex-container-time {
+  /* display: -webkit-flex; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /*justify-content: center;*/
+}
+
 .flex-container-progress {
   /* display: -webkit-flex; */
   display: flex;
@@ -233,12 +246,12 @@ footer {
   justify-content: space-around;
   /*justify-content: center;*/
 }
+
 .flex-container-sub {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  /*align-items: baseline;*/
 }
 
 .flex-item {
@@ -276,6 +289,7 @@ footer {
   margin-bottom: 5px;
   padding: 1px;
 }
+
 /* -----------------
     Cover formating
    ----------------- */
@@ -290,7 +304,10 @@ footer {
 
 .cover-flex-item {
   flex-grow: 0;
-  margin: auto;
+  margin-left: 1.2rem;
+  margin-right: 1.2rem;
+
+  /* margin: auto;*/
 }
 
 /* Format input element inside flex item */
@@ -304,9 +321,8 @@ footer {
 /*    General Nav Menu elements    */
 /* =============================== */
 .nav-menu {
-  width: 15%;
+  width: 20%;
   margin: 0 auto;
-
 }
 
 .nav-menu-list {
@@ -358,6 +374,20 @@ button {
 
 #comment {
   margin-top: 4px;
+}
+
+/* =============================== */
+/*   General Lead List formatting  */
+/* =============================== */
+.list-head-row {
+  color:  darkblue;
+  font-size: 95%;
+  font-weight: 700;
+}
+
+.list-body-row {
+  color:  darkblue;
+  font-size: 80%;
 }
 
 /* =============================== */
@@ -477,6 +507,7 @@ button {
   display: none;
   width: 100%;
 }
+
 #viewLead {
   display: none;
   width: 100%;
@@ -490,10 +521,10 @@ button {
 }
 
 #contactComment {
-  width: 88%;
+  width: 40rem;
   height: 2rem;
   text-align: left;
-  font-size: 100%;
+  font-size: 95%;
 }
 
 #serviceComment {
@@ -598,12 +629,12 @@ button {
 #lead-action-buttons {
   text-align: center;
 }
+
 /*
 #addLeadForm input::-webkit-input-placeholder {
     color: #999;
 }
 */
-
 
 /* ================================== */
 /*     Practice View & Navigation     */
@@ -706,7 +737,7 @@ tr:nth-child(even) {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 30px; /* Location of the box */
+  padding-top: 35px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -777,4 +808,65 @@ tr:nth-child(even) {
     color: white;
 }
 
+/*
+============================================
+=== Popup Box Styles ===
+============================================
+*/
+.popup{
+  position:fixed;
+  z-index: 2;
+  width:100%;
+  height:100%;
+  left:0px;
+  right:0px;
+  top: 0px;
+  bottom:0px;
+  background-color:rgba(3,3,3,0.8);
+}
 
+.popupWindow{
+  background-color:white;
+  margin:0px auto;
+  width:35%;
+  min-width:300px;
+  min-height:100px;
+  margin-top:10%;
+  padding: 1rem;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color:green;
+  -moz-border-radius: 50px 50px / 50px 50px;
+  border-radius: 50px 50px / 50px 50px;
+  box-shadow: 10px 10px 5px #000;
+}
+
+.popup_txt{
+  text-align: left;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: .5rem;
+  margin-left: 4rem;
+  padding: .5rem;
+  color:green;
+}
+
+#infoClose{
+  border-radius: 50px 50px / 50px 50px;
+  font-size: 2rem;
+  padding: .5rem;
+  font-weight: bold;
+  color:green;
+}
+
+.popup_img{
+  margin: .3rem;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.popup_img_yes,.popup_img_no{
+  margin:20px;
+
+}
