@@ -6,7 +6,7 @@ const router = express.Router();
 
 // const {mongoose} = require('../db/mongoose');
 const {Lead} = require('../models/lead');
-const {LeadUpdate} = require('../controllers/leadsX');
+const {LeadUpdate, LeadSearch} = require('../controllers/leadsCtrl');
 //const {User} = require('../models/user');
 //const {authenticate} = require('../middleware/authenticate');
 //const {leadBody} = require('../utils/leadBody');
@@ -27,6 +27,13 @@ router.post('/add', async (req, res) => {
     //
     // Extract POST Data
     var body = req.body;
+    body.currentStatus = body.status, // workaround to avoid selection on last element of status array
+    body.currentState = body.progress, // workaround to avoid selection on last element of state array
+    body.statusHistory = [{'status' : body.status}];
+    body.stateHistory = [{'state' : body.progress}];
+    delete body.status;
+    delete body.progress;
+    delete body.error;
     console.log("---> Lead body: ", body);
     const lead = new Lead(body);
     let newLead = await lead.save();
@@ -69,97 +76,8 @@ router.post('/lead', async (req, res) => {
 // -----------------------------------
 //  Get leads for search key
 // -----------------------------------
-//router.get('/search/:key', async (req, res) => {
 router.post('/search', async (req, res) => {
-  console.log("*** Get Leads for Query Started ***");
-
-  console.log("---> Request: ", req.body);
-  //
-  // Extract parameters and create query for find request
-  // Query allows for partial case insentive parameters
-  //
-  var query = {};
-  var p = 0;
-  var param = ["reference","surname","firstName","entityName","entity.entRefNum","assignedAdviser","allocatedPractice"];
-
-  for(var key in req.body){ //could also be req.query and req.params
-    req.body[key] !== "" ? query[param[p]] = {$regex: req.body[key], $options: 'i' }: null;
-    p++;
-  }
-  console.log("---> Query: ", query);
-  //
-  // Find Documents
-  //
-  try {
-    const leads = await Lead.find(
-      query,
-      {
-        _id : 0,
-        who : 0,
-        createdAt : 0,
-        updatedAt : 0
-      }
-    ).sort({surname: 1});
-
-    console.log("*** Data Returned ***");
-    //
-    // Create data set for client
-    //
-    var listData = [];
-    for (var i = 0, j = leads.length; i < j; i++) {
-      //console.log(">>> counter: ", i);
-      //console.log("--->>> processing lead: ", leads[i].reference);
-      //
-      // Extract service lines
-      //
-      var lines = "";
-      for (var x = 0, y = leads[i].services.length; x < y; x++) {
-        //console.log(">>> lines count: ", x, " of ", y);
-        lines = lines + leads[i].services[x].line + " ";
-        //console.log(">>> lines: ", lines);
-      }
-      //
-      // Create data set array
-      //
-      listData.push(
-        {
-          reference : leads[i].reference,
-          status : (leads[i].statusHistory.length === 0) ? (" - ") : (leads[i].statusHistory[leads[i].statusHistory.length-1].status),
-          //status : (typeof leads[i].statusHistory === 'undefined') ? (" - ") : (leads[i].statusHistory[leads[i].statusHistory.length-1].status),
-          // status : leads[i].statusHistory[leads[i].statusHistory.length-1].status,
-          state : (leads[i].stateHistory.length === 0) ? (" - ") : (leads[i].stateHistory[leads[i].stateHistory.length-1].state),
-          firstName : leads[i].firstName,
-          surname : leads[i].surname,
-          // langPref : leads[i].langPref,
-          contactNum : leads[i].contactNum,
-          // altNumber : leads[i].altNumber,
-          //cellNumber : leads[i].cellNumber,
-          // eMail : leads[i].eMail,
-          enityType : leads[i].entity.entType,
-          entityRefNum : leads[i].entity.entRefNum,
-          entityName : leads[i].entityName,
-          postal : leads[i].contactLocation.postal,
-          suburb : leads[i].contactLocation.suburb,
-          service : lines,
-          lineOfBusiness: leads[i].lineOfBusiness,
-          //comment1 : leads[i].comments.comment1,
-          //comment2 : leads[i].comments.comment2,
-          servicerType : leads[i].servicerType,
-          //assignedAdviser : leads[i].assignedAdviser
-        }
-      );
-      //console.log(">>> Data List row: ", listData[i]);
-    }
-    //console.log(">>> Data list: ", listData);
-    console.log("*** Data List Created ***");
-    res.send(listData);
-    // res.send(leads);
-    console.log("*** Data List Sent ***");
-  }
-  catch (e) {
-    console.log("*** Data Extract Failed ***");
-    res.status(400).send(e);
-  }
+  LeadSearch(req, res);
 });
 
 // --------------------------------------
@@ -200,12 +118,16 @@ router.post('/allocatePractice', async (req, res) => {
 // -----------------------------------
 //  Get leads allocated to a practice
 // -----------------------------------
-router.get('/list/:practice', async (req, res) => {
+router.get('/list/:criteria', async (req, res) => {
   // extract GET parameters
-  const practice = req.params.practice;
-  console.log("---> GET parameter and url: ", practice, req.url);
-  const query = {allocatedPractice: practice};
-  //const query = {};
+  const criteria = req.params.criteria;
+  console.log("---> GET parameter and url: ", criteria, req.url);
+  const query = JSON.parse(criteria);
+  // var query = {
+  //   allocatedPractice : c.allocatedPractice,
+  //   currentStatus : c.status
+  // };
+  console.log("---> Query: ", query);
   try {
     const leads = await Lead.find(
       query,
@@ -253,6 +175,7 @@ router.get('/list/:practice', async (req, res) => {
     res.send(listData);
   }
   catch (e) {
+    console.log(">>> ERROR: request failed");
     res.status(400).send(e);
   }
 });
@@ -338,114 +261,5 @@ router.post('/assignAdviser', (req, res) => {
 router.post('/update', async (req, res) => {
   LeadUpdate(req, res);
 });
-
-/*
-router.post('/update', async (req, res) => {
-  console.log(">>> Request body and url: ", req.body, req.url);
-  router.route("/updateLead").post(leadCtrl.updateLead);
-  // make this a separate controller
-  // call with router.route("/updateLead").post(leadCtrl.updateLead);
-  // updateLead(req.body)
-  try {
-    // Extract data for update
-    const body = _.pick(req.body, [
-      'reference',
-      'langPref',
-      'entity',
-      'entityName',
-      'lineOfBusiness',
-      //'title',
-      'firstName',
-      'surname',
-      'contactNum',
-      'altNumber',
-      'cellNumber',
-      'eMail',
-      //'agentApproval',
-      'currentInsurer',
-      'previousInsured',
-      'contactLocation',
-      'postBox',
-      'contactPref',
-      'services',
-      'comments',
-      'allocatedPractice',
-      'assignedAdviser',
-      'statusHistory',
-      // stateHistory,
-      'outcome',
-      'policyNumber',
-      'who'
-    ]);
-    console.log("---> Update Data Received: ", body);
-
-    // Execute update - Model.method(query, data, options)
-    await Lead.findOneAndUpdate(
-      // Update document key
-      { reference: body.reference },
-      // Update data
-      {
-        //'reference' : body.reference,
-        'langPref' : body.langPref,
-        'entity.entType' : body.entity.entType,
-        'entity.entRefNum' : body.entity.entRefNum,
-        'entityName' : body.entityName,
-        'lineOfBusiness': body.lineOfBusiness,
-        //title: ,
-        'firstName' : body.firstName,
-        'surname' : body.surname,
-        'contactNum' : body.contactNum,
-        'altNumber' : body.altNumber,
-        'cellNumber' : body.cellNumber,
-        'eMail': body.eMail,
-        //agentApproval: ,
-        'currentInsurer': body.currentInsurer,
-        'previousInsured' : body.previousInsured,
-        'contactLocation.postal' : body.contactLocation.postal,
-        'contactLocation.suburb': body.contactLocation.suburb,
-        'contactLocation.streetNum' : body.contactLocation.streetNum,
-        'contactLocation.streetName' : body.contactLocation.streetName,
-        'contactLocation.buildingName' : body.contactLocation.buildingName,
-        'contactLocation.floor' : body.contactLocation.floor,
-        'contactLocation.room' : body.contactLocation.room,
-        'postBox.postalCode' : body.postBox.postalCode,
-        'postBox.boxNumber' : body.postBox.boxNumber,
-        'contactPref.contactDay' : body.contactPref.contactDay,
-        'contactPref.time' : body.contactPref.time,
-        'contactPref.timeBA' : body.contactPref.timeBA,
-        'services' : body.services,
-        //'services.line' : body.line,
-        //'services.types' : body.types,
-        'comments.comment1' : body.comments.comment1,
-        'comments.comment2' : body.comments.comment2,
-        //'comments.comment3' : body.comment3,
-        //'comments.comment4.date' : body.c4Date,
-        //'comments.comment4.body' : body.c4Body,
-        //'allocatedPractice' : body.allocatedPractice,
-        //'assignedAdviser' : body.adviser,
-        //'statusHistory.status' : body.status,
-        //'statusHistory.statusDate' : body.statusDate,
-        // stateHistory.state: ,
-        // stateHistory.stateDate: ,
-        //'outcome' : body.outcome,
-        //'policyNumber' : body.policyNumber,
-        'who' : body.who
-      },
-      // Update options
-      {
-        upsert: false,
-        new: true
-      }
-    )
-    // Return success status
-    res.status(200).send("Ok");
-  }
-  catch (e) {
-    console.log(">>> Practice update error: ", e);
-    // Return error status
-    res.status(400).send(e);
-  }
-});
-*/
 
 module.exports = router;

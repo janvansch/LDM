@@ -1,143 +1,169 @@
 "use strict";
 
-// ================================================
+// ============================================================================
 //  Click Event Orchestration for Lead UI controls
-// ================================================
+// ============================================================================
 //
 // the preferred way: element.addEventListener('click', myFunctionReference , false);
 //
 // --------------------------------
 //  Information popup open & close
 // --------------------------------
-document.getElementById("infoIcon").addEventListener("click", function() {
-  viewOn("infoPopup");
-});
-document.getElementById("infoClose").addEventListener("click", function() {
-  viewOff("infoPopup");
-});
+if (document.getElementById("infoIcon")) {
+  document.getElementById("infoIcon").addEventListener("click", function() {
+    viewOn("infoPopup");
+  });
+  document.getElementById("infoClose").addEventListener("click", function() {
+    viewOff("infoPopup");
+  });
+}
 // -------------------------------
 //  Lead UI button events control
 // -------------------------------
-document.getElementById("btn-add-lead").addEventListener("click", function() {
-  addLeadCtrl();
-});
-document.getElementById("btn-clear-form").addEventListener("click", function() {
-  resetForm('lead-form');
-});
-document.getElementById("updateLead").addEventListener("click", function() {
-  updateLead();
-});
+if (document.getElementById("btn-add-lead")) {
+  document.getElementById("btn-add-lead").addEventListener("click", function() {
+    addLeadCtrl();
+  });
+}
+if (document.getElementById("btn-clear-form")) {
+  document.getElementById("btn-clear-form").addEventListener("click", function() {
+    resetForm('lead-form');
+  });
+}
+if (document.getElementById("updateLead")) {
+  document.getElementById("updateLead").addEventListener("click", function() {
+    updateLead();
+  });
+}
 // -------------------------------
 //  Lead accept click event setup
 // -------------------------------
-document.getElementById("lead-accept").onclick = function() {
-  var accept = document.getElementsByClassName("accept-yes");
-  for (var i = 0; i < accept.length; i++) {
-    accept[i].disabled = false;
+if (document.getElementById("lead-accept")) {
+  document.getElementById("lead-accept").onclick = function() {
+    var accept = document.getElementsByClassName("accept-yes");
+    for (var i = 0; i < accept.length; i++) {
+      accept[i].disabled = false;
+    }
+    var reject = document.getElementById("rejectReason");
+    reject.value = null;
+    reject.disabled = true;
+    //document.getElementById("view-lead-ref-no").value = "";
   }
-  var reject = document.getElementById("rejectReason");
-  reject.value = null;
-  reject.disabled = true;
-  //document.getElementById("view-lead-ref-no").value = "";
 }
 // -------------------------------
 //  Lead reject click event setup
 // -------------------------------
-document.getElementById("lead-reject").onclick = function() {
-  var accept = document.getElementsByClassName("accept-yes");
-  for (var i = 0; i < accept.length; i++) {
-    accept[i].disabled = true;
+if (document.getElementById("lead-reject")) {
+  document.getElementById("lead-reject").onclick = function() {
+    var accept = document.getElementsByClassName("accept-yes");
+    for (var i = 0; i < accept.length; i++) {
+      accept[i].disabled = true;
+    }
+    document.getElementById("rejectReason").disabled = false;
   }
-  document.getElementById("rejectReason").disabled = false;
 }
 // ------------------------------
 //  No contact click event setup
 // ------------------------------
-document.getElementById('noContact').onclick = function() {
-  var elements = document.getElementsByClassName("accept-yes");
-  // access properties using "this" keyword
-  if ( this.checked ) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].disabled = true;
+if (document.getElementById('noContact')) {
+  document.getElementById('noContact').onclick = function() {
+    var elements = document.getElementsByClassName("accept-yes");
+    // access properties using "this" keyword
+    if ( this.checked ) {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].disabled = true;
+      }
+      document.getElementById("noContact").disabled = false;
+      document.getElementById("lead-accept").disabled = true;
+      document.getElementById("lead-reject").disabled = true;
     }
-    document.getElementById("noContact").disabled = false;
-    document.getElementById("lead-accept").disabled = true;
-    document.getElementById("lead-reject").disabled = true;
-  }
-  else {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].disabled = false;
+    else {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].disabled = false;
+      }
+      document.getElementById("lead-accept").disabled = false;
+      document.getElementById("lead-reject").disabled = false;
+    }
+  };
+}
+// -------------------------------
+//  Lead viable click event setup
+// -------------------------------
+if (document.getElementById("viable")) {
+  document.getElementById("viable").onclick = function() {
+    var reason = document.getElementById("not-viable-reason");
+    reason.value = null;
+    reason.disabled = true;
+    var accept = document.getElementsByClassName("accept-yes");
+    for (var i = 0; i < accept.length; i++) {
+      accept[i].disabled = false;
     }
     document.getElementById("lead-accept").disabled = false;
     document.getElementById("lead-reject").disabled = false;
   }
-};
-// -------------------------------
-//  Lead viable click event setup
-// -------------------------------
-document.getElementById("viable").onclick = function() {
-  var reason = document.getElementById("not-viable-reason");
-  reason.value = null;
-  reason.disabled = true;
-  var accept = document.getElementsByClassName("accept-yes");
-  for (var i = 0; i < accept.length; i++) {
-    accept[i].disabled = false;
-  }
-  document.getElementById("lead-accept").disabled = false;
-  document.getElementById("lead-reject").disabled = false;
 }
 // -------------------------------
 //  Lead not viable click event setup
 // -------------------------------
-document.getElementById("not-viable").onclick = function() {
-  document.getElementById("not-viable-reason").disabled = false;
-  var accept = document.getElementsByClassName("accept-yes");
-  for (var i = 0; i < accept.length; i++) {
-    accept[i].disabled = true;
+if (document.getElementById("not-viable")) {
+  document.getElementById("not-viable").onclick = function() {
+    document.getElementById("not-viable-reason").disabled = false;
+    var accept = document.getElementsByClassName("accept-yes");
+    for (var i = 0; i < accept.length; i++) {
+      accept[i].disabled = true;
+    }
+    document.getElementById("viable").disabled = false;
+    document.getElementById("not-viable").disabled = false;
+    document.getElementById("lead-accept").disabled = true;
+    document.getElementById("lead-reject").disabled = true;
   }
-  document.getElementById("viable").disabled = false;
-  document.getElementById("not-viable").disabled = false;
-  document.getElementById("lead-accept").disabled = true;
-  document.getElementById("lead-reject").disabled = true;
 }
 // ----------------------------------
 //  Quote accepted click event setup
 // ----------------------------------
-document.getElementById("quoteAccepted").onclick = function() {
-  document.getElementById("eventDate").disabled = false;
-  var reason = document.getElementById("declineReason");
-  reason.value = null;
-  reason.disabled = true;
+if (document.getElementById("quoteAccepted")) {
+  document.getElementById("quoteAccepted").onclick = function() {
+    document.getElementById("eventDate").disabled = false;
+    var reason = document.getElementById("declineReason");
+    reason.value = null;
+    reason.disabled = true;
+  }
 }
 // -------------------------------
 //  Lead declined click event setup
 // -------------------------------
-document.getElementById("quoteDeclined").onclick = function() {
-  document.getElementById("eventDate").disabled = false;
-  document.getElementById("declineReason").disabled = false;
+if (document.getElementById("quoteDeclined")) {
+  document.getElementById("quoteDeclined").onclick = function() {
+    document.getElementById("eventDate").disabled = false;
+    document.getElementById("declineReason").disabled = false;
+  }
 }
 // ----------------------------------
 //  Quote expired click event setup
 // ----------------------------------
-document.getElementById("quoteExpired").onclick = function() {
-  document.getElementById("eventDate").disabled = false;
-  var reason = document.getElementById("declineReason");
-  reason.value = null;
-  reason.disabled = true;
+if (document.getElementById("quoteExpired")) {
+  document.getElementById("quoteExpired").onclick = function() {
+    document.getElementById("eventDate").disabled = false;
+    var reason = document.getElementById("declineReason");
+    reason.value = null;
+    reason.disabled = true;
+  }
 }
 // ------------------------
 //  Pend click event setup
 // ------------------------
-document.getElementById('pend').onclick = function() {
-  // access properties using "this" keyword
-  if ( this.checked ) {
-    document.getElementById("pendDate").disabled = false;
-  }
-  else {
-    document.getElementById("pendDate").disabled = true;
-    document.getElementById("pendDate").value = null;
-  }
-};
+if (document.getElementById('pend')) {
+  document.getElementById('pend').onclick = function() {
+    // access properties using "this" keyword
+    if ( this.checked ) {
+      document.getElementById("pendDate").disabled = false;
+    }
+    else {
+      document.getElementById("pendDate").disabled = true;
+      document.getElementById("pendDate").value = null;
+    }
+  };
+}
 
 // What about:
 // - When contact date enterred the viable becomes active
@@ -146,9 +172,9 @@ document.getElementById('pend').onclick = function() {
 // - When decline is clicked the date and and decline reason becomes available
 // - When expired is clicked the date becomes available
 
-// ===================================
-// --- Leads Display Orchestration ---
-// ===================================
+// ============================================================================
+//  Leads Display Orchestration
+// ============================================================================
 
 // ---------------------------------------
 //  Display lead selection criteria panel
@@ -167,6 +193,8 @@ function openLeadsView(title) {
   //
   viewOn('panelViewLead');
   // The leads selection criteria is now displayed
+  // Restore comment
+  document.getElementById("tPos").innerHTML = 'Enter lead selection criteria and click "Find"';
 };
 
 function closeViewLeads() {
@@ -214,45 +242,51 @@ function listLeads() {
   // Set selection criteria, list column layout and list header based on role
   //
   switch (userRole) {
-    case 'practice':
-      var criteria = {
-        refNo : document.getElementById('view-lead-ref-no').value,
-        contactSurname : document.getElementById('view-lead-con-surname').value,
-        contactFirstName : document.getElementById('view-lead-con-name').value,
-        entityName : document.getElementById('view-lead-org-name').value,
-        entityRefNum : document.getElementById('view-lead-ref-id').value,
-        assignedAdviser : "",
-        allocatedPractice : userPracticeId
-      };
-      var layoutId = '1';
-      var title = "Practice Leads View";
-      break;
     case 'adviser':
       var criteria = {
+        // selected by user
         refNo : document.getElementById('view-lead-ref-no').value,
         contactSurname : document.getElementById('view-lead-con-surname').value,
         contactFirstName : document.getElementById('view-lead-con-name').value,
         entityName : document.getElementById('view-lead-org-name').value,
         entityRefNum : document.getElementById('view-lead-ref-id').value,
+        // set defaults
         assignedAdviser : userId,
         allocatedPractice : ""
       };
       var layoutId = '4';
       var title = "Adviser Leads View";
-      break;
+      break; //-----------------------------------------------------
     case 'agent':
       var criteria = {
+        // selected by user
         refNo : document.getElementById('view-lead-ref-no').value,
         contactSurname : document.getElementById('view-lead-con-surname').value,
         contactFirstName : document.getElementById('view-lead-con-name').value,
         entityName : document.getElementById('view-lead-org-name').value,
         entityRefNum : document.getElementById('view-lead-ref-id').value,
+        // set defaults
         assignedAdviser : "",
         allocatedPractice : ""
       };
       var layoutId = '5';
       var title = "Agent Leads View";
-      break;
+      break; //-----------------------------------------------------
+      case 'practice':
+        var criteria = {
+          // selected by user
+          refNo : document.getElementById('view-lead-ref-no').value,
+          contactSurname : document.getElementById('view-lead-con-surname').value,
+          contactFirstName : document.getElementById('view-lead-con-name').value,
+          entityName : document.getElementById('view-lead-org-name').value,
+          entityRefNum : document.getElementById('view-lead-ref-id').value,
+          // set defaults
+          assignedAdviser : "",
+          allocatedPractice : userPracticeId
+        };
+        var layoutId = '6';
+        var title = "Practice Leads View";
+        break; //-----------------------------------------------------
     default:
     var layoutId = '5';
     var title = "List of Leads";
@@ -293,8 +327,7 @@ function listLeads() {
       }
     }
     else {
-      var prompt = "Lead request error";
-      document.getElementById("leadErr").innerHTML = prompt;
+      alert("Lead request error");
     }
   });
 };
@@ -585,10 +618,34 @@ function displayLead(leadRef, viewId) {
   });
 };
 
-// ========================
+// ============================================================================
 //  Add Lead Orchestration
-// ========================
+// ============================================================================
 //
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  When a new lead is assigned to an agent is starts a two step process:
+//    1. Capture detail and create the lead
+//    2. Fulfill the request and update the lead document with the progress
+//  At the end of step 1 when the "Create Lead" button is clicked the captured
+//  content is used to create a new lead document in the DB and then in step 2
+//  the fulfilment process is started. To enable the lead agent to record the
+//  progress of the fulfilment process the progress form is displayed with the
+//  detail of the lead. Step 2 ends when the "Update" button is clicked.
+//
+//  When moving from step 1 to step 2 the UI is updated, which could result in
+//  certain data items required for the update not being available anymore. To
+//  prevent this the items required for the update is stored locally:
+//    sessionStorage.setItem('reference', resBody.reference); - returned by DB
+//    sessionStorage.setItem('servicerType', "agent"); - selected
+//    sessionStorage.setItem('trfApproval', "no"); - by default
+//    sessionStorage.setItem('accepted', "yes"); - by default
+//    sessionStorage.setItem('allocatedPractice', "Agents"); - by default
+//    sessionStorage.setItem('assignedAdviser', adviser); - read
+//
+//  Note: this may all be because of the way I do the update,
+//  need to investigate this
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 // --------------------
 //  Open Add Lead Form
 // --------------------
@@ -697,37 +754,6 @@ function submitLead() {
     //
     if (leadData !== "error") {
       //
-      // If servicer is agent then assign lead to agent and dummy practice
-      //
-      if (checked('assign-agent')) {
-        leadData.accepted = "yes";
-        leadData.allocatedPractice = "Agents";
-        leadData.assignedAdviser = sessionStorage.getItem('userId');
-      }
-      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      //  When a new lead is assigned to an agent is starts a two step process:
-      //    1. Capture detail and create the lead
-      //    2. Fulfill the request and update the lead document with the progress
-      //  At the end of step 1 when the "Create Lead" button is clicked the captured
-      //  content is used to create a new lead document in the DB and then step 2 the
-      //  fulfilment process is started. To enable the agent to record the progress
-      //  of the fulfilment process the progress form is displayed with the detail of
-      //  the lead. Step 2 ends when the "Update" button is clicked.
-      //  When moving from step 1 to step 2 the UI is updated, which could result in
-      //  certain data items required for the update not being available anymore. To
-      //  prevent this the items required for the update is stored locally:
-      //    sessionStorage.setItem('reference', resBody.reference); // returned by step 1
-      //    sessionStorage.setItem('servicerType', "agent"); - selected
-      //    sessionStorage.setItem('trfApproval', "no"); - by default
-      //    sessionStorage.setItem('accepted', "yes"); - by default
-      //    sessionStorage.setItem('allocatedPractice', "Agents"); - by default
-      //    sessionStorage.setItem('assignedAdviser', adviser); - read
-      //
-      //  Note: this may all be because of the way I do the update,
-      //  need to investigate this
-      //
-      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      //
       // Set add lead request parameters
       //
       var dataString = JSON.stringify(leadData);
@@ -745,10 +771,6 @@ function submitLead() {
           var resBody = result.responseText;
           console.log("===> Result response text: ", resBody);
           resolve("ok");
-          // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-          //  This needs to be enhanced to return the lead number
-          //  This is so that it can be displayed to the Agent
-          // +++++++++++++++++++++++++++++++++++++++++++++++++++++
           //
           // Store non-form items for the update of the new lead during step 2.
           //
@@ -828,9 +850,9 @@ function leadOk() {
   }
 };
 
-// ===========================
+// ============================================================================
 //  Lead Update Orchestration
-// ===========================
+// ============================================================================
 
 // ---------------------------------
 //  Send lead update data to server
@@ -919,9 +941,9 @@ function updateLead() {
   }
 };
 
-// ==========================================
+// ============================================================================
 //  Extract Lead Data from DOM Orchestration
-// ==========================================
+// ============================================================================
 
 // ---------------------------------------------
 //  Extract lead data & return lead data object
@@ -945,12 +967,12 @@ function getLeadData(action){
     var leadContentData = extractLeadContent("lead-form");
     console.log("===> Lead content returned: ", leadContentData);
     //
-    // Detemine and set value for a new lead
+    // For ADD:
     //
     if (action === "ADD") {
       console.log("*** Set New Lead Control Content ***");
       //
-      // Determine seleceted servicer from new lead form
+      // For AGENT:
       //
       if (checked('assign-agent')) {
         leadContentData.servicerType = "agent";
@@ -965,7 +987,16 @@ function getLeadData(action){
           status: 'assigned',
           error: ''
         }
+        //
+        // Assign agent and set accepted indicator to yes, i.e. taken state
+        //
+        leadContentData.accepted = "yes";
+        leadContentData.allocatedPractice = "Agents";
+        leadContentData.assignedAdviser = sessionStorage.getItem('userId');
       }
+      //
+      // For ADVISER:
+      //
       else if (checked('assign-adviser')) {
         leadContentData.servicerType = "adviser";
         //
@@ -990,7 +1021,6 @@ function getLeadData(action){
       else {
         console.log("*** ERROR: Could not determine servicer ***");
       }
-
       //
       // New lead has no reference id nor progress data
       //
@@ -999,7 +1029,9 @@ function getLeadData(action){
 
       console.log("*** New Lead Control Content Set ***");
     }
-
+    //
+    // For UPDATE:
+    //
     if (action === "UPDATE") {
       //
       // Get lead reference number from session storage
@@ -1016,10 +1048,10 @@ function getLeadData(action){
       //  when a lead is updated it is not an option. It is displayed in the modal header.
       //  When viewing a lead document this value will be retrieved from the DB with the
       //  rest of the lead's data from and stored locally as a key value pair:
-      //          sessionStorage.setItem('servicerType', data);
+      //          sessionStorage.setItem('servicerType', servicerType);
       //  If the lead being viewed is updated this key value pair will be retrieved from
       //  the local storage:
-      //          sessionStorage.getItem('servicerType')
+      //          servicerType = sessionStorage.getItem('servicerType')
       //  The value is required to create the updated lead document. If the value is not set
       //  the update will over write the value in the DB. This is because the data extract
       //  function is used by both the add lead and update lead functionality.
@@ -1028,7 +1060,7 @@ function getLeadData(action){
       // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       //
       //
-      // Determine lead state
+      // Determine lead's new state
       //
       console.log("*** Determine lead state ***");
       var leadStateData = determineLeadState("leadProgressForm")
@@ -1061,7 +1093,9 @@ function getLeadData(action){
     console.log("*** Lead Document Created ***");
     return leadData;
   }
-
+  //
+  // For ANY OTHER - Error
+  //
   else {
     //
     // Error - The action parameter does not contain a valid value
@@ -1147,8 +1181,9 @@ function extractLeadContent(formId){
   var contactTimeBA = getRadioCheckedValue(formData, radioName);
   if (Object.keys(contactTimeBA).length === 0 && contactTimeBA.constructor === Object) {
     var name = "timeBA";
-    var value = [];
-    value.push("n/a");
+    var value = "n/a";
+    //var value = [];
+    //value.push("n/a");
     contactTimeBA[name] = value;
   }
   console.log("---> Before/After Time: ", contactTimeBA);
@@ -1407,7 +1442,9 @@ function determineLeadState(formId){
   // ----------------------------------------------------------------------
   console.log("*** Apply rules to determine state ***");
   //
-  // State 7 - Policy Issued: polNum & issueDate; text, = enterred >> issued --> close
+  // STATE 7 - Policy Issued
+  //
+  // Rule: polNum & issueDate; text & date, = enterred >> issued --> close
   //
   console.log("*** First Test: Policy Issued ***");
   if (progressDates.issueDate.length !== 0 && progressText.polNum.length !== 0) {
@@ -1448,10 +1485,10 @@ function determineLeadState(formId){
     };
     return leadState;
   }
-
-
   //
-  // State 6 - Quote state: radio = accepted >> accepted --> status; declined >> declined --> close; expired >> expired --> close
+  // STATE 6 - Quote state
+  //
+  // Rule: acceptance; radio = accepted >> accepted --> assigned; declined >> declined --> close; expired >> expired --> close
   //
   console.log("*** Second Test: Quote state ***");
   radioName = "acceptance";
@@ -1542,7 +1579,9 @@ function determineLeadState(formId){
   }
 
   //
-  // State 5 - Quoted: quoteDate & quotNum; Date & Text, enterred >> quoted --> lead assigned
+  // STATE 5 - Quoted
+  //
+  // Rule: quoteDate & quotNum; Date & Text, enterred >> quoted --> lead assigned
   //
   console.log("*** Third Test: Quoted ***");
   if (progressDates.quoteDate.length !== 0 && progressText.quoteNum.length !== 0 ) {
@@ -1570,9 +1609,10 @@ function determineLeadState(formId){
     };
     return leadState;
   }
-
   //
-  // State 4 - Viability of lead: Viability; radio, = yes >> viable --> lead assigned; = no >> not viable --> lead closed
+  // STATE 4 - Viability of lead:
+  //
+  // Rule: viability; radio, = yes >> viable --> lead assigned; = no >> not viable --> lead closed
   //
   console.log("*** Fourth Test: Viability ***");
   radioName = "viability";
@@ -1604,9 +1644,10 @@ function determineLeadState(formId){
     };
     return leadState;
   }
-
   //
-  // Step 3 - No contact made: noContact; checkbox, = checked >> no contact --> lead closed
+  // STATE 3 - No contact made
+  //
+  // Rule: noContact; checkbox, = checked >> no contact --> lead closed
   //
   console.log("*** Fifth Test: - No contact ***");
   var noContact = document.getElementById('noContact').checked
@@ -1619,9 +1660,10 @@ function determineLeadState(formId){
     };
     return leadState;
   }
-
   //
-  // Step 2 - Made contact: contactedDate; date, = enterred >> contacted --> lead assigned
+  // STATE 2 - Made contact
+  //
+  // Rule: contactedDate; date, = enterred >> contacted --> lead assigned
   //
   console.log("*** Sixth Test: Contact made ***");
   if (progressDates.contactDate.length !== 0) {
@@ -1633,9 +1675,10 @@ function determineLeadState(formId){
     };
     return leadState;
   }
-
   //
-  // Step 1 - Acceptance: lead-accept; radio, = yes >> accepted --> lead assigned; = no >> rejected --> lead allocated
+  // STATE 1 - Acceptance
+  //
+  // Rule: lead-accept; radio, = yes >> accepted --> lead assigned; = no >> rejected --> lead allocated
   //
   console.log("*** Seventh Test: Acceptance ***");
   radioName = "leadAccept";

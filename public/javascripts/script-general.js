@@ -1,8 +1,8 @@
 "use strict";
 
-// ================================================
+// ============================================================================
 //  Global modal controls (adapted from w3schools)
-// ================================================
+// ============================================================================
 var modal = document.getElementById('modalBox');
 // var modalPrac = document.getElementById('modalPrac');
 
@@ -16,108 +16,88 @@ var xButton = document.getElementsByClassName("close")[0];
 // btn.onclick = function() {
 //    modal.style.display = "block";
 // }
-
-// ---------------------------------------------------
+// ----------------------
+//  Close the Modal View
+// ----------------------
+//
 //  When close button (x) is clicked, close the modal
-// ---------------------------------------------------
+//
 xButton.onclick = function() {
   //
-  // Clear Add User Form
+  // Clear modal content
   //
-  ////resetform("formAddUser");
-  ////document.getElementById('displayUser').style.display = 'none';
-  ////document.getElementById('s-ins-lines').style.display = 'none';
-  ////document.getElementById('s-pl-types').style.display = 'none';
-  ////document.getElementById('s-cl-types').style.display = 'none';
-  ////document.getElementById('s-sl-types').style.display = 'none';
-  ////document.getElementById('s-al-types').style.display = 'none';
-  ////document.getElementById('s-xl-types').style.display = 'none';
-  //
-  // Clear Add Practice Form
-  //
-  ////resetform("formAddPractice");
-  ////document.getElementById("addPractice").style.display = 'none';
-  //
-  // clear postal code table
-  //
-  ////var table = document.getElementById("tablePCode");
-  ////table.innerHTML = "<tr> </tr>";
-  //
-  // Clear lead View Form
-  //
-  ////resetform("formLead");
-  //resetform("formAddUser");
-  //resetform("formAddPractice");
-  resetForm("lead-form");
-  resetForm("leadProgressForm");
-
-  document.getElementById('lead-view').style.display = 'none';
-  document.getElementById('lead-progress').style.display = 'none';
-  //document.getElementById('v-ins-line').style.display = 'none';
-  document.getElementById('v-pl-types').style.display = 'none';
-  document.getElementById('v-cl-types').style.display = 'none';
-  document.getElementById('v-sl-types').style.display = 'none';
-  document.getElementById('v-al-types').style.display = 'none';
-  document.getElementById('v-xl-types').style.display = 'none';
-
+  clearModal();
   //
   // Close modal display
   //
   modal.style.display = "none";
 };
-
-// --------------------------------------------------------------
-//  When the user clicks anywhere outside of the modal, close it
-// --------------------------------------------------------------
+//
+//  When user clicks outside of the modal content, i.e. the shadow
+//
 window.onclick = function(event) {
   if (event.target == modal) {
-    //
-    // Clear Add User Form
-    //
-    ////resetform("formAddUser");
-    ////document.getElementById('displayUser').style.display = 'none';
-    ////document.getElementById('s-ins-lines').style.display = 'none';
-    ////document.getElementById('s-pl-types').style.display = 'none';
-    ////document.getElementById('s-cl-types').style.display = 'none';
-    ////document.getElementById('s-sl-types').style.display = 'none';
-    ////document.getElementById('s-al-types').style.display = 'none';
-    ////document.getElementById('s-xl-types').style.display = 'none';
-    //
-    // Clear Add Practice Form
-    //
-    ////resetform("formAddPractice");
-    ////document.getElementById("addPractice").style.display = 'none';
+  //
+  // Clear modal content
+  //
+  clearModal();
+  //
+  // Close modal display
+  //
+    modal.style.display = "none";
+  }
+};
+//
+// Clear Model Content
+//
+function clearModal() {
+  //
+  // User - reset form and close view
+  //
+  if (document.getElementById('user-view')) {
+    resetForm("user-form");
+    viewOff("practice-user");
+    viewOff("adviser-user");
+    document.getElementById('user-view').style.display = 'none';
+    //document.getElementById('s-ins-lines').style.display = 'none';
+    document.getElementById('s-pl-types').style.display = 'none';
+    document.getElementById('s-cl-types').style.display = 'none';
+    document.getElementById('s-sl-types').style.display = 'none';
+    document.getElementById('s-al-types').style.display = 'none';
+    document.getElementById('s-xl-types').style.display = 'none';
+  }
+  //
+  // Practice - reset form and close view
+  //
+  if (document.getElementById("practice-view")) {
+    resetForm("practice-form");
+    document.getElementById("practice-view").style.display = 'none';
     //
     // clear postal code table
     //
-    ////var table = document.getElementById("tablePCode");
-    ////table.innerHTML = "<tr> </tr>";
-    //
-    // Clear lead View Form
-    //
-    ////resetform("formLead");
-
+    var table = document.getElementById("tablePCode");
+    table.innerHTML = "<tr> </tr>";
+  }
+  //
+  // Lead - reset forms and close views
+  //
+  if (document.getElementById('lead-view')) {
     resetForm("lead-form");
     resetForm("leadProgressForm");
     document.getElementById('lead-view').style.display = 'none';
     document.getElementById('lead-progress').style.display = 'none';
-    //document.getElementById('v-ins-lines').style.display = 'none';
+    //document.getElementById('v-ins-line').style.display = 'none';
     document.getElementById('v-pl-types').style.display = 'none';
     document.getElementById('v-cl-types').style.display = 'none';
     document.getElementById('v-sl-types').style.display = 'none';
     document.getElementById('v-al-types').style.display = 'none';
     document.getElementById('v-xl-types').style.display = 'none';
-
-    //
-    // Close modal display
-    //
-    modal.style.display = "none";
   }
 };
 
-// ==============================================================================
-//  View Control
-// ==============================================================================
+// ============================================================================
+//  View Controls
+// ============================================================================
 // -------------------
 //  Select start view
 // -------------------
@@ -187,9 +167,6 @@ function openMenu() {
   toggleView("section");
   toggleView("headerMain");
   toggleView("headerSub");
-
-  // what does the line below do here??????????
-  document.getElementById("tPos").innerHTML = 'Enter lead selection criteria and click "Find"';
 };
 
 // -------------------------------------
@@ -240,9 +217,9 @@ function toggleView(viewId){
   console.log(`---> ${viewId} is ${state}`);
 };
 
-// ==============================================================================
+// ============================================================================
 //  Login
-// ==============================================================================
+// ============================================================================
 
 // -----------------------------------------------
 //  Validate Login and Open View Required by Role
@@ -503,48 +480,48 @@ function toggleView(viewId){
 //   console.log("---> Menu Options", menuOptions);
 // }
 
-// ====================================
+// ============================================================================
 //  Filter table rows by column values
-// ====================================
-function pracLeadFilter(tableId, filterId) {
-  //
-  //  Read filter definition
-  //
-  var filter = filterDef(filterId);
-  console.log("---> Filter definition: ", filter);
-  //
-  // Read filter parameter values entered
-  //
-  var filterObj = {};
-  var cols = [];
-  var x = 0;
-  var colFilter = [], criteria = [];
-  var colCount = filter.definition.length;
-  console.log("---> Filter Column Count: ", colCount);
-  for (var i=0; i < colCount; i++) {
-    console.log("---> Filter ID: ", filter.definition[i].valueId);
-    colFilter[i] = document.getElementById(filter.definition[i].valueId).value;
-    if (colFilter[i].length > 0) {
-      cols[x] = filter.definition[i].tableCol;
-      criteria[x] = colFilter[i];
-      console.log("---> Filter values 0:", cols[x], criteria[x]);
-      x++;
-    }
-  }
-  filterObj = {
-    cols : cols,
-    criteria : criteria
-  }
-  console.log("---> Filter Obj: ", filterObj);
-  //
-  // Apply filter to table rows
-  //
-  filterTable(tableId, filterObj);
-}
+// ============================================================================
+// function pracLeadFilter(tableId, filterId) {
+//   //
+//   //  Read filter definition
+//   //
+//   var filter = filterDef(filterId);
+//   console.log("---> Filter definition: ", filter);
+//   //
+//   // Read filter parameter values entered
+//   //
+//   var filterObj = {};
+//   var cols = [];
+//   var x = 0;
+//   var colFilter = [], criteria = [];
+//   var colCount = filter.definition.length;
+//   console.log("---> Filter Column Count: ", colCount);
+//   for (var i=0; i < colCount; i++) {
+//     console.log("---> Filter ID: ", filter.definition[i].valueId);
+//     colFilter[i] = document.getElementById(filter.definition[i].valueId).value;
+//     if (colFilter[i].length > 0) {
+//       cols[x] = filter.definition[i].tableCol;
+//       criteria[x] = colFilter[i];
+//       console.log("---> Filter values 0:", cols[x], criteria[x]);
+//       x++;
+//     }
+//   }
+//   filterObj = {
+//     cols : cols,
+//     criteria : criteria
+//   }
+//   console.log("---> Filter Obj: ", filterObj);
+//   //
+//   // Apply filter to table rows
+//   //
+//   filterTable(tableId, filterObj);
+// }
 
-// =============================================================================
+// ============================================================================
 //  Utilities - Reusable Data Display Functions
-// =============================================================================
+// ============================================================================
 //
 // ------------------------------------------------------------
 //  Set the line and type check boxes for the Lead detail view
@@ -565,7 +542,12 @@ function setServicesView(services, prefix) {
     //
     for (var x = 0, z = services[i].types.length; x < z; x++) {
       //console.log(">>> Services Detail: ", x, services[i].types[x]);
-      document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-" + services[i].types[x].toLocaleLowerCase().replace(/\s/g, '-')).checked = true;
+      if (document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-" + services[i].types[x].toLocaleLowerCase().replace(/\s/g, '-'))) {
+        document.getElementById(prefix + "-" + services[i].line.toLocaleLowerCase() + "-" + services[i].types[x].toLocaleLowerCase().replace(/\s/g, '-')).checked = true;
+      }
+      else {
+        alert(`Data Error: Invalid service type description: ${x}, ${services[i].types[x]}`);
+      }
     }
   }
 };
@@ -673,9 +655,9 @@ function typeSwitch(el) {
 //   }
 // }
 
-// =============================================================================
+// ============================================================================
 //  Utilities - Table Display Functions
-// =============================================================================
+// ============================================================================
 
 // ----------------------------------
 //  Create table and display content
@@ -756,7 +738,7 @@ function displayData(content, title, layoutId) {
   //
   // Determine element ids value for data display
   //
-  if (layoutId !== "1" && layoutId !== "4" && layoutId !== "5") {
+  if (layoutId !== "4" && layoutId !== "5" && layoutId !== "6") {
     // for leads display function
     var listId = "tPos" + layoutId;
     var titleId = "title" + layoutId;
@@ -802,7 +784,7 @@ function addRowHandlers(id) {
     // cells[4] = user email
   }
   if (id === "1"){
-    // practice leads list
+    // practice assign leads list
     var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
     // cells[0] = lead reference
   }
@@ -822,10 +804,16 @@ function addRowHandlers(id) {
     // cells[0] = lead reference
   }
   if (id === "5"){
-    // leads list
+    // agent leads list
     var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
     // cells[0] = lead reference
   }
+  if (id === "6"){
+    // practice leads list
+    var rowFunc = function(){ displayLead(this.cells[0].innerHTML, id); };
+    // cells[0] = lead reference
+  }
+
   for (var i = 1; i < rowCount; i++) {
       // ignore header, row 0
       rows[i].onclick = rowFunc;
@@ -849,12 +837,14 @@ function readLayout(definitionId) {
         '{ "fname" : "cell" , "label" : "Cell" },' +
         '{ "fname" : "email" , "label" : "email" },' +
         '{ "fname" : "roleCode" , "label" : "Role" },' +
-        '{ "fname" : "practiceCode" , "label" : "Practice Code" }' +
+        '{ "fname" : "adviserCode" , "label" : "Adv Code" },' +
+        '{ "fname" : "practiceCode" , "label" : "Prac Code" },' +
+        '{ "fname" : "status" , "label" : "Status" }' +
         ']}'
       ;
     break;
     case '1':
-      console.log("List Layout: 1 (Practice Leads)");
+      console.log("List Layout: 1 (Practice Assign Leads)");
       var layoutDef = '{ "definition" : [' +
         '{ "fname" : "reference" , "label" : "Ref No." },' +
         '{ "fname" : "status" , "label" : "Status" },' +
@@ -957,6 +947,27 @@ function readLayout(definitionId) {
         ']}'
       ;
     break;
+    case '6':
+      console.log("List Layout: 6 (Practice Leads)");
+      var layoutDef = '{ "definition" : [' +
+        '{ "fname" : "reference" , "label" : "Ref No." },' +
+        '{ "fname" : "status" , "label" : "Status" },' +
+        //'{ "fname" : "firstName" , "label" : "First Name" },' +
+        //'{ "fname" : "surname" , "label" : "Surname" },' +
+        '{ "fname" : "langPref" , "label" : "Language" },' +
+        //'{ "fname" : "contactNum" , "label" : "Contact #" },' +
+        //'{ "fname" : "altNumber" , "label" : "Alternate #" },' +
+        //'{ "fname" : "cellNumber" , "label" : "Cell #" },' +
+        //'{ "fname" : "eMail" , "label" : "eMail" },' +
+        '{ "fname" : "postal" , "label" : "Postal" },' +
+        '{ "fname" : "suburb" , "label" : "Suburb" },' +
+        '{ "fname" : "service" , "label" : "Service(s)" },' +
+        '{ "fname" : "comment1" , "label" : "Comment" },' +
+        '{ "fname" : "comment2" , "label" : "Service Comment" },' +
+        '{ "fname" : "assignedAdviser" , "label" : "Adviser" }' +
+        ']}'
+      ;
+    break;
   }
   // console.log("Definition set: ", jText);
   var layout = JSON.parse(layoutDef); // convert JSON text into JS object
@@ -974,7 +985,7 @@ function filterDef(filterId) {
       var filterDef = '{ "definition" : [' +
         '{ "tableCol" : 0 , "valueId" : "prac-lead-ref-filter" },' +
         '{ "tableCol" : 1 , "valueId" : "prac-lead-status-filter" },' +
-        '{ "tableCol" : 8 , "valueId" : "prac-lead-adviser-filter" }' +
+        '{ "tableCol" : 9, "valueId" : "prac-lead-adviser-filter" }' +
         ']}'
       ;
     break;
@@ -1002,6 +1013,15 @@ function filterDef(filterId) {
         '{ "tableCol" : 8 , "valueId" : "leads-contSurname-filter" }' +
         '{ "tableCol" : 8 , "valueId" : "leads-contNumb-filter" }' +
         '{ "tableCol" : 8 , "valueId" : "leads-refID-filter" }' +
+        ']}'
+      ;
+    break;
+    case '6':
+      console.log("Filter Definition: 1 (Practice Leads Filter)");
+      var filterDef = '{ "definition" : [' +
+        '{ "tableCol" : 0 , "valueId" : "prac-lead-ref-filter" },' +
+        '{ "tableCol" : 1 , "valueId" : "prac-lead-status-filter" },' +
+        '{ "tableCol" : 8 , "valueId" : "prac-lead-adviser-filter" }' +
         ']}'
       ;
     break;

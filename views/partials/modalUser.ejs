@@ -2,61 +2,67 @@
 User Description attributes
 -->
 <label>
-  First Name*: <input id="u0" type="text" name="firstName" size="15" required/>
+  *User Code: <input id="user-code" type="text" name="userCode" size="15" required/>
 </label>
 <label>
-  Surname*: <input id="u1" type="text" name="surname" size="20" required/>
+  *First Name: <input id="u0" type="text" name="firstName" size="15" required/>
 </label>
 <label>
-  Password (6 characters minimum)*: </label>
+  *Surname: <input id="u1" type="text" name="surname" size="20" required/>
+</label>
+<label>
+  *Password (6 characters minimum): </label>
 <input id="u2" type="password" name="password" minlength="6" size="15" required/>
 <br/>
 <label>
   Phone: <input id="u3" type="text" name="phone" size="15"/>
 </label>
 <label>
-  Cell*: <input id="u4" type="text" name="cell" size="15" required/>
+  *Cell: <input id="u4" type="text" name="cell" size="15" required/>
 </label>
 <label>
-  Email*: <input id="u5" type="email" name="email" size="60" required/>
-</label>
-<br/>
-<label>
-  Practice: <input id="u6" type="text" name="practice" size="60"/>
+  *Email: <input id="u5" type="email" name="email" size="60" required/>
 </label>
 <br/>
 <!--
 User Role Selection
 -->
-<label><b>Select User's Role*:</b></label>
+<label><b>*Select User's Role:</b></label>
 <label for="roleA">
-  <input id="roleA" type="radio" name="role" value="A" onclick="javascript:isAdviser();"/>
+  <input id="roleA" type="radio" name="role" value="A"/>
   System Administrator
 </label>
 <label for="roleB">
-  <input id="roleB" type="radio" name="role" value="B" onclick="javascript:isAdviser();"/>
+  <input id="roleB" type="radio" name="role" value="B"/>
   Practise Administrator
 </label>
 <label for="roleC">
-  <input id="roleC" type="radio" name="role" value="C" onclick="javascript:isAdviser();"/>
+  <input id="roleC" type="radio" name="role" value="C"/>
   Adviser
 </label>
 <label for="roleD">
-  <input id="roleD" type="radio" name="role" value="D" onclick="javascript:isAdviser();"/>
+  <input id="roleD" type="radio" name="role" value="D"/>
   Capture Leads
 </label>
-
-<br/>
-<!--
-If user role = Adviser select service abilities.
-Note that this is not mandatory as it can maintained by the practice.
-The skills of the adviser must be captured for it to be considered
-during the leads allocation process.
--->
-<div id="s-ins-lines" style="display:none">
-
+<!-- For a role associated with a practice get the practice code -->
+<div id="practice-user" style="display:none">
+  <label>
+    Practice: <input id="u6" type="text" name="practice" size="15"/>
+  </label>
+</div>
+<!-- For an adviser role get adviser code and the skills accreditation -->
+<div id="adviser-user" style="display:none">
+  <label>
+    Adviser Code: <input id="adviser-code" type="text" name="adviserCode" size="15"/>
+  </label>
   <fieldset>
     <legend>Select Adviser's Service Skill Lines:</legend>
+    <!--
+    If user role = Adviser select service abilities.
+    Note that this is not mandatory as it can maintained by the practice.
+    The skills of the adviser must be captured for it to be considered
+    during the leads allocation process.
+    -->
     <span id="lead-ins-line">Insurance Lines:</span>
     <!--
     Id prefix definition for insurance product lines and types display":
@@ -94,9 +100,9 @@ during the leads allocation process.
 
     <!-- <div id="ServiceComment" style="display:none"> -->
     <div id="comment">
-      <label for="serviceComment">
+      <label for="userComment">
         Service Comment:
-        <textarea id="serviceComment" name="comment2">
+        <textarea id="userComment" name="userComment">
         </textarea>
       </label>
     </div>

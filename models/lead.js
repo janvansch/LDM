@@ -219,8 +219,19 @@ var LeadSchema = new mongoose.Schema({
     type: String,
     enum: ['annually', 'monthly'],
   },
-
   // Processing state information
+  currentStatus: {
+    // workaround to avoid selection on last element of status array
+    type: String,
+    trim: true,
+    required: true
+  },
+  currentState:{
+    // workaround to avoid selection on last element of status array
+    type: String,
+    trim: true,
+    required: true
+  },
   statusHistory: [{
     status: {
       type: String,
@@ -267,14 +278,14 @@ LeadSchema.pre('save', function (next) {
     var pr = rdm.toString().padStart(3, '0');
     //this.reference = yr.toString() + pmh.toString() + "-" + psd + pmd + pr;
     this.reference = psd + "-" + pmd + "-" + pr;
-    this.statusHistory.push({
-        status : "open",
-        statusDate : Date.now
-    });
-    this.stateHistory.push({
-        state : "none",
-        stateDate : Date.now
-    });
+    // this.statusHistory.push({
+    //     status : "open",
+    //     statusDate : Date.now
+    // });
+    // this.stateHistory.push({
+    //     state : "none",
+    //     stateDate : Date.now
+    // });
     next();
   }
   else {

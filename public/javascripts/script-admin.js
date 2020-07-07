@@ -2,7 +2,37 @@
 //============================================================================
 // Admin View - System Users
 //============================================================================
-
+// ------------------------------------------
+//  User Role Selection Click Event Handlers
+// ------------------------------------------
+if (document.getElementById("roleA")) {
+  document.getElementById("roleA").addEventListener("click", function() {
+    // Admin
+    viewOff("practice-user");
+    viewOff("adviser-user");
+  });
+}
+if (document.getElementById("roleB")) {
+  document.getElementById("roleB").addEventListener("click", function() {
+    // Practice
+    viewOn("practice-user");
+    viewOff("adviser-user");
+  });
+}
+if (document.getElementById("roleC")) {
+  document.getElementById("roleC").addEventListener("click", function() {
+    // Adviser
+    viewOn("practice-user");
+    viewOn("adviser-user");
+  });
+}
+if (document.getElementById("roleD")) {
+  document.getElementById("roleD").addEventListener("click", function() {
+    // Practice
+    viewOff("practice-user");
+    viewOff("adviser-user");
+  });
+}
 // ----------------------------------------------------
 //  List system users and add row select functionality
 // ----------------------------------------------------
@@ -62,20 +92,20 @@ function listUsers() {
 // -------------------------------------------------------------------------
 //  If adviser role is selected display service ability selection else hide
 // -------------------------------------------------------------------------
-function isAdviser() {
-  if (document.getElementById('roleC').checked) {
-    // switch accreditation and skills on
-    document.getElementById('s-ins-lines').style.display = 'block';
-  }
-  else if (
-      document.getElementById('roleA').checked ||
-      document.getElementById('roleB').checked ||
-      document.getElementById('roleD').checked
-    ) {
-    // switch accreditation and skills off
-    document.getElementById('s-ins-lines').style.display = 'none';
-  }
-}
+// function isAdviser() {
+//   if (document.getElementById('roleC').checked) {
+//     // switch accreditation and skills on
+//     document.getElementById('s-ins-lines').style.display = 'block';
+//   }
+//   else if (
+//       document.getElementById('roleA').checked ||
+//       document.getElementById('roleB').checked ||
+//       document.getElementById('roleD').checked
+//     ) {
+//     // switch accreditation and skills off
+//     document.getElementById('s-ins-lines').style.display = 'none';
+//   }
+// }
 
 // -----------------------------
 //  Display add user modal form
@@ -88,7 +118,7 @@ function addUser() {
   // Enable email
   document.getElementById('u5').disabled='';
   // open add user form
-  document.getElementById("displayUser").style.display = 'block';
+  document.getElementById("user-view").style.display = 'block';
   document.getElementById("modal-header-text").innerHTML = "Add User";
   document.getElementById("addUserButtons").style.display = "block";
   document.getElementById("updateUserButtons").style.display = "none";
@@ -106,19 +136,15 @@ function displayUser(userId) {
   //
   // Display user form
   //
-  document.getElementById("displayUser").style.display = 'block';
+  //document.getElementById("displayUser").style.display = 'block';
+  document.getElementById("user-view").style.display = 'block';
   document.getElementById("modal-header-text").innerHTML = "detail for user: " + userId;
   document.getElementById("addUserButtons").style.display = "none";
   document.getElementById("updateUserButtons").style.display = "block";
-
-  // don't display password field
-  //document.getElementById('u2').style.display = "none";
-
+  viewOff("practice-user");
+  viewOff("adviser-user");
   // disable password field
   document.getElementById('u2').disabled='disabled'; // This is to disable an element,
-  // to enable the element,
-  // document.getelementById('btnName').disabled='';
-
   // disable email
   document.getElementById('u5').disabled='disabled';
 
@@ -138,20 +164,22 @@ function displayUser(userId) {
   xhrRequest(method, route, contentType, request, (err, res) => {
     if (!err) {
       var user = JSON.parse(res.responseText);
-      console.log(">>> User Detail: ", user);
+      console.log("===> User detail returned: ", user);
       //
       // Fill display form with user's data
       //
       console.log("---> firstname: ", user[0].firstName);
+      //document.getElementById("user-code").value = user[0].userCode;
       document.getElementById("u0").value = user[0].firstName;
       document.getElementById("u1").value = user[0].surname;
       document.getElementById("u2").value = "********";
       document.getElementById("u3").value = user[0].phone;
       document.getElementById("u4").value = user[0].cell;
       document.getElementById("u5").value = user[0].email;
+      document.getElementById("adviser-code").value = user[0].adviserCode;
       document.getElementById("u6").value = user[0].practiceCode;
       //
-      // Set user role radio button
+      // Set user role radio button and display accordingly
       //
       var role = user[0].roleCode;
       console.log(">>> Role: ", role);
@@ -162,13 +190,18 @@ function displayUser(userId) {
       else if (role === "B") {
         // user has a Practice Backoffice role
         document.getElementById("roleB").checked = true;
+        // Enable practice code display
+        viewOn("practice-user");
       }
       else if (role === "C") {
         // user has an Adviser role
         document.getElementById("roleC").checked = true;
+        // enable adviser practice code and skills display
+        viewOn("practice-user");
+        viewOn("adviser-user");
       }
       else if (role === "D") {
-        // user has a Lead Recorder role
+        // user has a Lead Agent role
         document.getElementById("roleD").checked = true;
       }
       else {
@@ -182,9 +215,8 @@ function displayUser(userId) {
         //
         // Display adviser skill detail
         //
-        document.getElementById("s-ins-lines").style.display = 'block';
         var services = user[0].services;
-        showServices(services, 's');
+        setServicesView(services, 's');
       }
     }
     else {
@@ -240,7 +272,7 @@ function submitUser(action) {
     }
     else {
       //
-      // Extract adviser services for each of the insurance lines selected
+      // Extract adviser services for each of the insurance lines selected - MAKE FUNCTION
       //
       console.log("---> The Lines obj: ", insLine.line);
       var lines = insLine.line;
@@ -279,12 +311,14 @@ function submitUser(action) {
   //  create User data object
   //
   var userData = {
+    //userCode : userText.userCode,
     firstName : userText.firstName,
     surname : userText.surname,
     phone : userText.phone,
     cell : userText.cell,
     email : userEmail.email,
     roleCode : userRole.role,
+    adviserCode : userText.adviserCode,
     practiceCode : userText.practice,
     services : userServices,
     password : userText.password
@@ -413,7 +447,7 @@ function addPractice() {
   modal.style.display = "block";
   //document.getElementById("viewAdminUser").style.display = 'block';
   // open add user form
-  document.getElementById("addPractice").style.display = 'block';
+  document.getElementById("practice-view").style.display = "block";
   document.getElementById("modal-header-text").innerHTML = "Add Practice";
   document.getElementById("addPracticeButtons").style.display = "block";
   document.getElementById("updatePracticeButtons").style.display = "none";
@@ -432,7 +466,7 @@ function displayPractice(practiceCode) {
   //
   // Display user form
   //
-  document.getElementById("addPractice").style.display = 'block';
+  document.getElementById("practice-view").style.display = 'block';
   document.getElementById("modal-header-text").innerHTML = "Update Practice or Delete";
   document.getElementById("addPracticeButtons").style.display = "none";
   document.getElementById("updatePracticeButtons").style.display = "block";

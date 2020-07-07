@@ -93,7 +93,7 @@ var loginUser = async (req, res) => {
       // Menu definition
       //
       const options = [
-        {func:'profile(user)',text:'Edit Profile'},
+        {func:'profile()',text:'Edit Profile'},
         {func:'listPractices()',text:'View Practices'},
         {func:'listUsers()',text:'View Users'}
       ];
@@ -116,12 +116,13 @@ var loginUser = async (req, res) => {
     //
     if (userRole==="B") {
       //
-      // Menu definition
+      // Menu definition - function to call & menu text
       //
       const options = [
-        {func:'profile(user)',text:'Edit Profile'},
-        {func:'openLeadsView("Practice")',text:'View Leads'},
-        {func:'listAdvisers(data)',text:'View Advisers'}
+        {func:'profile()',text:'Edit Profile'},
+        {func:'openLeadsView("Practice")',text:'View Practice Leads'}, // normal leads view for user practice
+        {func:'pracLeadsView()',text:'Assign Leads View'}, // pracrice leads view with table filter
+        {func:'listAdvisers()',text:'View Advisers'} // the advisers of the practice
       ];
       //
       // View definition
@@ -130,11 +131,11 @@ var loginUser = async (req, res) => {
         prompt: " ",
         productDef: product,
         menuDef: options,
-        title: 'Practice Options:',
+        title: 'Practice Options:', // menu header
         modal: "yes",
         view: "practice",
         user: userEmail,
-        userPrac: userPracCode
+        userPrac: userPracCode // the user's practice - determines the leads the user may see
       };
     }
     //
@@ -145,7 +146,7 @@ var loginUser = async (req, res) => {
       // Menu definition
       //
       const options = [
-        {func:'profile(user)',text:'Edit Profile'},
+        {func:'profile()',text:'Edit Profile'},
         {func:'openLeadsView("Adviser")',text:'View Assigned Leads'}
         //{func:'listAdvClients(user)',text:'View Clients'}
       ];
@@ -171,7 +172,7 @@ var loginUser = async (req, res) => {
       // Menu definition
       //
       const options = [
-        {func:'profile(user)',text:'Edit Profile'},
+        {func:'profile()',text:'Edit Profile'},
         // {func:'openAddLead()',text:'Add Lead'},
         {func:'openLeadsView("")',text:'Leads'}
       ];
@@ -186,7 +187,7 @@ var loginUser = async (req, res) => {
         modal: "yes", // if yes include modal place holder in view
         view: "agent", // which view to display
         user: userEmail, // the user's id
-        userPrac: ""
+        userPrac: "" // the practice the user belongs to if applicable
       };
     }
     // ------------------------------------------------

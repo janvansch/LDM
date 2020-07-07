@@ -8,27 +8,27 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.19.0",
     "clickatell-platform": "^2.0.11",
-    "cookie-parser": "~1.4.3",
+    "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "ejs-lint": "^0.3.0",
-    "express": "~4.16.0",
+    "express": "^4.16.4",
     "fs": "0.0.1-security",
-    "helmet": "^3.18.0",
+    "helmet": "^3.23.3",
     "http-errors": "~1.6.2",
-    "jsonwebtoken": "^8.3.0",
-    "lodash": "^4.17.11",
-    "mongoose": "^5.4.15",
-    "morgan": "^1.9.1",
-    "node-cache": "^4.2.0",
-    "nodemailer": "^4.6.8",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.9.21",
+    "morgan": "^1.10.0",
+    "node-cache": "^4.2.1",
+    "nodemailer": "^4.7.0",
     "serve-favicon": "^2.5.0",
     "url": "^0.11.0",
-    "validator": "^10.4.0"
+    "validator": "^10.11.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.2"
+    "nodemon": "^1.19.4"
   }
 }

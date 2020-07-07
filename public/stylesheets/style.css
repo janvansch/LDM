@@ -355,7 +355,7 @@ fieldset {
   padding-bottom: 0.625em;
   padding-left: 0.75em;
   padding-right: 0.75em;
-  border: 2px groove (internal value);
+  border: 1px groove (internal value);
 }
 
 legend {
@@ -438,7 +438,7 @@ button {
 }
 
 /* ------------------------------ */
-/*     Practice Administration    */
+/*    Practice Administration     */
 /* ------------------------------ */
 #viewAdminPrac {
   display: none;
@@ -499,6 +499,12 @@ button {
   text-align: center;
   font-size: 95%;
 }
+#userComment {
+  width: 60rem;
+  height: 4rem;
+  text-align: left;
+  font-size: 95%;
+}
 
 /* =============================== */
 /*     Leads View & Navigation     */
@@ -531,7 +537,7 @@ button {
   width: 85%;
   height: 2rem;
   text-align: left;
-  font-size: 100%;
+  font-size: 95%;
 }
 
 #lead-form {
@@ -755,7 +761,8 @@ tr:nth-child(even) {
   padding: 0;
   border: 1px solid rgb(156, 156, 156);
   /*width: 90%;*/
-  width: 125rem;
+  max-width: 125rem;
+  min-width: 90rem;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -775,11 +782,19 @@ tr:nth-child(even) {
 }
 
 /* === The Close Button === */
-.close {
+/*.close {
   color: rgb(119, 11, 11);
   float: right;
   font-size: 3rem;
   font-weight: bold;
+} */
+.close {
+  float: right;
+  line-height: .7;
+  color: rgb(175, 4, 4);
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: .4rem;
 }
 
 .close:hover,
@@ -809,9 +824,9 @@ tr:nth-child(even) {
 }
 
 /*
-============================================
+========================
 === Popup Box Styles ===
-============================================
+========================
 */
 .popup{
   position:fixed;
