@@ -376,18 +376,20 @@ button {
   margin-top: 4px;
 }
 
-/* =============================== */
-/*   General Lead List formatting  */
-/* =============================== */
+/* ================================== */
+/*   General list display formatting  */
+/* ================================== */
 .list-head-row {
   color:  darkblue;
-  font-size: 95%;
+  /* font-size: 95%; > font-size: 1.5rem; */
+  font-size: 1.5rem;
   font-weight: 700;
 }
 
 .list-body-row {
   color:  darkblue;
-  font-size: 80%;
+  /* font-size: 80%; > font-size: 1.3rem; */
+  font-size: 1.3rem;
 }
 
 /* =============================== */
@@ -398,7 +400,7 @@ button {
   width: 99%;
 }
 
-#viewLogin {
+#login-view {
   display: block;
   margin: 14rem 1rem;
   width: 99%;
@@ -521,7 +523,7 @@ button {
   text-align: center;
 }
 
-#tPos5 {
+#tPos {
   max-height: 51.2rem;
   overflow: auto;
 }
@@ -733,6 +735,12 @@ tr:nth-child(even) {
 }
 */
 
+#tPos7 {
+  max-height: 51.2rem;
+  font-size: 100%;
+  overflow: auto;
+}
+
 /*
 ============================================
 === Modal Box Styles (source: w3schools) ===
@@ -792,7 +800,7 @@ tr:nth-child(even) {
   float: right;
   line-height: .7;
   color: rgb(175, 4, 4);
-  font-size: 28px;
+  font-size: 2.8rem;
   font-weight: bold;
   margin-right: .4rem;
 }
@@ -869,7 +877,7 @@ tr:nth-child(even) {
 
 #infoClose{
   border-radius: 50px 50px / 50px 50px;
-  font-size: 2rem;
+  font-size: 1.6rem;
   padding: .5rem;
   font-weight: bold;
   color:green;

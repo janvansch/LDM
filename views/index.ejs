@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- New structure with single lead form - step 1 -->
+
 <html>
 <head>
 
@@ -7,15 +7,7 @@
   <title>LDM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-  <!--
   <script src="/javascripts/script-start.js" defer></script>
-  -->
-  <script src="/javascripts/script-general.js" defer></script>
-  <script src="/javascripts/script-utils.js" defer></script>
-  <script src="/javascripts/script-admin.js" defer></script>
-  <script src="/javascripts/script-lead.js" defer></script>
-  <script src="/javascripts/script-practice.js" defer></script>
-  <script src="/javascripts/script-adviser.js" defer></script>
 
 </head>
 
@@ -26,55 +18,12 @@
     <% include ./partials/uiHeader %>
   </header>
 
-  <!-- Role Navigation Content -->
-  <nav id="nav" style="display:none">
-    <% include ./partials/uiNav %>
-  </nav>
+  <section id="login-section" style="display:none">
 
-  <!-- Role Function Content -->
-  <section id="section" style="display:none">
-
-    <!-- Modal View Placeholder -->
-    <% if (modal === "yes") { %>
-      <% include ./partials/modal %>
-    <% } %>
-
-    <!-- Display Required View -->
-
+    <!-- Display Login View -->
     <% if (view === "login") { %>
-      <!-- Login View -->
-      <div id="viewLogin" style="display:block">
+      <div id="login-view" style="display:block">
         <% include ./partials/viewLogin %>
-      </div>
-    <% } %>
-
-    <% if (view === "admin") { %>
-      <!-- Admin Maintenence View -->
-      <div id="viewAdmin" style="display:block">
-        <% include ./partials/viewAdmin %>
-      </div>
-    <% } %>
-
-    <% if (view === "agent") { %>
-      <!-- Leads Agent View -->
-      <div id="viewLead" style="display:block">
-        <% include ./partials/viewLead %>
-      </div>
-    <% } %>
-
-    <% if (view === "practice") { %>
-      <!-- Practise View -->
-      <div id="viewPractice" style="display:block">
-        <% include ./partials/viewPractice %>
-        <% include ./partials/viewLead %>
-      </div>
-    <% } %>
-
-    <% if (view === "adviser") { %>
-      <!-- Adviser View -->
-      <div id="viewAdviser" style="display:block">
-        <% include ./partials/viewAdviser %> <!-- Remove, not necessary? -->
-        <% include ./partials/viewLead %>
       </div>
     <% } %>
 

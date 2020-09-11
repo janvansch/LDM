@@ -17,29 +17,29 @@
     <!-- Body -->
     <div class="modal-body">
       <!--
+      ------------------------------------------------------
         Place holders for modal forms as required per role
+      ------------------------------------------------------
       -->
-
-      <% if (view === "admin") { %>
-
+      <% if (view === "admin" || view === "practice") { %>
         <!-- User Detail View -->
         <div id="user-view" style="display:none">
           <form id="user-form">
             <% include ./modalUser %>
           </form>
         </div>
+      <% } %>
 
+      <% if (view === "admin") { %>
         <!-- Practice Detail View -->
         <div id="practice-view" style="display:none">
           <form id="practice-form">
             <% include ./modalPractice %>
           </form>
         </div>
-
       <% } %>
 
       <% if (view === "agent" || view === "practice" || view === "adviser") { %>
-
         <!-- Lead form for viewing and adding a lead -->
         <div id="lead-view" style="display:none">
           <form id="lead-form">
@@ -70,6 +70,15 @@
 
       <% } %>
 
+      <% if (view === "practice") { %>
+        <!-- Skilled Advisers -->
+        <div id="skilled-adv" style="display:none">
+          <form id="adv-list">
+            <% include ./modalSkill %>
+          </form>
+        </div>
+      <% } %>
+
       <!--
         Future development
       -->
@@ -84,9 +93,9 @@
 
     </div>
 
-      <!-- Footer -->
+    <!-- Footer -->
     <div class="modal-footer">
-      * = mandatory
+      * = mandatory field
       <p id="errMsg"> </p>
     </div>
   </div>

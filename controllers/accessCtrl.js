@@ -2,21 +2,18 @@ const _ = require('lodash');
 const {User} = require('../models/user');
 const {Product} = require('../models/product');
 
-// ----------------------------------------
+// ===================
 //	Render Login Page
-// ----------------------------------------
+// ===================
 var loginPage = (req, res, promptText) => {
+  console.log("---> Render Login Page");
 
   if (promptText === undefined) {
     var promptText = " ";
   }
-
   const options = [{func:'profile(user)',text:'Reset Password'}];
-
-  //
-  // Render App login page
-  //
   res.render('index', {
+    //renders the login view - index.js
     prompt: promptText,
     menuDef: options,
     modal: "yes",
@@ -26,9 +23,9 @@ var loginPage = (req, res, promptText) => {
   });
 }
 
-// ----------------------------------------
+// =====================================
 //	Process access request - Login User
-// ----------------------------------------
+// =====================================
 var loginUser = async (req, res) => {
   // console.log("Login User Started");
   // console.log("===> Login data", req.body.logindata);
@@ -69,9 +66,9 @@ var loginUser = async (req, res) => {
       User Role: ${userRole},
       Practice Code: ${userPracCode}`);
 
-    // ------------------------------------------
-    //  Retrieve product definition data from DB
-    // ------------------------------------------
+    // --------------------------------------
+    //  Read product definition data from DB
+    // --------------------------------------
     console.log("Start Product data load");
     const product = await Product.find(
       {},
@@ -81,12 +78,12 @@ var loginUser = async (req, res) => {
     );
     console.log("Product data loaded");
 
-    // ----------------------------------------------------
-    //  Setup user view in accordance with the user's role
-    // ----------------------------------------------------
+    // ---------------------------------------------
+    //  Configure the view for the role of the user
+    // ---------------------------------------------
     let viewObj;
     //
-    // Admin role view
+    // --- Admin role ---
     //
     if (userRole==="A") {
       //
@@ -94,8 +91,8 @@ var loginUser = async (req, res) => {
       //
       const options = [
         {func:'profile()',text:'Edit Profile'},
-        {func:'listPractices()',text:'View Practices'},
-        {func:'listUsers()',text:'View Users'}
+        {func:'openPracticesView()',text:'View Practices'},
+        {func:'openUsersView()',text:'View Users'}
       ];
       //
       // View definition
@@ -112,7 +109,7 @@ var loginUser = async (req, res) => {
       };
     }
     //
-    // Practice role view
+    // --- Practice role ---
     //
     if (userRole==="B") {
       //
@@ -120,9 +117,13 @@ var loginUser = async (req, res) => {
       //
       const options = [
         {func:'profile()',text:'Edit Profile'},
-        {func:'openLeadsView("Practice")',text:'View Practice Leads'}, // normal leads view for user practice
-        {func:'pracLeadsView()',text:'Assign Leads View'}, // pracrice leads view with table filter
-        {func:'listAdvisers()',text:'View Advisers'} // the advisers of the practice
+        {func:'openLeadsView("Practice")',text:'View Leads'},
+        // Practice leads list with user selection criteria (user practice code fixed)
+        {func:'allocatedLeadsView()',text:'Assign Leads'},
+        // Practice leads list with set selection criteria (user practice code and allocated status)
+        // The list has filter functionality
+        {func:'listAdvisers()',text:'View Advisers'}
+        // List the advisers of the practice
       ];
       //
       // View definition
@@ -139,7 +140,7 @@ var loginUser = async (req, res) => {
       };
     }
     //
-    // Adviser role view
+    // --- Adviser role ---
     //
     if (userRole==="C") {
       //
@@ -165,7 +166,7 @@ var loginUser = async (req, res) => {
       };
     }
     //
-    // Leads Agent role view
+    // --- Agent role ---
     //
     if (userRole==="D") {
       //
@@ -195,8 +196,7 @@ var loginUser = async (req, res) => {
     // ------------------------------------------------
     res
       .header('x-auth', token)
-      .render('index', viewObj)
-      //.end()
+      .render('ui', viewObj)
     ;
   }
   // -----------------------------------------------------

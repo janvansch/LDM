@@ -9,14 +9,28 @@
 
   <hr/>
 
-  <div id="prac-lead-filter">
+  <div id="lead-assign-filter">
     <b>Filter:</b>
-    Ref No.
-    <input type="text" id="prac-lead-ref-filter" placeholder="Lead Ref No." title="Lead Ref No.">
-    Status
-    <input type="text" id="prac-lead-status-filter" placeholder="Lead Status" title="Lead Status">
-    Adviser
-    <input type="text" id="prac-lead-adviser-filter" placeholder="Adviser" title="Assigned Adviser">
+    <label for="lead-assign-ref-filter">Ref No.:</label>
+    <input id="lead-assign-ref-filter" type="text" placeholder="Lead Ref No." title="Lead Ref No." size="11">
+
+    <label for="lead-assign-language-filter">Language:</label>
+    <input id="lead-assign-language-filter" type="text" list="lang" placeholder="Language" title="Language" size="12">
+    <datalist id="lang">
+      <option value="">
+      <option value="Afrikaans">
+      <option value="English">
+    </datalist>
+
+    <label for="lead-assign-postal-filter">Postal Code:</label>
+    <input  id="lead-assign-postal-filter" type="text" placeholder="Postal Code" title="Postal Code" size="8">
+
+    <label for="lead-assign-suburb-filter">Suburb:</label>
+    <input  id="lead-assign-suburb-filter" type="text" placeholder="Suburb" title="Suburb" size="20">
+
+    <label for="lead-assign-service-filter">Service Line:</label>
+    <input id="lead-assign-service-filter" type="text" placeholder="Service" title="Service" size="3"/>
+
     <input id="apply-prac-filter" type="button" value="Apply Filter" onclick="filterTable('tPos1', '1')"/>
   </div>
 

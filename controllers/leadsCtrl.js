@@ -68,7 +68,7 @@ var LeadSearch = async (req, res) => {
           state : (leads[i].stateHistory.length === 0) ? (" - ") : (leads[i].stateHistory[leads[i].stateHistory.length-1].state),
           firstName : leads[i].firstName,
           surname : leads[i].surname,
-          // langPref : leads[i].langPref,
+          langPref : leads[i].langPref,
           contactNum : leads[i].contactNum,
           // altNumber : leads[i].altNumber,
           //cellNumber : leads[i].cellNumber,
@@ -83,7 +83,7 @@ var LeadSearch = async (req, res) => {
           //comment1 : leads[i].comments.comment1,
           //comment2 : leads[i].comments.comment2,
           servicerType : leads[i].servicerType,
-          //assignedAdviser : leads[i].assignedAdviser
+          assignedAdviser : leads[i].assignedAdviser
         }
       );
       //console.log(">>> Data List row: ", listData[i]);
@@ -237,7 +237,50 @@ var LeadUpdate = async (req, res) => {
   }
 };
 
-module.exports = {LeadUpdate, LeadSearch};
+// ----------------------------------------
+//  Link adviser to lead and update status
+// ----------------------------------------
+var LinkAdviser = async (req, res) => {
+  console.log(">>> Link adviser: ", req.body, req.url);
+  try {
+    // Extract required data from update request
+    const body = _.pick(req.body, [
+      'reference',
+      'assignedAdviser',
+      'who'
+    ]);
+    console.log("---> Link adviser data: ", body);
+    //
+    // Define Update set
+    //
+    var updateData = {
+      'assignedAdviser' : body.assignedAdviser,
+      'currentStatus' : "assigned", // workaround to avoid selection on last element of status array
+      'who' : body.who
+    };
+    var pushData = {
+      'statusHistory' : {'status' : "assigned"}
+    }
+
+    // Update key
+    const query = { reference: body.reference };
+    // Update data
+    const data =  {$set: updateData, $push: pushData};
+    // Update options
+    const options = { upsert: false, new: true };
+    // Execute update - Model.method(query, data, options)
+    await Lead.findOneAndUpdate(query, data, options);
+    // Return success status
+    res.status(200).send("Ok");
+  }
+  catch (e) {
+    console.log(">>> Link Adviser Error: ", e);
+    // Return error status
+    res.status(400).send(e);
+  }
+};
+
+module.exports = {LeadUpdate, LeadSearch, LinkAdviser};
 
 /*
   const res = await Person.updateOne({ name: 'Jean-Luc Picard' }, { ship: 'USS Enterprise' });

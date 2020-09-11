@@ -29,6 +29,7 @@ async function leadAllocate(reference) {
     //
     var updateData = {
       'allocatedPractice' : "P-Test",
+      'currentStatus' : "allocated",
       'who' : "system"
     };
     var pushData = {

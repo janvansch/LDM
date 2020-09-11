@@ -5,6 +5,7 @@ const router = express.Router();
 //const {mongoose} = require('../db/mongoose');
 //const {Lead} = require('../models/lead');
 const {User} = require('../models/user');
+const {PracticeAdvisers, SkilledAdvisers} = require('../controllers/usersCtrl');
 const {authenticate} = require('../middleware/authenticate');
 
 /* GET users listing. */
@@ -28,7 +29,8 @@ router.post('/add', async (req, res) => {
 	    'phone',
 	    'cell',
       'email',
-	    'roleCode',
+      'roleCode',
+      'adviserCode',
 	    'practiceCode',
 	    'services',
       'password'
@@ -77,6 +79,7 @@ router.post('/update', (req, res) => {
     'cell',
     'email',
     'roleCode',
+    'adviserCode',
     'practiceCode',
     'services'
   ]);
@@ -91,6 +94,7 @@ router.post('/update', (req, res) => {
       'cell' : body.cell,
       'email' : body.email,
       'roleCode' : body.roleCode,
+      'adviserCode' : body.adviserCode,
       'practiceCode' : body.practiceCode,
       'services' : body.services
     },
@@ -158,37 +162,18 @@ router.get('/list', async (req, res) => {
 //     });
 // });
 
-// ----------------------------------------
-//  Get all adviser of practice
-//  - Advisers = users with roleCode = C
-//  - The practice is determined from the
-//    signed in user's practiceCode.
-// ----------------------------------------
-router.get('/advisers/:practice', async (req, res) => {
-  const practice = req.params.practice;
-  // const practice = req.query.practice
-  console.log("---> GET parameter and url: ", practice, req.url);
-  try {
-    const users = await User.find(
-      {
-        roleCode: "C",
-        practiceCode: practice
-      },
-      {
-        services : 0,
-        password : 0,
-        tokens : 0
-      }
-    )
-    .sort({surname: 1});
-    res.send(users);
-  }
-  catch (e) {
-    console.log("===> ERROR: ", e);
-    var errData = JSON.stringify(e);
-    console.log("===> ERROR Data: ", errData);
-    res.status(400).send(errData);
-  }
+// ------------------------------------------------
+//  Get all the advisers of the specified practice
+// ------------------------------------------------
+router.get('/advisers/:practice', (req, res) => {
+  PracticeAdvisers(req, res);
+});
+
+// -------------------------------------------------------------------
+//  Get all the advisers of the practice that has the required skills
+// -------------------------------------------------------------------
+router.get('/skilled/:criteria', (req, res) => {
+  SkilledAdvisers(req, res);
 });
 
 //----------------------------------------
@@ -203,8 +188,6 @@ router.delete('/users/me/token', authenticate, async (req, res) => {
     res.status(400).send();
   }
 });
-
-
 
 // ----------------------------------------
 //	Add adviser user test data via Postman

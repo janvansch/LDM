@@ -70,24 +70,40 @@ myCache.get( "myKey", function( err, value ){
 
 const app = express();
 
-// Helmet header security
-app.use(helmet());
-
+// -----------------
+// View Engine Setup
+// -----------------
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Basic middleware that every app would require
+// ----------------------------
+// app.use sets up a middleware
+// ----------------------------
+
+// -------------------------------------------------
+//  Basic middleware that is required for every app
+// -------------------------------------------------
+
+// Helmet header security
+app.use(helmet());
+
+// Data parsers - creates req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Path static content
 app.use(express.static(path.join(__dirname, 'public')));
-// Other middleware
+
+// ------------------
+//  Other middleware
+// ------------------
 app.use(cookieParser());
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use(logger('dev'));
 
-// ===============================
+// --------
 //  Routes
-// ===============================
+// --------
 app.use('/', indexRouter);
 app.use('/leads', leadsRouter);
 app.use('/practices', practicesRouter);

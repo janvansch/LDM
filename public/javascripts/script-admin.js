@@ -33,12 +33,12 @@ if (document.getElementById("roleD")) {
     viewOff("adviser-user");
   });
 }
-// ----------------------------------------------------
-//  List system users and add row select functionality
-// ----------------------------------------------------
-function listUsers() {
+// ----------------------------
+//  Open user maintenance view
+// ----------------------------
+function openUsersView() {
   //
-  // Switch panel-view on
+  // Switch panel-view on for Agent
   //
   openPanel();
   //
@@ -46,13 +46,22 @@ function listUsers() {
   //
   panelTitle("User Maintenance");
   //
-  // Switch User Maintenance Display on
+  // Switch user list display on
   //
   viewOn('panelAdminUser');
   //
-  // Switch Practise Maintenance Display off
+  // Switch practice list display off
   //
   viewOff('panelAdminPrac');
+  //
+  // Get users and list
+  //
+  listUsers();
+};
+// ---------------------------------------------
+//  List users and add row select functionality
+// ---------------------------------------------
+function listUsers() {
   //
   // Create User Data request
   //
@@ -64,7 +73,7 @@ function listUsers() {
   //  Request User Data from Server
   //
   xhrRequest(method, route, contentType, request, (err, res) => {
-    console.log(">>> res: ", res.responseText);
+    //console.log(">>> res: ", res.responseText);
     if (!err) {
       var data = JSON.parse(res.responseText);
       console.log(">>> Users: ", data);
@@ -74,7 +83,7 @@ function listUsers() {
       var layoutId = '0';
       var prompt = 'User list:';
       //
-      // Display user data in a table
+      // Display user list in a table
       //
       displayData(data, prompt, layoutId);
       //
@@ -232,9 +241,9 @@ function displayUser(userId) {
 function submitUser(action) {
   console.log("---> Action: ", action);
   //
-  //  Extract new/update user data from document
+  //  Extract new/update user data from DOM
   //
-  var formAddUser = document.getElementById("formAddUser");
+  var userForm = document.getElementById("user-form");
   var radioName = "";
   var formElement = "";
   var inputType = "";
@@ -243,18 +252,18 @@ function submitUser(action) {
   //
   formElement = "input";
   inputType = "text";
-  var userText = extractFormData(formAddUser, formElement, inputType);
+  var userText = extractFormData(userForm, formElement, inputType);
   //
   // Extract email data from add user form
   //
   formElement = "input";
   inputType = "email";
-  var userEmail = extractFormData(formAddUser, formElement, inputType);
+  var userEmail = extractFormData(userForm, formElement, inputType);
   //
   // Extract user role from add user form
   //
   radioName = "role";
-  var userRole = getRadioCheckedValue(formAddUser, radioName);
+  var userRole = getRadioCheckedValue(userForm, radioName);
   //
   // Extract Service Information for Adviser role
   //
@@ -263,7 +272,7 @@ function submitUser(action) {
     // Extract adviser service line data
     //
     var checkboxName = "line";
-    var insLine = getCheckedValues(formAddUser, checkboxName);
+    var insLine = getCheckedValues(userForm, checkboxName);
     if (Object.keys(insLine).length === 0 && insLine.constructor === Object) {
       var name = "line";
       var value = [];
@@ -281,7 +290,7 @@ function submitUser(action) {
       lines.forEach((element) => {
         var checkboxName = element;
         console.log("---> The Element: ", element);
-        var selection = getCheckedValues(formAddUser, checkboxName);
+        var selection = getCheckedValues(userForm, checkboxName);
         console.log("---> The Types selected: ", selection);
         if (Object.keys(selection).length === 0 && selection.constructor === Object) {
           var value = [];
@@ -341,30 +350,17 @@ function submitUser(action) {
   //
   xhrRequest(method, route, contentType, dataString, (err, result) => {
     if (!err) {
-      var resBody = result.responseText;
+      console.log("===> User add result: ", result.responseText);
       //
-      // Clear create user form
+      // Clear modal content
       //
-      document.getElementById("formAddUser").reset();
+      clearModal()
       //
-      // switch accreditation and skills off
+      // Close modal
       //
-      document.getElementById('s-ins-lines').style.display = 'none';
-      //
-      // Switch off skill sections
-      //
-      document.getElementById('s-pl-types').style.display = 'none';
-      document.getElementById('s-cl-types').style.display = 'none';
-      document.getElementById('s-sl-types').style.display = 'none';
-      document.getElementById('s-al-types').style.display = 'none';
-      document.getElementById('s-al-types').style.display = 'none';
-      //
-      // Close form and modal
-      //
-      document.getElementById("displayUser").style.display = 'none';
       modal.style.display = "none";
       //
-      // Update list
+      // Update user list
       //
       listUsers();
     }
@@ -378,13 +374,12 @@ function submitUser(action) {
 //============================================================================
 // Admin View - Practices
 //============================================================================
-
-// -----------------------------------
-//  Open Practice Maintenance Display
-// -----------------------------------
-function listPractices() {
+// --------------------------------
+//  Open practice maintenance view
+// --------------------------------
+function openPracticesView() {
   //
-  // Switch panel-view on
+  // Switch panel-view on for Agent
   //
   openPanel();
   //
@@ -392,13 +387,22 @@ function listPractices() {
   //
   panelTitle("Practice Maintenance");
   //
-  // Switch Practice Maintenance Display on
+  // Switch practices list display on
   //
   viewOn('panelAdminPrac');
   //
-  // Switch User Maintenance Display off
+  // Switch users list display off
   //
   viewOff('panelAdminUser');
+  //
+  // Get practices and list
+  //
+  listPractices();
+};
+// -----------------------------------
+//  Open Practice Maintenance Display
+// -----------------------------------
+function listPractices() {
   //
   // Create Practise Data request
   //
@@ -730,11 +734,11 @@ function submitPractice(action) {
   //
   //  Extract new/update practice data from DOM
   //
-  var formAddPractice = document.getElementById("formAddPractice");
+  var practiceForm = document.getElementById("practice-form");
   //
   // Do data validations
   //
-  if (formAddPractice.checkValidity() === false) {
+  if (practiceForm.checkValidity() === false) {
     alert("Practice information not valid!");
   }
   //
@@ -750,7 +754,7 @@ function submitPractice(action) {
   // If postal code entered and input attributes are valid
   // then continue else display errors
   //
-  if (cellCount > 0 && formAddPractice.checkValidity() === true) {
+  if (cellCount > 0 && practiceForm.checkValidity() === true) {
     var formElement = "";
     var inputType = "";
     //
@@ -758,13 +762,13 @@ function submitPractice(action) {
     //
     formElement = "input";
     inputType = "text";
-    var text = extractFormData(formAddPractice, formElement, inputType);
+    var text = extractFormData(practiceForm, formElement, inputType);
     //
     // Extract email data from add practice form
     //
     formElement = "input";
     inputType = "email";
-    var email = extractFormData(formAddPractice, formElement, inputType);
+    var email = extractFormData(practiceForm, formElement, inputType);
     //
     // Extract area data
     //
@@ -829,18 +833,17 @@ function submitPractice(action) {
     xhrRequest(method, route, contentType, dataString, (err, result) => {
       if (!err) {
         //
-        // Clear create practice form
-        //
-        document.getElementById("formAddPractice").reset();
-        //
-        // clear postal code table
+        // Clear postal code table
         //
         var table = document.getElementById("tablePCode");
         table.innerHTML = "<tr> </tr>";
         //
-        // Close form and modal
+        // Clear modal content
         //
-        document.getElementById("addPractice").style.display = 'none';
+        clearModal()
+        //
+        // Close modal
+        //
         modal.style.display = "none";
         //
         // Update practice list

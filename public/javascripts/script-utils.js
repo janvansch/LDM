@@ -73,7 +73,7 @@ function extractFormData(formContent, formElement, inputType) {
     console.log("===> Selector Error!");
     selector = "";
   }
-  console.log("===> Extract Form Data Selector: ", selector);
+  //console.log("===> Extract Form Data Selector: ", selector);
   //var el = document.getElementById(form).querySelectorAll(selector);
   var el = formContent.querySelectorAll(selector);
   var myData = {};

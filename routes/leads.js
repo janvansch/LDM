@@ -6,7 +6,7 @@ const router = express.Router();
 
 // const {mongoose} = require('../db/mongoose');
 const {Lead} = require('../models/lead');
-const {LeadUpdate, LeadSearch} = require('../controllers/leadsCtrl');
+const {LeadUpdate, LeadSearch, LinkAdviser} = require('../controllers/leadsCtrl');
 //const {User} = require('../models/user');
 //const {authenticate} = require('../middleware/authenticate');
 //const {leadBody} = require('../utils/leadBody');
@@ -71,13 +71,6 @@ router.post('/lead', async (req, res) => {
     var errData = JSON.stringify(e);
     res.status(400).send(errData);
   }
-});
-
-// -----------------------------------
-//  Get leads for search key
-// -----------------------------------
-router.post('/search', async (req, res) => {
-  LeadSearch(req, res);
 });
 
 // --------------------------------------
@@ -236,22 +229,9 @@ router.get('/list/:adviser', async (req, res) => {
 // -------------------------------------
 //	Update lead with adviser assignment
 // -------------------------------------
-router.post('/assignAdviser', (req, res) => {
-  console.log("===> Message: ", req.body);
-  try {
-
-    // allocate();
-
-    // var message = req.body;
-    // console.log("===> Message: ", message.message);
-    // sendSMS(message.message);
-    res.status(200).send("ok");
-  }
-  catch (e) {
-    console.log("===> ERROR: ", e.errors);
-    var errData = JSON.stringify(e);
-    res.status(400).send(errData);
-  }
+router.post('/linkAdviser', (req, res) => {
+  console.log("---> Link Adviser: ", req.body);
+  LinkAdviser(req, res);
 });
 
 //----------------------------------------
@@ -260,6 +240,13 @@ router.post('/assignAdviser', (req, res) => {
 //router.route("/update").post(LeadUpdate());
 router.post('/update', async (req, res) => {
   LeadUpdate(req, res);
+});
+
+// -----------------------------------
+//  Get leads for search key
+// -----------------------------------
+router.post('/search', (req, res) => {
+  LeadSearch(req, res);
 });
 
 module.exports = router;

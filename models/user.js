@@ -66,6 +66,23 @@ var UserSchema = new mongoose.Schema({
       required: false
     }
   }],
+  leads: {
+    assigned: {
+      type: Number
+    },
+    reject: {
+      type: Number
+    },
+    noContact: {
+      type: Number
+    },
+    quoted: {
+      type: Number
+    },
+    written: {
+      type: Number
+    }
+  },
   password: {
     type: String,
     require: true,
