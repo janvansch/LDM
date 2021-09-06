@@ -7,19 +7,24 @@
   -->
 
   <!-- Create selection checkbox for each Insurance Line -->
+  <div class="cover-flex-container">
+    <% for (var i = 0; i < productDef.length; i++) { %>
+      <div class="cover-flex-item">
 
-  <% for (var i = 0; i < productDef.length; i++) { %>
-    <span class="spacer">
-      <input
-        id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
-        type="checkbox"
-        name="prodLine"
-        value="<%= productDef[i].lineValue %>"
-        onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
-      <%= productDef[i].lineLabel %>
-    </span>
-  <% } %>
+        <input
+          id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
+          type="checkbox"
+          name="prodLine"
+          value="<%= productDef[i].lineValue %>"
+          onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
 
+        <label for="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line">
+          <%= productDef[i].lineLabel %>
+        </label>
+
+      </div>
+    <% } %>
+  </div>
   <!-- For each Insurance Line create a selection checkbox for each Type of the Insurance Line -->
 
   <!-- For each of the Insurance Lines create fieldset -->

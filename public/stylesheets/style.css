@@ -27,25 +27,20 @@ html {
   */
 }
 
-/* Set padding to use space inside the box */
+/* Set padding to use space inside the box and not to grow the box*/
 body {
   box-sizing: border-box;
   /*
     Padding consumes the content space inside the box, i.e. the content space is
     reduced, instead of making the box bigger and consuming extra screen space.
   */
-}
-
-/* =========================== */
-/*     General UI elements     */
-/* =========================== */
-
-body {
   width: 130rem;
   padding: 1rem;
   font: 1.6rem "Lucida Grande", Helvetica, Arial, sans-serif;
   line-height: 1.6;
   margin: auto;
+  box-shadow: 4px 0px 20px silver;
+
   /*
   ----------------------------------------------
    Background image from www.subtlepatterns.com
@@ -53,8 +48,47 @@ body {
   */
   /* background-image: url("../images/random_grey_variations.png"); */
   /* background-repeat: repeat-x; */
+
 }
 
+/* ============================== */
+/*            Layout              */
+/* ============================== */
+header {
+  height: 10rem;
+  background-color: silver;
+  color: white;
+  /* box-shadow: 0 4px 20px silver inset; */
+  box-shadow: 0px 0px 20px silver;
+}
+
+nav {
+  width: 100%;
+  padding: 1rem;
+  background-color: lightgrey;
+}
+
+section {
+  width: 100%;
+  max-height: 70rem;
+  overflow: auto;
+  font-size: 100%;
+  background-color: lightgrey;
+  padding: .5rem;
+}
+
+footer {
+  background-color: firebrick;
+  color: white;
+  clear: both;
+  font-size: 90%;
+  text-align: center;
+  padding: .5rem;
+}
+
+/* =========================== */
+/*     General UI elements     */
+/* =========================== */
 a {
   color: #00B7FF;
 }
@@ -138,42 +172,9 @@ input:invalid {
   font-weight: 900;
 }
 
-/* ============================== */
-/*            Layout              */
-/* ============================== */
-header {
-  height: 10rem;
-  background-color: darkblue;
-  color: white;
-}
-
-nav {
-  width: 100%;
-  padding: 1rem;
-  background-color: #ffeeff;
-}
-
-section {
-  width: 100%;
-  max-height: 70rem;
-  overflow: auto;
-  font-size: 100%;
-  background-color: rgb(244, 244, 248);
-  padding: .5rem;
-}
-
-footer {
-  background-color: firebrick;
-  color: white;
-  clear: both;
-  font-size: 90%;
-  text-align: center;
-  padding: .5rem;
-}
-
-/* ============================== */
-/*     Page Header Formatting     */
-/* ============================== */
+/* ====================================== */
+/*     Page Header Content Formatting     */
+/* ====================================== */
 #version {
   float: right;
   color: white;
@@ -184,6 +185,7 @@ footer {
 #mainTitle {
   text-align: center;
   padding-top: 1rem;
+  text-shadow: 0 0 5px red, 0 0 7px greenyellow, 0 0 9px silver;
 }
 
 #subTitle {
@@ -217,9 +219,9 @@ footer {
   cursor: pointer;
 }
 
-/* ================================ */
-/*  Formatting for flex containers  */
-/* ================================ */
+/* ========================= */
+/*  Flex Formatting Section  */
+/* ========================= */
 .flex-container {
   /* display: -webkit-flex; */
   display: flex;
@@ -231,13 +233,7 @@ footer {
   /*align-items: baseline;*/
 }
 
-.flex-container-time {
-  /* display: -webkit-flex; */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  /*justify-content: center;*/
-}
+
 
 .flex-container-progress {
   /* display: -webkit-flex; */
@@ -298,24 +294,173 @@ footer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  justify-content: center;
   /* height: 40px; */
 }
 
 .cover-flex-item {
   flex-grow: 0;
-  margin-left: 1.2rem;
-  margin-right: 1.2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   /* margin: auto;*/
 }
 
 /* Format input element inside flex item */
 .cover-flex-item input {
-  margin-top: 3px;
-  margin-bottom: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
   padding: 1px;
 }
+
+/* The below formats checkboxes into button like shapes */
+.cover-flex-item label{
+  display: inline-block;
+  background-color: rgba(255, 255, 255, .9);
+  border: 1px solid rgba(139, 139, 139, .3);
+  color:gray;
+  border-radius: 25px;
+  white-space: nowrap;
+  margin: 2px 0px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all .2s;
+  padding: 2px 6px; /* 8px 12px */
+  cursor: pointer;
+}
+
+.cover-flex-item label::before {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  /* font-family: "Font Awesome 5 Free"; */
+  font-weight: 900;
+  font-size: 1rem /* 12px */;
+  padding: 2px 2px 2px 2px;
+  content: "+"  /* "\f067" */;
+  transition: transform .3s ease-in-out;
+}
+
+.cover-flex-item input[type="checkbox"]:checked + label::before {
+  /*  For a checkbox the label is after the input element
+      The above selector selects the adjacent (+) label, i.e.
+      the label after the checked input element */
+  content: "\2713" /*"\f00c" */;
+  transform: rotate(-360deg);
+  transition: transform .3s ease-in-out;
+}
+
+.cover-flex-item input[type="checkbox"]:checked + label {
+  border: 1px solid #1bdbf8;
+  background-color: #12bbd4;
+  color: #fff;
+  transition: all .2s;
+}
+
+.cover-flex-item input[type="checkbox"] {
+  display: absolute;
+  position: absolute;
+  opacity: 0;
+}
+
+.cover-flex-item input[type="checkbox"]:focus + label {
+  border: 1px solid #e9a1ff;
+}
+
+/* ------------------------------------------
+    Contact Day & Time Preferences formating
+   ------------------------------------------ */
+.time-flex-container {
+  /* display: -webkit-flex; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /*justify-content: center;*/
+}
+
+.time-flex-item {
+  flex-grow: 0;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  /* margin: auto;*/
+}
+
+/* Format input element inside flex item */
+.time-flex-item input {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 1px;
+}
+
+/* The below formats checkboxes into button like shapes */
+.time-flex-item label{
+  display: inline-block;
+  background-color: rgba(255, 255, 255, .9);
+  border: 1px solid rgba(139, 139, 139, .3);
+  color:gray;
+  border-radius: 25px;
+  white-space: nowrap;
+  margin: 2px 0px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all .2s;
+  padding: 2px 6px; /* 8px 12px */
+  cursor: pointer;
+}
+
+.time-flex-item label::before {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  /* font-family: "Font Awesome 5 Free"; */
+  font-weight: 900;
+  font-size: 1rem /* 12px */;
+  padding: 2px 2px 2px 2px;
+  content: "+"  /* "\f067" */;
+  transition: transform .3s ease-in-out;
+}
+
+.time-flex-item input[type="checkbox"]:checked + label::before {
+  /*  For a checkbox the label is after the input element
+      The above selector selects the adjacent (+) label, i.e.
+      the label after the checked input element */
+  content: "\2713" /*"\f00c" */;
+  transform: rotate(-360deg);
+  transition: transform .3s ease-in-out;
+}
+
+.time-flex-item input[type="checkbox"]:checked + label {
+  border: 1px solid #1bdbf8;
+  background-color: #12bbd4;
+  color: #fff;
+  transition: all .2s;
+}
+
+.time-flex-item input[type="checkbox"] {
+  display: absolute;
+  position: absolute;
+  opacity: 0;
+}
+
+.time-flex-item input[type="checkbox"]:focus + label {
+  border: 1px solid #e9a1ff;
+}
+
+
 
 /* =============================== */
 /*    General Nav Menu elements    */

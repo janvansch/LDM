@@ -148,7 +148,8 @@ var loginUser = async (req, res) => {
       //
       const options = [
         {func:'profile()',text:'Edit Profile'},
-        {func:'openLeadsView("Adviser")',text:'View Assigned Leads'}
+        {func:'openLeadsView("Adviser")',text:'View Assigned Leads'},
+        {func:'openQuoteView("Adviser")',text:'View Quotes'}
         //{func:'listAdvClients(user)',text:'View Clients'}
       ];
       //
