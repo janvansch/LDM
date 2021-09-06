@@ -11,24 +11,24 @@
     "body-parser": "^1.19.0",
     "clickatell-platform": "^2.0.11",
     "cookie-parser": "^1.4.5",
-    "debug": "~2.6.9",
-    "ejs": "~2.5.7",
-    "ejs-lint": "^0.3.0",
-    "express": "^4.16.4",
+    "debug": "~4.3.2",
+    "ejs": "~3.1.6",
+    "ejs-lint": "^1.2.1",
+    "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "helmet": "^3.23.3",
-    "http-errors": "~1.6.2",
+    "helmet": "^4.6.0",
+    "http-errors": "~1.8.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
-    "mongoose": "^5.9.21",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.0.4",
     "morgan": "^1.10.0",
-    "node-cache": "^4.2.1",
-    "nodemailer": "^4.7.0",
+    "node-cache": "^5.1.2",
+    "nodemailer": "^6.6.3",
     "serve-favicon": "^2.5.0",
     "url": "^0.11.0",
-    "validator": "^10.11.0"
+    "validator": "^13.6.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^2.0.12"
   }
 }
