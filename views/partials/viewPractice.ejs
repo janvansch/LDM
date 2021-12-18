@@ -1,10 +1,15 @@
 <!--
-========================================
-=== List Leads Allocated to Practice ===
-========================================
+===================================================================
+  The UI views for the functionality of a user with a practice role
+===================================================================
+-->
+<!--
+----------------------------------------
+--- List Leads Allocated to Practice ---
+----------------------------------------
 -->
 <div id="panelLeadList" style="display:none">
-  <span class="closeP" onclick="javascript:leadsViewOff()">&times;</span>
+  <span class="closeP" id="end-leads-view">&times;</span>
   <h3 id="title1">Allocated Leads List</h3>
 
   <hr/>
@@ -31,7 +36,8 @@
     <label for="lead-assign-service-filter">Service Line:</label>
     <input id="lead-assign-service-filter" type="text" placeholder="Service" title="Service" size="3"/>
 
-    <input id="apply-prac-filter" type="button" value="Apply Filter" onclick="filterTable('tPos1', '1')"/>
+    <input id="apply-prac-filter" type="button" value="Apply Filter"/>
+    <!-- filterTable("tPos1", "1") -->
   </div>
 
   <div id="tPos1">
@@ -47,12 +53,12 @@
   -->
 </div>
 <!--
-========================================
-=== List Advisers Linked to Practice ===
-========================================
+----------------------------------------
+--- List Advisers Linked to Practice ---
+----------------------------------------
 -->
 <div id="panelAdvList" style="display:none">
-  <span class="closeP" onclick="javascript:AdvViewOff()">&times;</span>
+  <span class="closeP" id="end-adviser-view">&times;</span>
   <h3 id="title3">Adviser List</h3>
 
   <hr/>
@@ -68,9 +74,10 @@
 
   <hr/>
 
-  <input type="button" value="Add Adviser" onclick="javascript:addAdviser();"/>
-  <input type="button" value="Update Adviser" onclick="javascript:updateAdviser();"/>
-  <input type="button" value="Remove Adviser" onclick="javascript:removeAdviser();"/>
+  <input type="button" id="link-adviser" value="Add Adviser"/>
+  <input type="button" id="amend-adviser" value="Update Adviser"/>
+  <input type="button" id= "delink-adviser" value="Remove Adviser"/>
+  <!-- Removes the association of the adviser to the practice -->
 
 </div>
 
@@ -78,14 +85,16 @@
 
 
 <!--
-=== Allocate Lead to Adviser ===
+------------------------------
+--- Assign Adviser to Lead ---
+------------------------------
 -->
 
 <div id="allocate" style="display:none">
   <fieldset>
     <legend>Practice View</legend>
     <br/>
-    <input type="button" value="Allocate" onclick="allocLead()"/>
+    <input id="assign-adviser" type="button" value="Assign" onclick="allocLead()"/>
   </fieldset>
   <br/>
 </div>

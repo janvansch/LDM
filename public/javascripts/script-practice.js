@@ -4,19 +4,54 @@
 //  Practice View Click Event Controller
 // ======================================
 
-// -------------------
-//  Assign Lead Event
-// -------------------
+// -------------------------
+//  Assign lead click event
+// -------------------------
 if (document.getElementById("assignLead")) {
   document.getElementById("assignLead").addEventListener("click", function() {
     displaySkilledAdvisers();
   });
 }
 
+// -----------------------------------------------------------
+//  Postal codes serviced by practice maintenace click events
+// -----------------------------------------------------------
+var linkRef = document.getElementById('add-pcode');
+if (linkRef) {
+  linkRef.addEventListener("click", () => addPostalCode());
+}
+
+var linkRef = document.getElementById('update-pcode');
+if (linkRef) {
+  linkRef.addEventListener("click", () => amendPostalCodeList('update'));
+}
+
+var linkRef = document.getElementById('remove-pcode');
+if (linkRef) {
+  linkRef.addEventListener("click", () => amendPostalCodeList('remove'));
+}
+
+// ----------------------------------
+//  Practice maintenace click events
+// ----------------------------------
+var linkRef = document.getElementById('formAddPractice');
+if (linkRef) {
+  linkRef.addEventListener("click", () => submitPractice('add'));
+}
+
+var linkRef = document.getElementById('formUpdatePractice');
+if (linkRef) {
+  linkRef.addEventListener("click", () => submitPractice('update'));
+}
+
+var linkRef = document.getElementById('formDeletePractice');
+if (linkRef) {
+  linkRef.addEventListener("click", () => deletePractice());
+}
+
 // ===========================================================================
 //  Practice View Controller - Leads Functionality (leads route and model)
 // ===========================================================================
-//
 
 // ------------------
 //  Close leads view

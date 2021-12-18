@@ -3,8 +3,8 @@
 === View Leads Panel ===
 ========================
 -->
-<div id=panelViewLead style="display:none">
-  <span class="closeP" onclick="javascript:closeViewLeads()">&times;</span>
+<div id=panelLeadsView style="display:none">
+  <span class="closeP" id="close-leads-view">&times;</span>
   <h3 id="title">Click Find to View leads</h3>
   <hr/>
   <div id="lead-selector">
@@ -23,9 +23,9 @@
     ID/Registration Number
     <input type="text" id="view-lead-ref-id" placeholder="ID/Registration No." title="ID/Registration Nunmber">
     <!-- Find button -->
-    <input id="find-lead-btn" type="button" value="Find" onclick="javascript:listLeads()"/>
+    <input id="find-lead-btn" type="button" value="Find"/>
     <!-- Add Lead Button -->
-    <input id="add-lead-btn" type="button" value="Add Lead" onclick="javascript:addLead()"/>
+    <input id="add-lead-btn" type="button" value="Add Lead"/>
   </div>
   <b>Find Result:</b>
   <br/>

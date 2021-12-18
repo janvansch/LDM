@@ -20,12 +20,12 @@
 
   <!-- Page Header Content -->
   <header>
-    <% include ./partials/uiHeader %>
+    <%- include('partials/uiHeader'); %>
   </header>
 
   <!-- Role Navigation Content -->
   <nav id="nav" style="display:none">
-    <% include ./partials/uiNav %>
+    <%- include('partials/uiNav'); %>
   </nav>
 
   <!-- Role Function Content -->
@@ -33,7 +33,7 @@
 
     <!-- Modal View Placeholder -->
     <% if (modal === "yes") { %>
-      <% include ./partials/modal %>
+      <%- include('partials/modal'); %>
     <% } %>
 
     <!-- Display Required UI View -->
@@ -41,37 +41,37 @@
     <% if (view === "admin") { %>
       <!-- Admin Maintenence View -->
       <div id="viewAdmin" style="display:block">
-        <% include ./partials/viewAdmin %>
+        <%- include('partials/viewAdmin'); %>
       </div>
     <% } %>
 
     <% if (view === "agent") { %>
       <!-- Leads Agent View -->
       <div id="viewLead" style="display:block">
-        <% include ./partials/viewLead %>
+        <%- include('partials/viewLead'); %>
       </div>
     <% } %>
 
     <% if (view === "practice") { %>
       <!-- Practise View -->
       <div id="viewPractice" style="display:block">
-        <% include ./partials/viewPractice %>
-        <% include ./partials/viewLead %>
+        <%- include('partials/viewPractice'); %>
+        <%- include('partials/viewLead'); %>
       </div>
     <% } %>
 
     <% if (view === "adviser") { %>
       <!-- Adviser View -->
       <div id="viewAdviser" style="display:block">
-        <% include ./partials/viewAdviser %> <!-- Remove, not necessary? -->
-        <% include ./partials/viewLead %>
+        <%- include('partials/viewAdviser'); %> <!-- Remove, not necessary? -->
+        <%- include('partials/viewLead'); %>
       </div>
     <% } %>
 
 	</section>
 
 	<footer>
-    <% include ./partials/uiFooter %>
+    <%- include('partials/uiFooter'); %>
 	</footer>
 
 </body>

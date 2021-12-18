@@ -6,6 +6,66 @@
 //
 // the preferred way: element.addEventListener('click', myFunctionReference , false);
 //
+// ---------------------------------------
+//  Leads list view button event handlers
+// ---------------------------------------
+if (document.getElementById('close-leads-view')) {
+  document.getElementById('close-leads-view').addEventListener("click", function() {
+    closeLeadsView();
+  });
+}
+
+if (document.getElementById("find-lead-btn")) {
+  document.getElementById("find-lead-btn").addEventListener("click", function() {
+    listLeads();
+  });
+}
+
+if (document.getElementById("add-lead-btn")) {
+  document.getElementById("add-lead-btn").addEventListener("click", function() {
+    addLead();
+  });
+}
+
+// ------------------------------------------
+//  Lead capture screen control click events
+// ------------------------------------------
+var linkRef = document.getElementById('assign-agent');
+if (linkRef) {
+  linkRef.addEventListener("click", () => assignFork());
+}
+
+linkRef = document.getElementById('assign-adviser');
+if (linkRef) {
+  linkRef.addEventListener("click", () => assignFork());
+}
+
+linkRef = document.getElementById('trfYes');
+if (linkRef) {
+  linkRef.addEventListener("click", () => leadOk());
+}
+
+linkRef = document.getElementById('trfNo');
+if (linkRef) {
+  linkRef.addEventListener("click", () => leadOk());
+}
+//
+//  Display insurance type selection based on the Insurance line selection
+//
+// Get elements of class ins-line
+var insureLine = document.querySelectorAll('input.ins-line');
+console.log("===> Insurance lines: ", insureLine);
+insureLine.forEach(item => {
+  var idRef = item.id
+  console.log("---> item: ", idRef);
+  // Get the id of the element
+  var linkRef = document.getElementById(idRef);
+  if (linkRef) {
+    // Setup click event toggle type display
+    linkRef.addEventListener("click", () => typeSwitch(idRef.substring(0,4)));
+  }
+});
+
 // --------------------------------
 //  Information popup open & close
 // --------------------------------
@@ -35,6 +95,7 @@ if (document.getElementById("updateLead")) {
     updateLead();
   });
 }
+
 // -------------------------------
 //  Lead accept click event setup
 // -------------------------------
@@ -191,13 +252,13 @@ function openLeadsView(title) {
   //
   // Switch Leads List Panel on
   //
-  viewOn('panelViewLead');
+  viewOn('panelLeadsView');
   // The leads selection criteria is now displayed
   // Restore comment
   document.getElementById("tPos").innerHTML = 'Enter lead selection criteria and click "Find"';
 };
 
-function closeViewLeads() {
+function closeLeadsView() {
   //
   // Clear filter selections
   //

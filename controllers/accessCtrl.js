@@ -90,9 +90,9 @@ var loginUser = async (req, res) => {
       // Menu definition
       //
       const options = [
-        {func:'profile()',text:'Edit Profile'},
-        {func:'openPracticesView()',text:'View Practices'},
-        {func:'openUsersView()',text:'View Users'}
+        {funcId:'profile',text:'Edit Profile'},
+        {funcId:'practices',text:'View Practices'},
+        {funcId:'users',text:'View Users'}
       ];
       //
       // View definition
@@ -116,13 +116,13 @@ var loginUser = async (req, res) => {
       // Menu definition - function to call & menu text
       //
       const options = [
-        {func:'profile()',text:'Edit Profile'},
-        {func:'openLeadsView("Practice")',text:'View Leads'},
+        {funcId:'profile',text:'Edit Profile'},
+        {funcId:'practice-leads',text:'View Leads'},
         // Practice leads list with user selection criteria (user practice code fixed)
-        {func:'allocatedLeadsView()',text:'Assign Leads'},
+        {funcId:'allocated-leads',text:'Assign Leads'},
         // Practice leads list with set selection criteria (user practice code and allocated status)
         // The list has filter functionality
-        {func:'listAdvisers()',text:'View Advisers'}
+        {funcId:'practice-advisers',text:'View Advisers'}
         // List the advisers of the practice
       ];
       //
@@ -147,9 +147,9 @@ var loginUser = async (req, res) => {
       // Menu definition
       //
       const options = [
-        {func:'profile()',text:'Edit Profile'},
-        {func:'openLeadsView("Adviser")',text:'View Assigned Leads'},
-        {func:'openQuoteView("Adviser")',text:'View Quotes'}
+        {funcId:'profile',text:'Edit Profile'},
+        {funcId:'adviser-leads',text:'View Assigned Leads'},
+        {funcId:'adviser-quotes',text:'View Quotes'}
         //{func:'listAdvClients(user)',text:'View Clients'}
       ];
       //
@@ -174,9 +174,9 @@ var loginUser = async (req, res) => {
       // Menu definition
       //
       const options = [
-        {func:'profile()',text:'Edit Profile'},
+        {funcId:'profile',text:'Edit Profile'},
         // {func:'openAddLead()',text:'Add Lead'},
-        {func:'openLeadsView("")',text:'Leads'}
+        {funcId:'leads',text:'Leads'}
       ];
       //
       // View definition for index.ejs

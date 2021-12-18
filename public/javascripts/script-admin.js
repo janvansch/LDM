@@ -1,7 +1,57 @@
 "use strict";
+
 //============================================================================
 // Admin View - System Users
 //============================================================================
+//
+// ---------------------------------------
+//  User list screen control click events
+// ---------------------------------------
+var idRef = document.getElementById('close-users-view');
+if (idRef) {
+  idRef.addEventListener("click", () => openMenu());
+}
+
+var idRef = document.getElementById('add-user');
+if (idRef) {
+  idRef.addEventListener("click", () => addUser());
+}
+
+// --------------------------------
+//  User view control click events
+// --------------------------------
+var idRef = document.getElementById('form-add-user');
+if (idRef) {
+  idRef.addEventListener("click", () => submitUser('add'));
+}
+
+var idRef = document.getElementById('form-update-user');
+if (idRef) {
+  idRef.addEventListener("click", () => submitUser('update'));
+}
+
+var idRef = document.getElementById('form-delete-user');
+if (idRef) {
+  idRef.addEventListener("click", () => deleteUser());
+}
+
+// ------------------------------------------------------------------------
+//  Display insurance type selection based on the Insurance line selection
+// ------------------------------------------------------------------------
+// Get elements of class ins-line
+var insureLine = document.querySelectorAll('input.ins-line-s');
+console.log("===> Insurance lines: ", insureLine);
+insureLine.forEach(item => {
+  var idRef = item.id
+  console.log("---> item: ", idRef);
+  // Get the id of the element
+  var linkRef = document.getElementById(idRef);
+  if (linkRef) {
+    // Setup click event toggle type display
+    linkRef.addEventListener("click", () => typeSwitch(idRef.substring(0,4)));
+  }
+});
+
 // ------------------------------------------
 //  User Role Selection Click Event Handlers
 // ------------------------------------------
@@ -374,6 +424,19 @@ function submitUser(action) {
 //============================================================================
 // Admin View - Practices
 //============================================================================
+// -------------------------------------------
+//  Practice list screen control click events
+// -------------------------------------------
+var idRef = document.getElementById('close-practice-view');
+if (idRef) {
+  idRef.addEventListener("click", () => openMenu());
+}
+
+idRef = document.getElementById('add-practice');
+if (idRef) {
+  idRef.addEventListener("click", () => addPractice());
+}
+
 // --------------------------------
 //  Open practice maintenance view
 // --------------------------------
@@ -523,7 +586,7 @@ function displayPractice(practiceCode) {
 }
 
 // --------------------------------------------
-//  Check if new code is a duplicate post code
+//  Check if new code is a duplicate post code --- move to general
 // --------------------------------------------
 function dupPostCode(code){
   var table = document.getElementById("tablePCode");
@@ -543,7 +606,7 @@ function dupPostCode(code){
 }
 
 // -------------------------------
-//  Process add postal code event
+//  Process add postal code event --- move to general
 // -------------------------------
 function addPostCode() {
   //
@@ -616,7 +679,7 @@ function addPostCode() {
 }
 
 // ----------------------------
-//  Update postal code display
+//  Update postal code display --- move to general
 // ----------------------------
 function insertPostCode(code) {
   const table = document.getElementById("tablePCode");
@@ -669,7 +732,7 @@ function insertPostCode(code) {
 }
 
 // ---------------------------------------------------------------
-//  Display selected postal code for maintenance - edit or delete
+//  Display selected postal code for maintenance - edit or delete --- move to general
 // ---------------------------------------------------------------
 function displayPostCode(pCode) {
   console.log("---> Post Code selected: ", pCode);
@@ -696,10 +759,10 @@ function displayPostCode(pCode) {
   localStorage.setItem("columnIndex", columnIndex);
 }
 
-// ------------------------------------------
-//  Update postal code list with maintenance
-// ------------------------------------------
-function updatePostCodeList(action) {
+// --------------------------------------------
+//  Amend postal code list with action request --- move general
+// --------------------------------------------
+function amendPostCodeList(action) {
   const table = document.querySelector('#tablePCode');
   const rowIndex = localStorage.getItem("rowIndex");
   const columnIndex = localStorage.getItem("columnIndex");

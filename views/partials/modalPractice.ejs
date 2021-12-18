@@ -1,5 +1,9 @@
 <!--
-Practice Description attributes
+  ===============================================================================
+  Practice Maintenance - Add, Update and Delete
+  Deleting a practice would have to be done subject to conditions
+  For example the practice should have no advisers and no leads associated to it.
+  ===============================================================================
 -->
 <fieldset>
   <legend>Practice Information:</legend>
@@ -62,17 +66,17 @@ Practice Description attributes
   <label id="addPostCode" style="display:block">
     Enter Postal Code to add:
     <input id="pCode" type="text" name="postalCode" size="15"/>
-    <button type="button" onclick="addPostCode()">
+    <button id=add-pcode type="button">
       Add
     </button>
   </label>
   <label id="editPostCode" style="display:none">
     Edit selected Postal Code:
     <input id="selectedPCode" type="text" name="postalCode" size="15"/>
-    <button type="button" onclick="updatePostCodeList('update')">
+    <button id=update-pcode type="button">
       Update
     </button>
-    <button type="button" onclick="updatePostCodeList('remove')">
+    <button id=remove-pcode type="button">
       Delete
     </button>
   </label>
@@ -88,11 +92,11 @@ Practice Description attributes
 
 <div id="addPracticeButtons" style="display:none">
   <!-- <input id="formAddPractice addPractice" type="submit" value="Add Practice"/> -->
-  <input id="formAddPractice" type="button" value="Add Practice" onclick="submitPractice('add')"/>
+  <input id="formAddPractice" type="button" value="Add Practice"/>
 </div>
 <div id="updatePracticeButtons" style="display:none">
-  <input id="formUpdatePractice updatePractice" type="button" value="Update Practice" onclick="submitPractice('update')"/>
-  <input id="formDeletePractice removePractice" type="button" value="Delete Practice" onclick="deletePractice()"/>
+  <input id="formUpdatePractice updatePractice" type="button" value="Update Practice"/>
+  <input id="formDeletePractice removePractice" type="button" value="Delete Practice"/>
 </div>
 
 

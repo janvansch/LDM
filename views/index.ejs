@@ -15,7 +15,7 @@
 
   <!-- Page Header Content -->
   <header>
-    <% include ./partials/uiHeader %>
+    <%- include('partials/uiHeader'); %>
   </header>
 
   <section id="login-section" style="display:none">
@@ -23,14 +23,14 @@
     <!-- Display Login View -->
     <% if (view === "login") { %>
       <div id="login-view" style="display:block">
-        <% include ./partials/viewLogin %>
+        <%- include('partials/viewLogin'); %>
       </div>
     <% } %>
 
 	</section>
 
 	<footer>
-    <% include ./partials/uiFooter %>
+    <%- include('partials/uiFooter'); %>
 	</footer>
 
 </body>

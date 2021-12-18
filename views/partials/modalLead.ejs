@@ -1,16 +1,16 @@
 <fieldset>
   <legend>Contact Information</legend>
-  <% include ./contact %>
+  <%- include('contact'); %>
 </fieldset>
 
 <fieldset>
   <legend>Information:</legend>
-  <% include ./info %>
+  <%- include('info'); %>
 </fieldset>
 
 <fieldset>
   <legend>Cover Required*:</legend>
-  <% include ./cover %>
+  <%- include('cover'); %>
 </fieldset>
 
 <!-- Assign to Agent or Adviser -->
@@ -22,15 +22,13 @@
           type="radio"
           name="servicerType"
           value="agent"
-          onclick="javascript:assignFork();"
   />
   <label for="assign-agent">Me</label>
 
-  <input  id=assign-adviser
+  <input  id="assign-adviser"
           type="radio"
           name="servicerType"
           value="adviser"
-          onclick="javascript:assignFork();"
   />
   <label for="assign-adviser">
     Adviser
@@ -46,11 +44,11 @@
   Do you confirm that the contact understands and agrees
   to follow-up contact from an accredited Tied Adviser?
   <label for="trfYes">
-    <input id="trfYes" type="radio" name="trfApproval" onclick="javascript:leadOk();"/>
+    <input id="trfYes" type="radio" name="trfApproval" />
     Yes
   </label>
   <label for="trfNo">
-    <input id="trfNo" type="radio" name="trfApproval" onclick="javascript:leadOk();"/>
+    <input id="trfNo" type="radio" name="trfApproval" />
     No
   </label>
 </div>
@@ -68,11 +66,11 @@
 <div id="yesForm" style="display:none">
   <fieldset>
     <legend>Contact's Location & Postal Information:</legend>
-    <% include ./location %>
+    <%- include('location'); %>
   </fieldset>
 
   <fieldset>
     <legend>Contact's Preferred Contact Times:</legend>
-    <% include ./time %>
+    <%- include('time'); %>
   </fieldset>
 </div>

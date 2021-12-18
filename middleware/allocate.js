@@ -45,11 +45,11 @@ async function leadAllocate(reference) {
     // Execute update - Model.method(query, data, options)
     await Lead.findOneAndUpdate(query, data, options);
     // Return success status
-    result = "Ok";
+    var result = "Ok";
     return result;
   }
   catch (e) {
-    result = "Error";
+    var result = "Error";
     return result;
   }
 };

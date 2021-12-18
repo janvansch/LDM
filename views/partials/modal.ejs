@@ -25,7 +25,7 @@
         <!-- User Detail View -->
         <div id="user-view" style="display:none">
           <form id="user-form">
-            <% include ./modalUser %>
+            <%- include('modalUser'); %>
           </form>
         </div>
       <% } %>
@@ -34,7 +34,7 @@
         <!-- Practice Detail View -->
         <div id="practice-view" style="display:none">
           <form id="practice-form">
-            <% include ./modalPractice %>
+            <%- include('modalPractice'); %>
           </form>
         </div>
       <% } %>
@@ -43,7 +43,7 @@
         <!-- Lead form for viewing and adding a lead -->
         <div id="lead-view" style="display:none">
           <form id="lead-form">
-            <% include ./modalLead %>
+            <%- include('modalLead'); %>
           </form>
         </div>
 
@@ -56,13 +56,13 @@
             When viewing a lead this is always displayed to update the progress of the lead
           -->
           <form id="leadProgressForm">
-            <% include ./progress %>
+            <%- include('progress'); %>
           </form>
         </div>
 
         <!-- Lead action buttons -->
         <div id="lead-action-buttons">
-          <% include ./leadButtons %>
+          <%- include('leadButtons'); %>
         </div>
 
         <!-- Place holder for messages -->
@@ -74,7 +74,7 @@
         <!-- Skilled Advisers -->
         <div id="skilled-adv" style="display:none">
           <form id="adv-list">
-            <% include ./modalSkill %>
+            <%- include('modalSkill'); %>
           </form>
         </div>
       <% } %>
@@ -86,7 +86,7 @@
         <!-- Profile Detail View -->
         <div id="editProfile" style="display:none">
           <form id="formProfile">
-            <% include ./modalProfile %>
+            <%- include('modalProfile'); %>
           </form>
         </div>
       <% } %>

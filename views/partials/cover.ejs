@@ -12,12 +12,12 @@
       <div class="cover-flex-item">
 
         <input
+          class="ins-line"
           id="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
           type="checkbox"
           name="prodLine"
           value="<%= productDef[i].lineValue %>"
-          onclick="javascript:typeSwitch('v-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
-
+        >
         <label for="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line">
           <%= productDef[i].lineLabel %>
         </label>

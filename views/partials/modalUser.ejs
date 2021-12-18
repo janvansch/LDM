@@ -74,12 +74,16 @@ User Role Selection
     <!-- Insurance Lines Selection Checkbox -->
     <% for (var i = 0; i < productDef.length; i++) { %>
       <input id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line"
+        class="ins-line-s"
         type="checkbox"
         name="line"
         value="<%= productDef[i].lineValue %>"
-        onclick="javascript:typeSwitch('s-<%= productDef[i].lineValue.toLocaleLowerCase() %>');">
-      <%= productDef[i].lineLabel %>
+      >
+      <label for="v-<%= productDef[i].lineValue.toLocaleLowerCase() %>-line">
+        <%= productDef[i].lineLabel %>
+      </label>
     <% } %>
+
     <!-- Insurance Line Types Selection Checkbox -->
     <% for (var i = 0; i < productDef.length; i++) { %>
       <div id="s-<%= productDef[i].lineValue.toLocaleLowerCase() %>-types" style="display:none">
@@ -111,9 +115,9 @@ User Role Selection
 </div>
 
 <div id="addUserButtons" style="display:none">
-  <input id="formAddUser" type="button" value="Add User" onclick="submitUser('add')"/>
+  <input id="form-add-user" type="button" value="Add User" onclick="submitUser('add')"/>
 </div>
 <div id="updateUserButtons" style="display:none">
-  <input id="formUpdateUser" type="button" value="Update User" onclick="submitUser('update')"/>
-  <input id="formDeleteUser" type="button" value="Delete User" onclick="deleteUser()"/>
+  <input id="form-update-user" type="button" value="Update User" onclick="submitUser('update')"/>
+  <input id="form-delete-user" type="button" value="Delete User" onclick="deleteUser()"/>
 </div>

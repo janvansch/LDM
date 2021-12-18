@@ -3,7 +3,7 @@
   <ul class="nav-menu-list">
     <h3><%= title %></h3>
     <% menuDef.forEach(function(option){ %>
-      <li class="nav-menu-item" onclick=<%= option.func %>>
+      <li class="nav-menu-item" id="<%= option.funcId %>" >
         <a href="#"><%= option.text %></a>
       </li>
     <% }) %>
