@@ -112,63 +112,54 @@ if (document.getElementById("profile")) {
   });
 }
 
-// ----------------------------------------
-//  Admin Role (A) Option - View Practices
-// ----------------------------------------
-if (document.getElementById("practices")) {
-  document.getElementById("practices").addEventListener("click", function() {
+// -----------------------------
+//  Admin Role (A) Menu Options
+// -----------------------------
+//  View Practices
+if (document.getElementById("admin-practices")) {
+  document.getElementById("admin-practices").addEventListener("click", function() {
     openPracticesView();
   });
 }
-
-// ------------------------------------
-//  Admin Role (A) Option - View Users
-// ------------------------------------
-if (document.getElementById("users")) {
-  document.getElementById("users").addEventListener("click", function() {
+//  View Users
+if (document.getElementById("admin-users")) {
+  document.getElementById("admin-users").addEventListener("click", function() {
     openUsersView();
   });
 }
 
-// ---------------------------------------
-//  Practice Role (B) Option - View Leads
-// ---------------------------------------
+// --------------------------------
+//  Practice Role (B) Menu Options
+// --------------------------------
+//  View Leads
 if (document.getElementById("practice-leads")) {
   document.getElementById("practice-leads").addEventListener("click", function() {
     openLeadsView("Practice");
   });
 }
-
-// -----------------------------------------
-//  Practice Role (B) Option - Assign Leads
-// -----------------------------------------
+//  Assign Leads
 if (document.getElementById("allocated-leads")) {
   document.getElementById("allocated-leads").addEventListener("click", function() {
     allocatedLeadsView();
   });
 }
-
-// ------------------------------------------
-//  Practice Role (B) Option - View Advisers
-// ------------------------------------------
+//  View Advisers
 if (document.getElementById("practice-advisers")) {
-  document.getElementById("practice-adviser").addEventListener("click", function() {
+  document.getElementById("practice-advisers").addEventListener("click", function() {
     listAdvisers();
   });
 }
 
-// -----------------------------------------------
-//  Adviser Role (C) Option - View Assigned Leads
-// -----------------------------------------------
+// -------------------------------
+//  Adviser Role (C) Menu Options
+// -------------------------------
+//  View Assigned Leads
 if (document.getElementById("adviser-leads")) {
   document.getElementById("adviser-leads").addEventListener("click", function() {
     openLeadsView("Adviser");
   });
 }
-
-// ---------------------------------------
-//  Adviser Role (C) Option - View Quotes
-// ---------------------------------------
+//  View Quotes
 if (document.getElementById("adviser-quotes")) {
   document.getElementById("adviser-quotes").addEventListener("click", function() {
     openQuoteView("Adviser");
@@ -176,8 +167,9 @@ if (document.getElementById("adviser-quotes")) {
 }
 
 // -------------------------------
-//  Agent Role (D) Option - Leads
+//  Agent Role (D) Menu Options
 // -------------------------------
+//  Leads
 if (document.getElementById("leads")) {
   document.getElementById("leads").addEventListener("click", function() {
     openLeadsView("");
@@ -751,8 +743,7 @@ function filterDef(filterId) {
   return filter;
 };
 
-console.log("Valid links for current role marked with *** ");
-const clickId = [
+// Click Documentation:
   // {ref:'leadButton',id:'rejectLeadP',func:'rejectLead("P")'},
   // {ref:'leadButton',id:'adv-updateLead',func:'updateLead()'},
   // {ref:'modalLead',id:'assign-agent',func:'assignFork()'},
@@ -760,8 +751,8 @@ const clickId = [
   // {ref:'modalLead',id:'trfYes',func:'leadOk()'},
   // {ref:'modalLead',id:'trfNo',func:'leadOk()'},
 
-  {ref:'progress',id:'progress-update',func:'updateLeadProgress()'},
-  {ref:'progress',id:'progress-reset',func:'resetLeadProgressForm()'},
+  // {ref:'progress',id:'progress-update',func:'updateLeadProgress()'},
+  // {ref:'progress',id:'progress-reset',func:'resetLeadProgressForm()'},
 
   // {ref:'modalPractice',id:'add-pcode',func:'addPostCode()'},
   // {ref:'modalPractice',id:'update-pcode',func:'amendPostCodeList("update")'},
@@ -787,18 +778,3 @@ const clickId = [
   // {ref:'viewAdmin',id:'add-practice',func:'addPractice()'},
   // {ref:'viewAdmin',id:'close-users-view',func:'openMenu()'},
   // {ref:'viewAdmin',id:'add-user',func:'addUser()'},
-
-  {ref:'viewAdviser',id:'update-lead',func:'updateAdviser()'},
-  {ref:'viewAdviser',id:'reject-lead',func:'rejectLead()'},
-  {ref:'viewAdviser',id:'close-lead',func:'closeLead()'}
-
-
-];
-let idRef;
-clickId.forEach((item) => {
-  console.log(">>> id: ", item.id, " Func: ", item.func);
-  idRef = document.getElementById(item.id)
-  if (idRef) {
-    console.log("*** id: ", item.id, " Func: ", item.func);
-  }
-});

@@ -5,7 +5,7 @@ I use this project as a learning area where I try to apply practically what I ha
 
 Say a company has a website from which a prospect can contact a contact centre or request to be contacted. The call or the mail would be routed to a contact centre agent who would process the request. In case of a mail the agent will call the prospect.
 
-The agent would assess if the company can provide the service the prospect requires. If so, the agent will create a lead in this app. If the agent can provide the service, the agent will indicate that the lead must be assign to the agent. If not, the agent will indicate that a suitably qualified adviser must be assigned to meet with the potential client. Leads are assigned based on the service required and the location of the prospect using the accreditation of the advicer and the adviser's area of operation.
+The agent would assess if the company can provide the service the prospect requires. If so, the agent will create a lead in this app. If the agent can provide the service, the agent will indicate that the lead must be assign to the agent. If not, the agent will indicate that a suitably qualified adviser must be assigned to meet with the potential client. Leads are assigned based on the service required and the location of the prospect using the accreditation of the adviser and the adviser's area of operation.
 
 The app is a single page web app that enables the following:
   - The capture of a lead by agent.

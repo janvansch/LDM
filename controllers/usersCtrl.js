@@ -82,9 +82,9 @@ var SkilledAdvisers = async (req, res) => {
 
 };
 
-//
-// Select advisers with the required skill
-//
+// -----------------------------------------
+//  Select advisers with the required skill
+// -----------------------------------------
 function selectAdvisers(adv, serv) {
   console.log(`---> Adviser Count: ${adv.length} Service Count: ${serv.length}`);
   console.log(`---> Lead services: ${serv[0].line}`);

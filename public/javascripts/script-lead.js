@@ -27,9 +27,9 @@ if (document.getElementById("add-lead-btn")) {
   });
 }
 
-// ------------------------------------------
-//  Lead capture screen control click events
-// ------------------------------------------
+// -------------------------------
+//  Lead detail view click events
+// -------------------------------
 var linkRef = document.getElementById('assign-agent');
 if (linkRef) {
   linkRef.addEventListener("click", () => assignFork());
@@ -94,6 +94,19 @@ if (document.getElementById("updateLead")) {
   document.getElementById("updateLead").addEventListener("click", function() {
     updateLead();
   });
+}
+
+// -----------------------
+//  Lead progress control
+// -----------------------
+linkRef = document.getElementById('progress-update');
+if (linkRef) {
+  linkRef.addEventListener("click", () => updateLeadProgress());
+}
+
+linkRef = document.getElementById('progress-reset');
+if (linkRef) {
+  linkRef.addEventListener("click", () => resetLeadProgressForm());
 }
 
 // -------------------------------
@@ -227,7 +240,7 @@ if (document.getElementById('pend')) {
 }
 
 // What about:
-// - When contact date enterred the viable becomes active
+// - When contact date entered the viable becomes active
 // - When viable Yes is clicked the quoting section becomes available
 // - When accepted is clicked the date and policy section becomes available
 // - When decline is clicked the date and and decline reason becomes available
@@ -277,7 +290,7 @@ function closeLeadsView() {
 //  Extract leads based on search criteria & display list
 // -------------------------------------------------------
 //
-// In future use pageing functionality?
+// In future use paging functionality?
 //
 function listLeads() {
   console.log("*** List Leads ***");
@@ -713,8 +726,8 @@ function displayLead(leadRef, viewId) {
 //    2. Fulfill the request and update the lead document with the progress
 //  At the end of step 1 when the "Create Lead" button is clicked the captured
 //  content is used to create a new lead document in the DB and then in step 2
-//  the fulfilment process is started. To enable the lead agent to record the
-//  progress of the fulfilment process the progress form is displayed with the
+//  the fulfillment process is started. To enable the lead agent to record the
+//  progress of the fulfillment process the progress form is displayed with the
 //  detail of the lead. Step 2 ends when the "Update" button is clicked.
 //
 //  When moving from step 1 to step 2 the UI is updated, which could result in
@@ -797,13 +810,13 @@ async function addLeadCtrl() {
         resetForm('lead-form');
       }
       //
-      // Agent selected - lead created, record progress of fulfilment
+      // Agent selected - lead created, record progress of fulfillment
       //
       else {
         //
         // Enhancement: the reference of lead created must be return so that it can be displayed
         //
-        console.log("*** Agent assigned get fulfilment progress ***");
+        console.log("*** Agent assigned get fulfillment progress ***");
         viewOff('addLeadButtons');
         viewOn('lead-progress');
         viewOn('updateLeadButtons');
@@ -1497,7 +1510,7 @@ function extractLeadProgress(formId){
 };
 
 // --------------------------------------------------
-//  Detemine lead's state from updated progress data
+//  Determine lead's state from updated progress data
 // --------------------------------------------------
 function determineLeadState(formId){
   console.log("*** Started determining lead state ***");
@@ -1533,7 +1546,7 @@ function determineLeadState(formId){
   //
   // STATE 7 - Policy Issued
   //
-  // Rule: polNum & issueDate; text & date, = enterred >> issued --> close
+  // Rule: polNum & issueDate; text & date, = entered >> issued --> close
   //
   console.log("*** First Test: Policy Issued ***");
   if (progressDates.issueDate.length !== 0 && progressText.polNum.length !== 0) {
@@ -1670,7 +1683,7 @@ function determineLeadState(formId){
   //
   // STATE 5 - Quoted
   //
-  // Rule: quoteDate & quotNum; Date & Text, enterred >> quoted --> lead assigned
+  // Rule: quoteDate & quotNum; Date & Text, entered >> quoted --> lead assigned
   //
   console.log("*** Third Test: Quoted ***");
   if (progressDates.quoteDate.length !== 0 && progressText.quoteNum.length !== 0 ) {
@@ -1752,7 +1765,7 @@ function determineLeadState(formId){
   //
   // STATE 2 - Made contact
   //
-  // Rule: contactedDate; date, = enterred >> contacted --> lead assigned
+  // Rule: contactedDate; date, = entered >> contacted --> lead assigned
   //
   console.log("*** Sixth Test: Contact made ***");
   if (progressDates.contactDate.length !== 0) {

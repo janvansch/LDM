@@ -91,8 +91,8 @@ var loginUser = async (req, res) => {
       //
       const options = [
         {funcId:'profile',text:'Edit Profile'},
-        {funcId:'practices',text:'View Practices'},
-        {funcId:'users',text:'View Users'}
+        {funcId:'admin-practices',text:'View Practices'},
+        {funcId:'admin-users',text:'View Users'}
       ];
       //
       // View definition
@@ -118,12 +118,8 @@ var loginUser = async (req, res) => {
       const options = [
         {funcId:'profile',text:'Edit Profile'},
         {funcId:'practice-leads',text:'View Leads'},
-        // Practice leads list with user selection criteria (user practice code fixed)
         {funcId:'allocated-leads',text:'Assign Leads'},
-        // Practice leads list with set selection criteria (user practice code and allocated status)
-        // The list has filter functionality
         {funcId:'practice-advisers',text:'View Advisers'}
-        // List the advisers of the practice
       ];
       //
       // View definition

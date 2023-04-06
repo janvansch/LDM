@@ -1,12 +1,12 @@
 "use strict";
 
-//============================================================================
-// Admin View - System Users
-//============================================================================
-//
-// ---------------------------------------
-//  User list screen control click events
-// ---------------------------------------
+// =========================
+//  Admin View Click Events
+// =========================
+
+// -------------------------------
+//  User list screen click events
+// -------------------------------
 var idRef = document.getElementById('close-users-view');
 if (idRef) {
   idRef.addEventListener("click", () => openMenu());
@@ -18,7 +18,7 @@ if (idRef) {
 }
 
 // --------------------------------
-//  User view control click events
+//  User modal click events
 // --------------------------------
 var idRef = document.getElementById('form-add-user');
 if (idRef) {
@@ -35,6 +35,64 @@ if (idRef) {
   idRef.addEventListener("click", () => deleteUser());
 }
 
+// -----------------------------------
+//  Practice list screen click events
+// -----------------------------------
+var idRef = document.getElementById('close-practice-view');
+if (idRef) {
+  idRef.addEventListener("click", () => openMenu());
+}
+
+idRef = document.getElementById('add-practice');
+if (idRef) {
+  idRef.addEventListener("click", () => addPractice());
+}
+
+// ----------------------------------
+//  Practice modal click events
+// ----------------------------------
+//
+// Postal codes maintenace click events
+//
+var linkRef = document.getElementById('add-pcode');
+if (linkRef) {
+  linkRef.addEventListener("click", () => addPostalCode());
+}
+
+var linkRef = document.getElementById('update-pcode');
+if (linkRef) {
+  linkRef.addEventListener("click", () => amendPostalCodeList('update'));
+}
+
+var linkRef = document.getElementById('remove-pcode');
+if (linkRef) {
+  linkRef.addEventListener("click", () => amendPostalCodeList('remove'));
+}
+//
+// Practice maintenace click events
+//
+var linkRef = document.getElementById('formAddPractice');
+if (linkRef) {
+  console.log("---> Form Add Practice set");
+  linkRef.addEventListener("click", () => submitPractice('add'));
+}
+
+var linkRef = document.getElementById('formUpdatePractice');
+if (linkRef) {
+  console.log("---> Form Update Practice set");
+  linkRef.addEventListener("click", () => submitPractice('update'));
+}
+
+var linkRef = document.getElementById('formDeletePractice');
+if (linkRef) {
+  linkRef.addEventListener("click", () => deletePractice());
+}
+
+
+//============================================================================
+// Admin View - System Users
+//============================================================================
+//
 // ------------------------------------------------------------------------
 //  Display insurance type selection based on the Insurance line selection
 // ------------------------------------------------------------------------
@@ -424,18 +482,6 @@ function submitUser(action) {
 //============================================================================
 // Admin View - Practices
 //============================================================================
-// -------------------------------------------
-//  Practice list screen control click events
-// -------------------------------------------
-var idRef = document.getElementById('close-practice-view');
-if (idRef) {
-  idRef.addEventListener("click", () => openMenu());
-}
-
-idRef = document.getElementById('add-practice');
-if (idRef) {
-  idRef.addEventListener("click", () => addPractice());
-}
 
 // --------------------------------
 //  Open practice maintenance view
@@ -608,7 +654,7 @@ function dupPostCode(code){
 // -------------------------------
 //  Process add postal code event --- move to general
 // -------------------------------
-function addPostCode() {
+function addPostalCode() {
   //
   // Get input
   //

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <!-- New structure with single lead form -->
+<!-- Setup the window frame/layout, the content is added later by browser JS -->
 <html>
 <head>
 
@@ -39,7 +40,7 @@
     <!-- Display Required UI View -->
 
     <% if (view === "admin") { %>
-      <!-- Admin Maintenence View -->
+      <!-- Admin Maintenance View -->
       <div id="viewAdmin" style="display:block">
         <%- include('partials/viewAdmin'); %>
       </div>
@@ -53,7 +54,7 @@
     <% } %>
 
     <% if (view === "practice") { %>
-      <!-- Practise View -->
+      <!-- Practice View -->
       <div id="viewPractice" style="display:block">
         <%- include('partials/viewPractice'); %>
         <%- include('partials/viewLead'); %>

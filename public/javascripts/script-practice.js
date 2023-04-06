@@ -4,6 +4,24 @@
 //  Practice View Click Event Controller
 // ======================================
 
+if (document.getElementById('end-leads-view')) {
+  document.getElementById('end-leads-view').addEventListener("click", function() {
+    closeLeadsView();
+  });
+}
+
+if (document.getElementById('end-adviser-view')) {
+  document.getElementById('end-adviser-view').addEventListener("click", function() {
+    AdvViewOff();
+  });
+}
+
+if (document.getElementById('apply-prac-filter')) {
+  document.getElementById('apply-prac-filter').addEventListener("click", function() {
+    filterTable("tPos1", "1");
+  });
+}
+
 // -------------------------
 //  Assign lead click event
 // -------------------------
@@ -11,42 +29,6 @@ if (document.getElementById("assignLead")) {
   document.getElementById("assignLead").addEventListener("click", function() {
     displaySkilledAdvisers();
   });
-}
-
-// -----------------------------------------------------------
-//  Postal codes serviced by practice maintenace click events
-// -----------------------------------------------------------
-var linkRef = document.getElementById('add-pcode');
-if (linkRef) {
-  linkRef.addEventListener("click", () => addPostalCode());
-}
-
-var linkRef = document.getElementById('update-pcode');
-if (linkRef) {
-  linkRef.addEventListener("click", () => amendPostalCodeList('update'));
-}
-
-var linkRef = document.getElementById('remove-pcode');
-if (linkRef) {
-  linkRef.addEventListener("click", () => amendPostalCodeList('remove'));
-}
-
-// ----------------------------------
-//  Practice maintenace click events
-// ----------------------------------
-var linkRef = document.getElementById('formAddPractice');
-if (linkRef) {
-  linkRef.addEventListener("click", () => submitPractice('add'));
-}
-
-var linkRef = document.getElementById('formUpdatePractice');
-if (linkRef) {
-  linkRef.addEventListener("click", () => submitPractice('update'));
-}
-
-var linkRef = document.getElementById('formDeletePractice');
-if (linkRef) {
-  linkRef.addEventListener("click", () => deletePractice());
 }
 
 // ===========================================================================
@@ -76,7 +58,7 @@ function leadsViewOff() {
 };
 
 // -------------------------------------------------------------------------------
-//  Display practise leads in "allocated" status to enable assignment to advisers
+//  Display practice leads in "allocated" status to enable assignment to advisers
 // -------------------------------------------------------------------------------
 function allocatedLeadsView() {
   console.log("*** Practice Allocated Leads Display Started");
@@ -84,7 +66,7 @@ function allocatedLeadsView() {
   // Other panels off
   //
   viewOff('panelAdvList');
-  viewOff('panelViewLead');
+  viewOff('panelLeadsView');
   //
   // Switch panel-view on
   //
@@ -299,7 +281,7 @@ function listAdvisers() {
   // Other panels off
   //
   viewOff('panelLeadList');
-  viewOff('panelViewLead');
+  viewOff('panelLeadsView');
   //
   // Switch panel-view on
   //
@@ -432,8 +414,8 @@ Rules:
  - The adviser starts with 10 point
  - For every lead assigned to the adviser that is viable but is not converted -1 point
  - For every lead converted +5 points
- - Can accumalate a maximum of 20 points
- - Everbody on and above 10 points stand an equal change of being selected
+ - Can accumulate a maximum of 20 points
+ - Everybody on and above 10 points stand an equal change of being selected
  - SLA non-compliance -1 point
  - Documentation non-compliance -2 points
 */
