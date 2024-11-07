@@ -39,7 +39,7 @@ xButton.onclick = function() {
 };
 
 // -------------------------------------------------------------------------
-//  Close the Modal when a click event occurss outside of the modal content
+//  Close the Modal when a click event occurs outside of the modal content
 // -------------------------------------------------------------------------
 window.onclick = function(event) {
   if (event.target == modal) {
